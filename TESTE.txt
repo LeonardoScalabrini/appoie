@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 TESTANDO 12345678
+=======
+TESTE 123
+TESTE 12345
+TESTE 12345678
+>>>>>>> develop
