@@ -3,9 +3,9 @@ package com.appoie.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appoie.models.Email;
-import com.appoie.models.Senha;
+import com.appoie.exceptions.EmailSenhaInvalidoException;
 import com.appoie.querys.UsuarioQuery;
+import com.appoie.utils.ValidationString;
 
 @Service
 public class LoginService {
@@ -13,10 +13,14 @@ public class LoginService {
 	@Autowired
 	private UsuarioQuery usuarioQuery;
 	
-	public void realizarLogin(Email email, Senha senha) throws Exception {
+	public void realizarLogin(String email, String senha) throws Exception {
+		
+		if (ValidationString.isNullOrEmpty(email)||ValidationString.isNullOrEmpty(senha)){
+			throw new EmailSenhaInvalidoException();
+		}
 		
 		if (!usuarioQuery.exiteUsuario(email, senha)){
-			throw new Exception("O email e/ou senha estão incorretos!");
+			throw new EmailSenhaInvalidoException();
 		}
 	}
 

@@ -4,8 +4,6 @@ import static com.appoie.utils.ValidationString.*;
 
 import javax.persistence.Embeddable;
 
-import com.appoie.exceptions.CampoObrigatorioException;
-
 @Embeddable
 public class Senha {
 	
@@ -19,7 +17,7 @@ public class Senha {
 		this();
 		
 		if(isNullOrEmpty(value)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.value = value;
 	}
@@ -28,11 +26,11 @@ public class Senha {
 		this();
 		
 		if(isNullOrEmpty(value)||isNullOrEmpty(confirmarSenha)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		
 		if(!value.equals(confirmarSenha)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		
 		this.value = value;

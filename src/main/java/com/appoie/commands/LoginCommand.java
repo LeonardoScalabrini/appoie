@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginCommand {
 
-	private String email;
-	private String senha;
+	public final String email;
+	public final String senha;
 	
 	public Email getEmail() throws Exception {
 		// TODO Auto-generated method stub

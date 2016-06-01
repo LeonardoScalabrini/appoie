@@ -1,10 +1,8 @@
 package com.appoie.models;
 
-import static com.appoie.utils.ValidationString.*;
+import static com.appoie.utils.ValidationString.isNullOrEmpty;
 
 import javax.persistence.Embeddable;
-
-import com.appoie.exceptions.CampoObrigatorioException;
 
 @Embeddable
 public class Email {
@@ -19,7 +17,7 @@ public class Email {
 		this();
 		
 		if (isNullOrEmpty(value)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.value = value;
 	}
@@ -28,11 +26,11 @@ public class Email {
 		this();
 		
 		if (isNullOrEmpty(value) || isNullOrEmpty(confirmarEmail)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		
 		if(!value.equals(confirmarEmail)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.value = value;
 	}

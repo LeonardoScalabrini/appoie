@@ -6,18 +6,15 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
-import com.appoie.models.Email;
-import com.appoie.models.Senha;
-
 @Component
 public class UsuarioQuery extends BasicQuery{
 
-	public Boolean exiteUsuario(Email email, Senha senha){
+	public Boolean exiteUsuario(String email, String senha){
 		Query query =  em.createNativeQuery("select count(1) from usuario where email = :email and senha = :senha");
-		query.setParameter("email", email.getValue());
-		query.setParameter("senha", senha.getValue());
-		BigInteger quantidade = (BigInteger) query.getSingleResult();
-		return quantidade.intValue() == 1;
+		query.setParameter("email", email);
+		query.setParameter("senha", senha);
+		BigInteger quantidade = (BigInteger)query.getSingleResult();
+		return quantidade.longValue() == 1L;
 	}
 	
 }

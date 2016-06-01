@@ -10,7 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.appoie.exceptions.CampoObrigatorioException;
 import static com.appoie.utils.ValidationString.*;
 
 @Entity
@@ -43,42 +42,42 @@ public class Usuario extends BasicEntity{
 	
 	public void setNome(String nome) throws Exception{
 		if (isNullOrEmpty(nome)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.nome = nome;
 	}
 	
 	public void setSobrenome(String sobrenome) throws Exception{
 		if (isNullOrEmpty(sobrenome)){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.sobrenome = sobrenome;
 	}
 	
 	public void setDataDeNascimento(Calendar dataDeNascimento) throws Exception{
 		if (dataDeNascimento == null){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.dataDeNascimento = dataDeNascimento;
 	}
 	
 	public void setEmail (Email email) throws Exception{
 		if (email == null){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.email = email;
 	}
 	
 	public void setSexo (Sexo sexo) throws Exception{
 		if (sexo == null){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.sexo = sexo;
 	}
 	
 	public void setSenha(Senha senha) throws Exception{
 		if (senha == null){
-			throw new CampoObrigatorioException();
+			throw new IllegalArgumentException();
 		}
 		this.senha = senha;
 	}

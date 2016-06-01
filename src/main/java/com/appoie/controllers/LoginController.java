@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.LoginCommand;
-import com.appoie.models.Email;
-import com.appoie.models.Senha;
 import com.appoie.services.LoginService;
 
 @RestController
@@ -20,9 +18,7 @@ public class LoginController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand) throws Exception{
-		Email email = loginCommand.getEmail();
-		Senha senha = loginCommand.getSenha();
-		loginService.realizarLogin(email, senha);
+		loginService.realizarLogin(loginCommand.email, loginCommand.senha);
 	}
 	
 }
