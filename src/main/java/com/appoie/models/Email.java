@@ -1,6 +1,6 @@
 package com.appoie.models;
 
-import static com.appoie.utils.ValidationString.isNullOrEmpty;
+//import static com.appoie.utils.ValidationString.isNullOrEmpty;
 
 import javax.persistence.Embeddable;
 
@@ -8,32 +8,13 @@ import javax.persistence.Embeddable;
 public class Email {
 
 	private String value;
-	
-	private Email(){
-		
+	public Email() {
+		// TODO Auto-generated constructor stub
 	}
 	
-	public Email(String value) throws Exception {
-		this();
-		
-		if (isNullOrEmpty(value)){
-			throw new IllegalArgumentException();
-		}
+	public Email(String value){		
 		this.value = value;
-	}
-	
-	public Email(String value, String confirmarEmail)throws Exception {
-		this();
-		
-		if (isNullOrEmpty(value) || isNullOrEmpty(confirmarEmail)){
-			throw new IllegalArgumentException();
-		}
-		
-		if(!value.equals(confirmarEmail)){
-			throw new IllegalArgumentException();
-		}
-		this.value = value;
-	}
+	}	
 	
 	public String getValue(){
 		return value;

@@ -16,9 +16,15 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	
+		 
+	 
+	
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public void cadastrar(@RequestBody UsuarioCommand usuarioCommand) throws Exception{
-		
-		usuarioService.cadastrar(usuarioCommand.getUsuario());
+		usuarioService.cadastrar(usuarioCommand);
 	}
+	
+	
 }
