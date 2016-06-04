@@ -16,12 +16,12 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<name>org.springframework.ide.eclipse.core.springbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.springframework.ide.eclipse.core.springbuilder</name>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -36,7 +36,7 @@
 		<link>
 			<name>src/main/webapp</name>
 			<type>2</type>
-			<location>C:/Users/igorh/Escola de TI/Appoie/webapp</location>
+			<locationURI>PARENT-1-PROJECT_LOC/webapp</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
