@@ -19,8 +19,8 @@ public class UsuarioService {
 	private UsuarioQuery usuarioQuery;
 
 	public void cadastrar(UsuarioCommand command) throws Exception {
-		Usuario usuario=command.criarUsuario();
-		if(usuarioQuery.existeEmail(usuario.getEmail())){
+		Usuario usuario=command.criarUsuario();		
+		if(usuarioQuery.existeEmail(command.getEmail())){
 			throw new EmailJaCadastrado();
 		}
 		usuarioRepository.save(usuario);

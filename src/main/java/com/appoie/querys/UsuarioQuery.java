@@ -19,8 +19,8 @@ public class UsuarioQuery extends BasicQuery{
 		BigInteger quantidade = (BigInteger)query.getSingleResult();
 		return quantidade.longValue() == 1L;
 	}
-	public Boolean existeEmail(Email email){
-		Query query= em.createNativeQuery("select usuario from usuario where email = :email");
+	public Boolean existeEmail(String email){
+		Query query= em.createNativeQuery("select count(1) from usuario where email = :email");
 		query.setParameter("email", email);
 		BigInteger quantidade =(BigInteger)query.getSingleResult();
 		return quantidade.longValue()==1L;

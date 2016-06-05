@@ -85,6 +85,11 @@ public class UsuarioCommand extends ValidationString {
 
 	}
 	
+	
+	public String getEmail() {
+		return email;
+	}
+	
 	public Usuario criarUsuario() throws Exception{
 		return new Usuario(nome, sobrenome, dataDeNascimento, sexo, new Email(email), new Senha(senha));
 	}
