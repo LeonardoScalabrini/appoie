@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appoie.commands.UsuarioCommand;
+import com.appoie.commands.CadastrarCommand;
 import com.appoie.services.UsuarioService;
 
 @RestController
@@ -16,14 +16,9 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	
-		 
-	 
-	
-	
 	@RequestMapping(method=RequestMethod.POST)
-	public void cadastrar(@RequestBody UsuarioCommand usuarioCommand) throws Exception{
-		usuarioService.cadastrar(usuarioCommand);
+	public void cadastrar(@RequestBody CadastrarCommand command) throws Exception{
+		usuarioService.cadastrar(command);
 	}
 	
 	

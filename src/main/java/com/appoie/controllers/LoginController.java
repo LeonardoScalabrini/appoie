@@ -18,7 +18,7 @@ public class LoginController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand) throws Exception{
-		loginService.realizarLogin(loginCommand.email, loginCommand.senha);
+		loginService.realizarLogin(loginCommand);
 	}
 	
 }

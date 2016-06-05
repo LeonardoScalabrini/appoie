@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import static com.appoie.utils.ValidationObject.*;
+
 import static com.appoie.utils.ValidationString.*;
 
 @Entity
@@ -41,44 +43,32 @@ public class Usuario extends BasicEntity{
 	}
 	
 	public void setNome(String nome) throws Exception{
-		if (isNullOrEmpty(nome)){
-			throw new IllegalArgumentException();
-		}
+		isNullOrEmpty(nome);
 		this.nome = nome;
 	}
 	
 	public void setSobrenome(String sobrenome) throws Exception{
-		if (isNullOrEmpty(sobrenome)){
-			throw new IllegalArgumentException();
-		}
+		isNullOrEmpty(sobrenome);
 		this.sobrenome = sobrenome;
 	}
 	
 	public void setDataDeNascimento(Calendar dataDeNascimento) throws Exception{
-		if (dataDeNascimento == null){
-			throw new IllegalArgumentException();
-		}
+		isNull(dataDeNascimento);
 		this.dataDeNascimento = dataDeNascimento;
 	}
 	
 	public void setEmail (Email email) throws Exception{
-		if (email == null){
-			throw new IllegalArgumentException();
-		}
+		isNull(email);
 		this.email = email;
 	}
 	
 	public void setSexo (Sexo sexo) throws Exception{
-		if (sexo == null){
-			throw new IllegalArgumentException();
-		}
+		isNull(sexo);
 		this.sexo = sexo;
 	}
 	
 	public void setSenha(Senha senha) throws Exception{
-		if (senha == null){
-			throw new IllegalArgumentException();
-		}
+		isNull(senha);
 		this.senha = senha;
 	}
 	

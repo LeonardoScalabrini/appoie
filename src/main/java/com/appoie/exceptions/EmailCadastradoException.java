@@ -1,6 +1,6 @@
 package com.appoie.exceptions;
 
-public class EmailJaCadastrado extends Exception {
+public class EmailCadastradoException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
