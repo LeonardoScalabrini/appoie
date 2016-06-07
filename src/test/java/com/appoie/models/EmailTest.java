@@ -1,14 +1,21 @@
 package com.appoie.models;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.appoie.biulders.EmailBiulder;
 import com.appoie.exceptions.EmailFormatoException;
 
 public class EmailTest {
 
 	private Email email;
-
+	
+	@Before
+	public void antes(){
+		email = null;
+	}
+	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarEmailNulo() throws Exception{
 		email = new Email(null);
@@ -49,19 +56,73 @@ public class EmailTest {
 		email = new Email("teste@teste.");
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarEmailNulo() throws Exception{
+		email = new EmailBiulder().criar();
+		email.setValue(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarEmailVazio() throws Exception{
+		email = new EmailBiulder().criar();
+		email.setValue("");
+	}
+	
+	@Test(expected=EmailFormatoException.class)
+	public void nãoDeveSetarEmailSemArroba() throws EmailFormatoException{
+		email = new EmailBiulder().criar();
+		email.setValue("teste");
+	}
+	
+	@Test(expected=EmailFormatoException.class)
+	public void nãoDeveSetarEmailComMaisDeUmaArroba() throws EmailFormatoException{
+		email = new EmailBiulder().criar();
+		email.setValue("teste@@");
+	}
+	
+	@Test(expected=EmailFormatoException.class)
+	public void nãoDeveSetarEmailComNadaAntesArroba() throws EmailFormatoException{
+		email = new EmailBiulder().criar();
+		email.setValue("@teste");
+	}
+	
+	@Test(expected=EmailFormatoException.class)
+	public void nãoDeveSetarEmailComNadaDepoisArroba() throws EmailFormatoException{
+		email = new EmailBiulder().criar();
+		email.setValue("teste@");
+	}
+	
+	@Test(expected=EmailFormatoException.class)
+	public void nãoDeveSetarEmailSemPonto() throws EmailFormatoException{
+		email = new EmailBiulder().criar();
+		email.setValue("teste@teste");
+	}
+	
+	@Test(expected=EmailFormatoException.class)
+	public void nãoDeveSetarEmailNadaDepoisDoPonto() throws EmailFormatoException{
+		email = new EmailBiulder().criar();
+		email.setValue("teste@teste.");
+	}
+	
 	@Test
-	public void DeveAceitarEmail() throws EmailFormatoException{
-		
+	public void deveAceitarEmailComPontoCom() throws EmailFormatoException{
 		String emailPontoCom = "teste@teste.com";
-		Email email = new Email(emailPontoCom);
+		email = new Email(emailPontoCom);
 		email.setValue(emailPontoCom);
 		Assert.assertTrue(email.getValue().equals(emailPontoCom));
 		
+	}
+	
+	@Test
+	public void deveAceitarEmailComPontoComPontoBr() throws EmailFormatoException{
 		String emailPontoComPontoBr = "teste@teste.com.br";
 		email = new Email(emailPontoComPontoBr);
 		email.setValue(emailPontoComPontoBr);
 		Assert.assertTrue(email.getValue().equals(emailPontoComPontoBr));
-		
+	}
+	
+	@Test
+	public void deveAceitarEmailComAlgumaCoisa() throws EmailFormatoException{
 		String emailPontoAlgumaCoisa = "teste@teste.algumacoisa.com.br";
 		email = new Email(emailPontoAlgumaCoisa);
 		email.setValue(emailPontoAlgumaCoisa);

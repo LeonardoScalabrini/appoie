@@ -1,6 +1,11 @@
 package com.appoie.commands;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
 import com.appoie.models.Sexo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,18 +23,18 @@ public class CadastrarCommand{
 	
 	@JsonCreator
 	public CadastrarCommand(@JsonProperty(value="nome") String nome, 
-						  @JsonProperty(value="sobrenome") String sobrenome, 
-						  @JsonProperty(value="dataDeNascimento") Calendar dataDeNascimento,
-						  @JsonProperty(value="sexo") Sexo sexo,
-						  @JsonProperty(value="email") String email,
-						  @JsonProperty(value="confirmarEmail") String confirmarEmail,
-						  @JsonProperty(value="senha") String senha,
-						  @JsonProperty(value="confirmarSenha") String confirmarSenha){		
+						  	@JsonProperty(value="sobrenome") String sobrenome, 
+						  	@JsonProperty(value="nascimento") Calendar dataDeNascimento,
+						  	@JsonProperty(value="sexo") String sexo,
+						  	@JsonProperty(value="email") String email,
+						  	@JsonProperty(value="confirmaEmail") String confirmarEmail,
+						  	@JsonProperty(value="senha") String senha,
+						  	@JsonProperty(value="confirmaSenha") String confirmarSenha){		
 
 		this.nome = nome;
-		this.sobrenome = sobrenome;
+		this.sobrenome = sobrenome; 
 		this.dataDeNascimento = dataDeNascimento;
-		this.sexo = sexo;
+		this.sexo = Sexo.valueOf(sexo.toUpperCase());
 		this.email = email;
 		this.confirmarEmail = confirmarEmail;
 		this.senha = senha;

@@ -17,6 +17,7 @@ public class UsuarioTest {
 	@Before
 	public void antes() throws EmailFormatoException, SenhaTamanhoMinimoException{
 		 biulder = new UsuarioBiulder();
+		 usuario = null;
 	}
 	
 	@Test
@@ -78,6 +79,53 @@ public class UsuarioTest {
 		usuario = biulder.senha(null).criar();
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarNomeNulo() throws Exception {
+		usuario = biulder.criar();
+		usuario.setNome(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarNomeVazio() throws Exception {
+		usuario = biulder.criar();
+		usuario.setNome("");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarSobrenomeNulo() throws Exception {
+		usuario = biulder.criar();
+		usuario.setSobrenome(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarSobrenomeVazio() throws Exception {
+		usuario = biulder.criar();
+		usuario.setSobrenome("");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarDataDeNascimentoNula() throws Exception {
+		usuario = biulder.criar();
+		usuario.setDataDeNascimento(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarSexoNulo() throws Exception {
+		usuario = biulder.criar();
+		usuario.setSexo(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarEmailNulo() throws Exception {
+		usuario = biulder.criar();
+		usuario.setEmail(null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void nãoDeveSetarSenhaNula() throws Exception {
+		usuario = biulder.criar();
+		usuario.setSenha(null);
+	}
 	
 
 }

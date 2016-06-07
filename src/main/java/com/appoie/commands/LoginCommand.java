@@ -22,7 +22,6 @@ public class LoginCommand {
 	
 	@JsonCreator
 	public LoginCommand(@JsonProperty(value="email") String email, @JsonProperty(value="senha") String senha) {
-		// TODO Auto-generated constructor stub
 		this.email = email;
 		this.senha = senha;
 	}
