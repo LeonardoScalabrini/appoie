@@ -33,7 +33,7 @@ public class Usuario extends BasicEntity{
 	}
 	
 	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha) throws Exception{
-		this();
+		super();
 		setNome(nome);
 		setSobrenome(sobrenome);
 		setDataDeNascimento(dataDeNascimento);

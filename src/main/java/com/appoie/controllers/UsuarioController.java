@@ -18,18 +18,16 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public void cadastrar(@RequestBody CadastrarCommand command) throws Exception{
+
+	@RequestMapping(method = RequestMethod.POST)
+	public void cadastrar(@RequestBody CadastrarCommand command) throws Exception {
 		usuarioService.cadastrar(command);
 	}
-	
-	
-	@RequestMapping
+
+	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
 	public void recuperarSenha(@RequestBody RecuperarSenhaCommand command) throws Exception {
 		usuarioService.recuperarSenha(command);
-		
+
 	}
-	
-	
+
 }

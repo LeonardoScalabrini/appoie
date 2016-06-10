@@ -11,6 +11,7 @@ import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.EmailNaoCadastradoExcpetion;
 import com.appoie.maps.UsuarioMap;
 import com.appoie.models.Email;
+import com.appoie.models.SenderEmail;
 import com.appoie.models.Usuario;
 import com.appoie.querys.UsuarioQuery;
 import com.appoie.repositorys.UsuarioRepository;
@@ -44,13 +45,19 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public void recuperarSenha(RecuperarSenhaCommand command) throws EmailFormatoException, EmailNaoCadastradoExcpetion {
-		if(!usuarioQuery.existeEmail(new Email(command.getEmail()))) {
+	public void recuperarSenha(RecuperarSenhaCommand command)
+			throws EmailFormatoException, EmailNaoCadastradoExcpetion {
+
+		if (!usuarioQuery.existeEmail(new Email(command.getEmail()))) {
 			throw new EmailNaoCadastradoExcpetion();
-		}
-		else {
-			//envia email aqui
-			
+		} else {
+
+			String senhaRecuperada;
+			// SenderEmail se = new SenderEmail(new Email(command.getEmail()));
+
+			senhaRecuperada = usuarioQuery.selectUsuarioByEmail(new Email(command.getEmail()));
+			// se.sendSenha(senhaRecuperada);
+
 		}
 
 	}
