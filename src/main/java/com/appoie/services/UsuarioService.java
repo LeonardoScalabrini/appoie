@@ -43,6 +43,7 @@ public class UsuarioService {
 			throw new EmailCadastradoException();
 
 		usuarioRepository.save(usuario);
+		enviarEmailConfirmacaoCadastro(usuario.getEmail(), "Confirmação de cadastro");
 	}
 
 	public void recuperarSenha(RecuperarSenhaCommand command)
@@ -53,7 +54,8 @@ public class UsuarioService {
 		} else {
 
 			String senhaRecuperada;
-			// SenderEmail se = new SenderEmail(new Email(command.getEmail()));
+			// SenderEmail se = new SenderEmail(new Email(command.getEmail()),
+			// "Recuperação de senha");
 
 			senhaRecuperada = usuarioQuery.selectUsuarioByEmail(new Email(command.getEmail()));
 			// se.sendSenha(senhaRecuperada);
@@ -61,5 +63,15 @@ public class UsuarioService {
 		}
 
 	}
+
+	private void enviarEmailConfirmacaoCadastro(Email email, String subject) {
+		SenderEmail se = new SenderEmail(email, subject);
+
+		// se.sendConfirmacaoCadastro("<h1>OBRIGADO!</h1><br />Uma conta no
+		// Appoie.com.br foi criada com este email (" + email.toString() + ")");
+
+	}
+	
+	
 
 }

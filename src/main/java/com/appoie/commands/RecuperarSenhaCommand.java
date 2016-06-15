@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RecuperarSenhaCommand {
-	public final String email;
+	private String email;
 
 	@JsonCreator
 	public RecuperarSenhaCommand(@JsonProperty(value = "email") String email) {
