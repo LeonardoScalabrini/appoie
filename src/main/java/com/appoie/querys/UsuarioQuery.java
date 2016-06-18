@@ -29,7 +29,7 @@ public class UsuarioQuery extends BasicQuery {
 		return quantidade.longValue() == 1L;
 	}
 
-	public String selectUsuarioByEmail(Email email) {
+	public String selectSenhaUsuarioByEmail(Email email) {
 		Query query = em.createNativeQuery("select senha from usuario where email = :email");
 		query.setParameter("email", email.getValue());
 		return query.getSingleResult().toString();

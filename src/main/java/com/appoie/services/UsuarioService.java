@@ -57,7 +57,7 @@ public class UsuarioService {
 			// SenderEmail se = new SenderEmail(new Email(command.getEmail()),
 			// "Recuperação de senha");
 
-			senhaRecuperada = usuarioQuery.selectUsuarioByEmail(new Email(command.getEmail()));
+			senhaRecuperada = usuarioQuery.selectSenhaUsuarioByEmail(new Email(command.getEmail()));
 			// se.sendSenha(senhaRecuperada);
 
 		}
