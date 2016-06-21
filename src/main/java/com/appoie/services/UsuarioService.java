@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
-<<<<<<< .merge_file_a04332
 import com.appoie.commands.EmailCommand;
 import com.appoie.commands.LoginCommand;
 import com.appoie.commands.PerfilCommand;
@@ -19,16 +18,9 @@ import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.models.Email;
 import com.appoie.models.Foto;
 import com.appoie.models.Senha;
-=======
 import com.appoie.commands.RecuperarSenhaCommand;
-import com.appoie.exceptions.CamposCadastrarException;
-import com.appoie.exceptions.EmailCadastradoException;
-import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.EmailNaoCadastradoExcpetion;
-import com.appoie.maps.UsuarioMap;
-import com.appoie.models.Email;
 import com.appoie.models.SenderEmail;
->>>>>>> .merge_file_a06936
 import com.appoie.models.Usuario;
 import com.appoie.models.UsuarioId;
 import com.appoie.querys.UsuarioQuery;
@@ -51,22 +43,15 @@ public class UsuarioService {
 	private FotoRepository fotoRepository;
 
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
-<<<<<<< .merge_file_a04332
-=======
-
->>>>>>> .merge_file_a06936
+		
 		Usuario usuario;
 		try {
 			usuario = new Usuario(command);
 		} catch (Exception e) {
 			throw new CamposCadastrarException();
 		}
-<<<<<<< .merge_file_a04332
-		if(!usuario.getEmail().getValue().equals(command.confirmarEmail))
-=======
 
 		if (!usuario.getEmail().getValue().equals(command.confirmarEmail))
->>>>>>> .merge_file_a06936
 			throw new CamposCadastrarException();
 
 		if (usuarioQuery.existeEmail(usuario.getEmail()))
@@ -82,14 +67,11 @@ public class UsuarioService {
 		if (!usuarioQuery.existeEmail(new Email(command.getEmail()))) {
 			throw new EmailNaoCadastradoExcpetion();
 		} else {
-
 			String senhaRecuperada;
 			// SenderEmail se = new SenderEmail(new Email(command.getEmail()),
 			// "Recuperação de senha");
-
 			senhaRecuperada = usuarioQuery.selectSenhaUsuarioByEmail(new Email(command.getEmail()));
 			// se.sendSenha(senhaRecuperada);
-
 		}
 
 	}
@@ -102,7 +84,6 @@ public class UsuarioService {
 
 	}
 	
-<<<<<<< .merge_file_a04332
 	public UsuarioId realizarLogin(LoginCommand command) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
@@ -129,14 +110,12 @@ public class UsuarioService {
 		}
 		usuarioRepository.save(usuario);
 		fotoRepository.save(foto);
-=======
+	}
+	
 	private void enviarEmailAlteracaoSenha(Email email, String subject) {
 		SenderEmail se = new SenderEmail(email, subject);
-
 		// se.sendConfirmacaoCadastro("<h1>ATENÇÃO!</h1><br />Houve uma alteração de senha de uma conta do
 		// Appoie.com.br vinculada a este email (" + email.toString() + ")");
-
->>>>>>> .merge_file_a06936
 	}
 
 	public void alterarEmail(EmailCommand c, UsuarioId id) throws EmailFormatoException, CamposCadastrarException, NovoEmailIgualException {
