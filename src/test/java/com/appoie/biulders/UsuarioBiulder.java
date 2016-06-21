@@ -3,9 +3,9 @@ package com.appoie.biulders;
 import java.util.Calendar;
 
 import com.appoie.exceptions.EmailFormatoException;
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.models.Email;
 import com.appoie.models.Senha;
-import com.appoie.models.SenhaTamanhoMinimoException;
 import com.appoie.models.Sexo;
 import com.appoie.models.Usuario;
 

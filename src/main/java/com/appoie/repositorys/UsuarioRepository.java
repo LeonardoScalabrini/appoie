@@ -1,7 +1,10 @@
 package com.appoie.repositorys;
 
-import com.appoie.models.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioRepository extends BasicRepository<Usuario>{
+import com.appoie.models.Usuario;
+import com.appoie.models.UsuarioId;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, UsuarioId>{
 
 }

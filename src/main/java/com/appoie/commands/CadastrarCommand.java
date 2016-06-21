@@ -1,10 +1,6 @@
 package com.appoie.commands;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import com.appoie.models.Sexo;
 import com.fasterxml.jackson.annotation.JsonCreator;

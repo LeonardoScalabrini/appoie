@@ -11,12 +11,10 @@ public class LoginCommand {
 	public final String senha;
 	
 	public Email getEmail() throws Exception {
-		// TODO Auto-generated method stub
 		return new Email(email);
 	}
 
 	public Senha getSenha() throws Exception{
-		// TODO Auto-generated method stub
 		return new Senha(senha);
 	}
 	

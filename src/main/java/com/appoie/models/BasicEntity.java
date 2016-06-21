@@ -1,21 +1,21 @@
 package com.appoie.models;
 
-import java.util.UUID;
-
-import javax.persistence.Id;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class BasicEntity {
+@Entity
+public abstract class BasicEntity<IdBasic extends BasicId>{
 
-	@Id
-	private final String id;
+	@EmbeddedId
+	private final IdBasic id;
 	
-	public BasicEntity() {
-		id = UUID.randomUUID().toString(); 
+	public BasicEntity(IdBasic id) {
+		this.id = id;
 	}
 	
-	public String getId(){
+	public final IdBasic getId(){
 		return id;
 	}
 }

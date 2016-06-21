@@ -17,7 +17,7 @@ public class Email {
 	private String value;
 	
 	private Email() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public Email(String value) throws EmailFormatoException{		
