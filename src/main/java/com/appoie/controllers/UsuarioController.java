@@ -10,11 +10,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.CadastrarCommand;
+<<<<<<< .merge_file_a06368
 import com.appoie.commands.EmailCommand;
 import com.appoie.commands.LoginCommand;
 import com.appoie.commands.PerfilCommand;
 import com.appoie.commands.SenhaCommand;
 import com.appoie.models.UsuarioId;
+=======
+import com.appoie.commands.RecuperarSenhaCommand;
+import com.appoie.exceptions.EmailFormatoException;
+import com.appoie.exceptions.EmailNaoCadastradoExcpetion;
+>>>>>>> .merge_file_a02892
 import com.appoie.services.UsuarioService;
 import com.appoie.utils.UsuarioLogado;
 
@@ -24,11 +30,12 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public void cadastrar(@RequestBody CadastrarCommand command) throws Exception{
+
+	@RequestMapping(method = RequestMethod.POST)
+	public void cadastrar(@RequestBody CadastrarCommand command) throws Exception {
 		usuarioService.cadastrar(command);
 	}
+<<<<<<< .merge_file_a06368
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand, HttpSession session) throws Exception{
@@ -63,4 +70,13 @@ public class UsuarioController {
 	}
 	
 	
+=======
+
+	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
+	public void recuperarSenha(@RequestBody RecuperarSenhaCommand command) throws Exception {
+		usuarioService.recuperarSenha(command);
+
+	}
+
+>>>>>>> .merge_file_a02892
 }
