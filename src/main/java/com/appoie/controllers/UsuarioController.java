@@ -14,7 +14,7 @@ import com.appoie.commands.EmailCommand;
 import com.appoie.commands.LoginCommand;
 import com.appoie.commands.PerfilCommand;
 import com.appoie.commands.SenhaCommand;
-import com.appoie.models.UsuarioId;
+import com.appoie.ids.UsuarioId;
 import com.appoie.commands.RecuperarSenhaCommand;
 import com.appoie.services.UsuarioService;
 import com.appoie.utils.UsuarioLogado;

@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.PerfilCommand;
+import com.appoie.ids.UsuarioId;
 
 import static com.appoie.utils.ValidationObject.*;
 

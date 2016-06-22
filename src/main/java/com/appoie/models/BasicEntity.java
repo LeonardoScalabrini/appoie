@@ -3,13 +3,15 @@ package com.appoie.models;
 import javax.persistence.EmbeddedId;
 import javax.persistence.MappedSuperclass;
 
+import com.appoie.ids.BasicId;
+
 @MappedSuperclass
 public abstract class BasicEntity<IdBasic extends BasicId>{
 
 	@EmbeddedId
 	private final IdBasic id;
 	
-	public BasicEntity(IdBasic id) {
+	protected BasicEntity(IdBasic id) {
 		this.id = id;
 	}
 	

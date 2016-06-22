@@ -6,10 +6,10 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
+import com.appoie.ids.UsuarioId;
 import com.appoie.models.Email;
 import com.appoie.models.Senha;
 import com.appoie.models.Usuario;
-import com.appoie.models.UsuarioId;
 
 @Component
 public class UsuarioQuery extends BasicQuery {
