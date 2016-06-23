@@ -2,6 +2,8 @@ package com.appoie.models;
 
 import java.util.Calendar;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,7 +20,9 @@ import static com.appoie.utils.ValidationString.*;
 @Entity
 public class Publicacao extends BasicEntity<PublicacaoId>{
 	
+	@AttributeOverride(name="id",column=@Column(name="usuario_id"))
 	private UsuarioId usuarioId;
+	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
 	private CidadeId cidadeId;
 	private String titulo;
 	private String descrição;

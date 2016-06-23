@@ -3,28 +3,30 @@ package com.appoie.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
+import com.appoie.ids.CidadeId;
 import com.appoie.ids.EstadoId;
 import static com.appoie.utils.ValidationObject.*;
 
 @Entity
 public class Estado extends BasicEntity<EstadoId>{
 	
-	@OneToMany
-	@JoinColumn(name="estado_id", referencedColumnName="id")
-	private List<Cidade> cidades = new ArrayList<>(); 
+	@ElementCollection
+	@CollectionTable(name="Cidade",joinColumns=@JoinColumn(name="estado_id"))
+	private List<CidadeId> cidades = new ArrayList<>(); 
 	
 	private Estado() {
 		super(new EstadoId());
 	}
 	
-	public Estado(Cidade cidade){
+	public Estado(CidadeId cidadeId){
 		this();
-		isNull(cidade);
-		this.cidades.add(cidade);
+		isNull(cidadeId);
+		this.cidades.add(cidadeId);
 	}
 
 }

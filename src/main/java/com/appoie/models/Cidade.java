@@ -1,31 +1,32 @@
 package com.appoie.models;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.appoie.ids.CidadeId;
+import com.appoie.ids.EstadoId;
+
 import static com.appoie.utils.ValidationObject.*;
 
 @Entity
 public class Cidade extends BasicEntity<CidadeId>{
 	
-    @ManyToOne
-    @JoinColumn(name="estado_id", referencedColumnName="id")
-	private Estado estado;
+	@AttributeOverride(name="id",column=@Column(name="estado_id"))
+	private EstadoId estadoId;
 	
 	private Cidade() {
 		super(new CidadeId());
 	}
 	
-	public Cidade(Estado estado){
+	public Cidade(EstadoId estadoId){
 		this();
-		isNull(estado);
-		this.estado = estado;
+		isNull(estadoId);
+		this.estadoId = estadoId;
 	}
 	
-	public Estado getEstadoId(){
-		return estado;
+	public EstadoId getEstadoId(){
+		return estadoId;
 	}
 
 }
