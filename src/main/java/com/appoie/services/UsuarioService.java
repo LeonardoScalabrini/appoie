@@ -24,6 +24,17 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioQuery usuarioQuery;
+	
+	
+	
+
+	public UsuarioRepository getUsuarioRepository() {
+		return usuarioRepository;
+	}
+    @Autowired
+	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
+		this.usuarioRepository = usuarioRepository;
+	}
 
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
 
