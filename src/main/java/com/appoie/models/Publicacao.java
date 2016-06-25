@@ -4,15 +4,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
 import com.appoie.ids.CidadeId;
+import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
 import static com.appoie.utils.ValidationObject.*;
@@ -22,7 +28,9 @@ import static com.appoie.utils.ValidationString.*;
 @Entity
 public class Publicacao extends BasicEntity<PublicacaoId>{
 	
+	@AttributeOverride(name="id",column=@Column(name="usuario_id"))
 	private UsuarioId usuarioId;
+	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
 	private CidadeId cidadeId;
 	private String titulo;
 	private String descricao;
@@ -30,7 +38,9 @@ public class Publicacao extends BasicEntity<PublicacaoId>{
 	private Categoria categoria;
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicação = Calendar.getInstance();
-	private List<FotoPublicacao> fotos = new ArrayList<>();
+	@ElementCollection
+	@CollectionTable(name="FotoPublicacao",joinColumns=@JoinColumn(name="fotoPublicacaoId"))
+	private List<FotoPublicacaoId> fotos = new ArrayList<>();
 	
 	private Publicacao() {
 		super(new PublicacaoId());
@@ -55,8 +65,8 @@ public class Publicacao extends BasicEntity<PublicacaoId>{
 			throw new NumeroFotosPublicacaoInvalido();
 
 		} else {
-			for (FotoPublicacao fotoPublicacao : fotos) {
-				this.fotos.add(fotoPublicacao);
+			for (FotoPublicacaoId fotoPublicacaoId : fotos) {
+				this.fotos.add(fotoPublicacaoId);
 
 			}
 		}
