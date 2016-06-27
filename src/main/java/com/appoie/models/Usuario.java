@@ -10,36 +10,55 @@ import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.appoie.commands.CadastrarCommand;
+import com.appoie.commands.PerfilCommand;
+import com.appoie.ids.UsuarioId;
+
 import static com.appoie.utils.ValidationObject.*;
 
 import static com.appoie.utils.ValidationString.*;
 
 @Entity
-public class Usuario extends BasicEntity{
+public class Usuario extends BasicEntity<UsuarioId>{
 	
 	private String nome;
 	private String sobrenome;
+	
 	@Temporal(TemporalType.DATE)
 	private Calendar dataDeNascimento;
+	
 	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
+	
 	@AttributeOverride(name="value",column=@Column(name="email"))
 	private Email email;
+	
 	@AttributeOverride(name="value",column=@Column(name="senha"))
 	private Senha senha;
 	
 	private Usuario() {
-		super();
+		super(new UsuarioId());
 	}
 	
 	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha) throws Exception{
-		super();
+		this();
 		setNome(nome);
 		setSobrenome(sobrenome);
 		setDataDeNascimento(dataDeNascimento);
 		setSexo(sexo);
 		setEmail(email);
 		setSenha(senha);
+	}
+	
+	public Usuario(CadastrarCommand command) throws Exception{
+		this();
+		isNull(command);
+		setNome(command.nome);
+		setSobrenome(command.sobrenome); 
+		setDataDeNascimento(command.dataDeNascimento); 
+		setSexo(command.sexo); 
+		setEmail(new Email(command.email)); 
+		setSenha(new Senha(command.senha));
 	}
 	
 	public void setNome(String nome) throws Exception{
@@ -94,6 +113,13 @@ public class Usuario extends BasicEntity{
 	
 	public Senha getSenha(){
 		return senha;
+	}
+
+	public void alterarPerfil(PerfilCommand perfilCommand) throws Exception {
+		setNome(perfilCommand.nome);
+		setSobrenome(perfilCommand.sobrenome);
+		setSexo(perfilCommand.sexo);
+		setDataDeNascimento(perfilCommand.dataDeNascimento);
 	}
 	
 }

@@ -1,6 +1,5 @@
 package com.appoie.commands;
 
-import com.appoie.models.Email;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

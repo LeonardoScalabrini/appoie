@@ -2,6 +2,8 @@ package com.appoie.models;
 
 import javax.persistence.Embeddable;
 
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
+
 import static com.appoie.utils.ValidationString.*;
 
 @Embeddable
@@ -11,7 +13,7 @@ public class Senha {
 	private static final int TAMANHO_MINIMO = 6;
 	
 	private Senha() {
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public Senha(String value) throws SenhaTamanhoMinimoException{	

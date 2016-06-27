@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.appoie.biulders.UsuarioBiulder;
 import com.appoie.exceptions.EmailFormatoException;
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
 
 public class UsuarioTest {
 	

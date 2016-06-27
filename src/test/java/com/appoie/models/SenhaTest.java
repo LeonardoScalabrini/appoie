@@ -3,6 +3,8 @@ package com.appoie.models;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
+
 public class SenhaTest {
 
 	private Senha senha;
