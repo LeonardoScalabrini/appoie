@@ -66,19 +66,15 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void paraRecuperarSenhaTemQueExistirOEmailCadastrado() throws Exception{	
-
 		 
-		RecuperarSenhaCommand command1=new RecuperarSenhaCommand("rafael3450@gmail.com.br");
+		RecuperarSenhaCommand command1=new RecuperarSenhaCommand("rafaelnochellidasilva@gmail.com");
 		
 		targetController.recuperarSenha(command1);	
 		
 		
 	}
-	@Test
-	public void emailDeConfirmacao(){
-		
-		
-	}
+	
+	
 	
 
 }
