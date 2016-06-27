@@ -1,16 +1,10 @@
 package com.appoie.service;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
-import java.util.List;
 
-import org.fest.assertions.AssertExtension;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.appoie.AppoieApplication;
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.commands.LoginCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
 import com.appoie.controllers.UsuarioController;
-import com.appoie.models.Email;
-import com.appoie.models.Senha;
 import com.appoie.models.Usuario;
 import com.appoie.querys.UsuarioQuery;
 import com.appoie.repositorys.UsuarioRepository;
@@ -45,8 +36,8 @@ public class UsuarioServiceTest {
 	@Mock
 	private UsuarioRepository targetRepositoryMock;
 	
-	@Mock
-	private UsuarioQuery targetUsuarioQueryMock;
+	
+	
 
 	@Before
 	public void setUp() throws Exception {
