@@ -10,6 +10,10 @@ public class FotoPerfil extends BasicEntity<UsuarioId>{
 	
 	public byte[] foto;
 	
+	private FotoPerfil(){
+		super(new UsuarioId());
+	}
+	
 	public FotoPerfil(UsuarioId id, byte[] foto) {
 		super(id);
 		isNull(id);

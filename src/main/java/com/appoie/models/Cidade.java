@@ -15,7 +15,7 @@ public class Cidade extends BasicEntity<CidadeId>{
 	@AttributeOverride(name="id",column=@Column(name="estado_id"))
 	private EstadoId estadoId;
 	
-	private Cidade() {
+	private Cidade(){
 		super(new CidadeId());
 	}
 	
