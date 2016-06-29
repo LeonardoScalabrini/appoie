@@ -21,66 +21,77 @@ import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
+import com.appoie.utils.UsuarioLogado;
+
 import static com.appoie.utils.ValidationObject.*;
 
 import static com.appoie.utils.ValidationString.*;
 
 @Entity
-public class Publicacao extends BasicEntity<PublicacaoId>{
-	
-	@AttributeOverride(name="id",column=@Column(name="usuario_id"))
+public class Publicacao extends BasicEntity<PublicacaoId> {
+
+	@AttributeOverride(name = "id", column = @Column(name = "usuario_id") )
 	private UsuarioId usuarioId;
-	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
+	@AttributeOverride(name = "id", column = @Column(name = "cidade_id") )
 	private CidadeId cidadeId;
 	private String titulo;
 	private String descricao;
 	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
 	@Temporal(TemporalType.DATE)
-	private Calendar dataPublicação = Calendar.getInstance();
+	private Calendar dataPublicacao = Calendar.getInstance();
+
 	@ElementCollection
-	@CollectionTable(name="FotoPublicacao",joinColumns=@JoinColumn(name="fotoPublicacaoId"))
-	private List<FotoPublicacaoId> fotos = new ArrayList<>();
-	
+	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
+
+	private List<FotoPublicacaoId> fotosId = new ArrayList<>();
+
 	private Publicacao() {
 		super(new PublicacaoId());
 	}
-	
-	public Publicacao(UsuarioId usuarioId, 
-					  CidadeId cidadeId, 
-					  String titulo, 
-					  String descrição, 
-					  Categoria categoria) throws NumeroFotosPublicacaoInvalido{
+
+	public Publicacao(UsuarioId usuarioId, CidadeId cidadeId, String titulo, String descricao, Categoria categoria,
+			List<FotoPublicacaoId> fotosId) throws NumeroFotosPublicacaoInvalido {
 		this();
 		isNull(usuarioId);
 		isNull(cidadeId);
 		this.usuarioId = usuarioId;
 		this.cidadeId = cidadeId;
 		setTitulo(titulo);
-		setDescrição(descrição);
+		setDescrição(descricao);
 		setCategoria(categoria);
+
+		if (fotosId.size() < 1 || fotosId.size() > 3) {
+
+			throw new NumeroFotosPublicacaoInvalido();
+
+		} else {
+			for (FotoPublicacaoId foto : fotosId) {
+				this.fotosId.add(foto);
+			}
+		}
+	}
+
+	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, List<FotoPublicacao> fotos) throws NumeroFotosPublicacaoInvalido {
+		this();
+		isNull(command);
+		this.usuarioId = usuarioId;				
+		this.cidadeId = command.cidadeId;
+		this.titulo = command.titulo;
+		this.descricao = command.descricao;
+		this.categoria = command.categoria;
+		this.dataPublicacao = command.dataPublicação;
 		
 		if (fotos.size() < 1 || fotos.size() > 3) {
 
 			throw new NumeroFotosPublicacaoInvalido();
 
 		} else {
-			for (FotoPublicacaoId fotoPublicacaoId : fotos) {
-				this.fotos.add(fotoPublicacaoId);
-
+			for (FotoPublicacao foto : fotos) {
+				
+				this.fotosId.add(foto.getId());
 			}
 		}
-	}
-	
-	public Publicacao(PublicacaoCommand command) {
-		this();
-		isNull(command);
-		this.usuarioId = command.usuarioId;
-		this.cidadeId = command.cidadeId;
-		this.titulo = command.titulo;
-		this.descricao = command.descricao;
-		this.categoria = command.categoria;
-		this.dataPublicação = command.dataPublicação;
 
 	}
 
@@ -93,16 +104,16 @@ public class Publicacao extends BasicEntity<PublicacaoId>{
 		isNullOrEmpty(descrição);
 		this.descricao = descrição;
 	}
-	
+
 	public void setCategoria(Categoria categoria) {
 		isNull(categoria);
 		this.categoria = categoria;
 	}
-	
+
 	public String getTitulo() {
 		return titulo;
 	}
-	
+
 	public String getDescrição() {
 		return descricao;
 	}
@@ -114,14 +125,13 @@ public class Publicacao extends BasicEntity<PublicacaoId>{
 	public UsuarioId getUsuarioId() {
 		return usuarioId;
 	}
-	
-	public Calendar getDataPublicação(){
-		return dataPublicação;
+
+	public Calendar getDataPublicação() {
+		return dataPublicacao;
 	}
 
 	public CidadeId getCidadeId() {
 		return cidadeId;
 	}
-	
 
 }
