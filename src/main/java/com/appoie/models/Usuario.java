@@ -37,7 +37,9 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	@AttributeOverride(name="value",column=@Column(name="senha"))
 	private Senha senha;
 	
+	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
 	private CidadeId cidadeId;
+	
 	
 	private Usuario() {
 		super(new UsuarioId());
@@ -101,6 +103,10 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		this.senha = senha;
 	}
 	
+	public CidadeId getCidadeId() {
+		return cidadeId;
+	}
+
 	public String getNome(){
 		return nome;
 	}
