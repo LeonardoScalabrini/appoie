@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.PerfilCommand;
+import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
 
 import static com.appoie.utils.ValidationObject.*;
@@ -36,11 +37,13 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	@AttributeOverride(name="value",column=@Column(name="senha"))
 	private Senha senha;
 	
+	private CidadeId cidadeId;
+	
 	private Usuario() {
 		super(new UsuarioId());
 	}
 	
-	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha) throws Exception{
+	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha, CidadeId cidadeId) throws Exception{
 		this();
 		setNome(nome);
 		setSobrenome(sobrenome);
@@ -48,8 +51,14 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setSexo(sexo);
 		setEmail(email);
 		setSenha(senha);
+		setCidadeId(cidadeId);
 	}
 	
+	private void setCidadeId(CidadeId cidadeId) {
+		this.cidadeId = cidadeId;
+		
+	}
+
 	public Usuario(CadastrarCommand command) throws Exception{
 		this();
 		isNull(command);
@@ -59,6 +68,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setSexo(command.sexo); 
 		setEmail(new Email(command.email)); 
 		setSenha(new Senha(command.senha));
+		setCidadeId(command.getCidadeId());
 	}
 	
 	public void setNome(String nome) throws Exception{

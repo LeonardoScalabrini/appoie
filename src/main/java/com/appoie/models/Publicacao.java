@@ -72,11 +72,11 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		}
 	}
 
-	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, List<FotoPublicacao> fotos) throws NumeroFotosPublicacaoInvalido {
+	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, List<FotoPublicacao> fotos, CidadeId cidadeId) throws NumeroFotosPublicacaoInvalido {
 		this();
 		isNull(command);
 		this.usuarioId = usuarioId;				
-		this.cidadeId = command.cidadeId;
+		this.cidadeId = cidadeId;
 		this.titulo = command.titulo;
 		this.descricao = command.descricao;
 		this.categoria = command.categoria;

@@ -21,7 +21,8 @@ public class PublicacaoCommand {
 	public final List<byte[]> fotos;
 
 	@JsonCreator
-	public PublicacaoCommand(@JsonProperty(value = "cidadeId") CidadeId cidadeId, @JsonProperty(value = "titulo") String titulo,
+	public PublicacaoCommand(@JsonProperty(value = "cidadeId") CidadeId cidadeId,
+			@JsonProperty(value = "titulo") String titulo,
 			@JsonProperty(value = "descricao") String descricao, @JsonProperty(value = "categoria") Categoria categoria,
 			@JsonProperty(value = "dataPublicacao") Calendar dataPublicacao,
 			@JsonProperty(value = "fotos") List<byte[]> fotos) {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
 import com.appoie.exceptions.PublicacaoNaoEncontradaException;
+import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
@@ -31,14 +32,16 @@ public class PublicacaoService {
 	private PublicacaoQuery publicacaoQuery;
 
 	public void salvar(PublicacaoCommand command, HttpSession session) throws NumeroFotosPublicacaoInvalido {
+		
 		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
+		CidadeId cidadeId = usuarioLogado.getCidadeId();
 		List<FotoPublicacao> fotos = new ArrayList<>();
 
 		for (byte[] fotoPublicacao : command.fotos) {
 			fotos.add(new FotoPublicacao(fotoPublicacao));
 
 		}
-		Publicacao publicacao = new Publicacao(command, usuarioLogado.getId(), fotos);
+		Publicacao publicacao = new Publicacao(command, usuarioLogado.getId(), fotos, cidadeId);
 		for (FotoPublicacao fotoPublicacao : fotos) {
 			fotoPublicacao.setPublicacaoId(publicacao.getId());
 
