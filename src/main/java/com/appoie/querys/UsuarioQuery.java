@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Email;
 import com.appoie.models.Senha;
@@ -15,14 +16,20 @@ import com.appoie.models.Usuario;
 public class UsuarioQuery extends BasicQuery {
 
 	public UsuarioId buscar(Email email, Senha senha){
-		Query query = em.createNativeQuery("select id from usuario where email = :email and senha = :senha", UsuarioId.class);
+		Query query = em.createNativeQuery("select id from usuario where email = :email and senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
-		return (UsuarioId) query.getSingleResult();
+		String id = (String) query.getSingleResult();
+		return new UsuarioId(id);
 	}
 	
 	public Usuario buscar(Email email){
-		Query query =  em.createNativeQuery("select * from usuario where email = :email", Usuario.class);
+		Query query =  em.createNativeQuery("select id, "
+				+ "data_de_nascimento, "
+				+ "email, nome, senha, "
+				+ "sexo, "
+				+ "sobrenome "
+				+ "from usuario where email = :email", Usuario.class);
 		query.setParameter("email", email.getValue());
 		return (Usuario) query.getSingleResult();
 	}
@@ -34,7 +41,7 @@ public class UsuarioQuery extends BasicQuery {
 		return quantidade.longValue() > 0L;
 	}
 	
-	public Boolean exite(Email email, Senha senha) {
+	public Boolean existe(Email email, Senha senha) {
 		Query query = em.createNativeQuery("select count(1) from usuario where email = :email and senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
@@ -42,11 +49,10 @@ public class UsuarioQuery extends BasicQuery {
 		return quantidade.longValue() == 1L;
 	}
 
-	public String selectSenhaUsuarioByEmail(Email email) {
+	public Senha buscarSenha(Email email) throws SenhaTamanhoMinimoException {
 		Query query = em.createNativeQuery("select senha from usuario where email = :email");
 		query.setParameter("email", email.getValue());
-		return query.getSingleResult().toString();
-
+		return new Senha(query.getSingleResult().toString());
 	}
 
 }

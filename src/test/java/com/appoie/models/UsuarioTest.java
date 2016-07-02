@@ -6,18 +6,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.appoie.biulders.UsuarioBiulder;
+import com.appoie.builders.UsuarioBuilder;
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
 
 public class UsuarioTest {
 	
-	private UsuarioBiulder biulder;
+	private UsuarioBuilder biulder;
 	private Usuario usuario;
 	
 	@Before
 	public void antes() throws EmailFormatoException, SenhaTamanhoMinimoException{
-		 biulder = new UsuarioBiulder();
+		 biulder = new UsuarioBuilder();
 		 usuario = null;
 	}
 	

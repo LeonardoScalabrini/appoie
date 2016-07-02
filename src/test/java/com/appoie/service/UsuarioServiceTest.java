@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.util.Calendar;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +17,14 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.appoie.AppoieApplication;
+import com.appoie.builders.UsuarioBuilder;
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.commands.RecuperarSenhaCommand;
+import com.appoie.commands.LoginCommand;
 import com.appoie.controllers.UsuarioController;
+import com.appoie.exceptions.EmailFormatoException;
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.UsuarioId;
 import com.appoie.models.Usuario;
-import com.appoie.querys.UsuarioQuery;
 import com.appoie.repositorys.UsuarioRepository;
 import com.appoie.services.UsuarioService;
 
@@ -31,13 +35,13 @@ public class UsuarioServiceTest {
 	private UsuarioController targetController;
 	
 	@Autowired
+	private UsuarioRepository repository;
+	
+	@Autowired
 	private UsuarioService targetService;
 	
 	@Mock
 	private UsuarioRepository targetRepositoryMock;
-	
-	
-	
 
 	@Before
 	public void setUp() throws Exception {
@@ -67,14 +71,23 @@ public class UsuarioServiceTest {
 	@Test
 	public void paraRecuperarSenhaTemQueExistirOEmailCadastrado() throws Exception{	
 		 
-		RecuperarSenhaCommand command1=new RecuperarSenhaCommand("rafaelnochellidasilva@gmail.com");
+		//RecuperarSenhaCommand command1=new RecuperarSenhaCommand("rafaelnochellidasilva@gmail.com");
 		
-		targetController.recuperarSenha(command1);	
-		
-		
+		//targetController.recuperarSenha(command1);	
 	}
 	
+	@Test
+	public void deveRealizarLogin() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
+		Usuario usuario = new UsuarioBuilder().criar();
+		repository.save(usuario);
+		try {
+			LoginCommand command = new LoginCommand(usuario.getEmail().getValue(), usuario.getSenha().getValue());
+			UsuarioId id = targetService.realizarLogin(command);
+			Assert.assertTrue(usuario.getId().equals(id.getId()));
+		} catch (Exception e) {
+			// TODO: handle exception
+			repository.delete(usuario);
+		}
+	}
 	
-	
-
 }
