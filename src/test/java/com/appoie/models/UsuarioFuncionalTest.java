@@ -57,7 +57,8 @@ public class UsuarioFuncionalTest {
 		ResultActions result =mockMvc.perform(request);
 		
 		result.andExpect(status().isOk());
-		Usuario usuario= usuarioRepository.findOne("rafaelnochellidasilva@gmail.com");
+		result.andReturn().getResponse();
+		Usuario usuario= (Usuario) usuarioRepository.findAll();
 		assertThat(usuario.getNome()).isEqualTo("rafael");
 		assertThat(usuario.getSobrenome()).isEqualTo("Nochelli da Silva");
 		
