@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.appoie.AppoieApplication;
+<<<<<<< HEAD
 import com.appoie.builders.FotoPerfilBuilder;
 import com.appoie.builders.UsuarioBuilder;
 import com.appoie.commands.CadastrarCommand;
@@ -36,6 +38,16 @@ import com.appoie.models.Senha;
 import com.appoie.models.Sexo;
 import com.appoie.models.Usuario;
 import com.appoie.repositorys.FotoPerfilRepository;
+=======
+import com.appoie.builders.UsuarioBuilder;
+import com.appoie.commands.CadastrarCommand;
+import com.appoie.commands.LoginCommand;
+import com.appoie.controllers.UsuarioController;
+import com.appoie.exceptions.EmailFormatoException;
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.UsuarioId;
+import com.appoie.models.Usuario;
+>>>>>>> c72c8b950a938951549416e14a65af3c8d072e39
 import com.appoie.repositorys.UsuarioRepository;
 import com.appoie.services.UsuarioService;
 
@@ -45,6 +57,7 @@ public class UsuarioServiceTest {
 	@Autowired
 	private UsuarioController targetController;	
 	@Autowired
+<<<<<<< HEAD
 	private UsuarioService targetService;	
 	@Autowired
 	private UsuarioRepository targetRepository;	
@@ -55,6 +68,15 @@ public class UsuarioServiceTest {
 	Usuario usuarioBuilder;
 	
 	
+=======
+	private UsuarioRepository repository;
+	
+	@Autowired
+	private UsuarioService targetService;
+	
+	@Mock
+	private UsuarioRepository targetRepositoryMock;
+>>>>>>> c72c8b950a938951549416e14a65af3c8d072e39
 
 	@Before
 	public void setUp() throws Exception {
@@ -99,6 +121,7 @@ public class UsuarioServiceTest {
 	    }
 	
 	@Test
+<<<<<<< HEAD
 	public void paraRecuperarSenhaTemQueExistirOEmailCadastrado() throws Exception{			
 		targetRepository.save(usuarioBuilder);
 		Usuario usuario =targetRepository.findOne(usuarioBuilder.getId());
@@ -197,7 +220,13 @@ public class UsuarioServiceTest {
 		isNullOrEmpty(command.senhaAtual);
 		isNullOrEmpty(command.novaSenha);
 		isNullOrEmpty(command.confirmarNovaSenha);		
+=======
+	public void paraRecuperarSenhaTemQueExistirOEmailCadastrado() throws Exception{	
+		 
+		//RecuperarSenhaCommand command1=new RecuperarSenhaCommand("rafaelnochellidasilva@gmail.com");
+>>>>>>> c72c8b950a938951549416e14a65af3c8d072e39
 		
+		//targetController.recuperarSenha(command1);	
 	}
 	@Test
 	public void deveAlterarSenhadoUsuario() throws Exception {
@@ -222,7 +251,18 @@ public class UsuarioServiceTest {
 	}
 	
 	
+	@Test
+	public void deveRealizarLogin() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
+		Usuario usuario = new UsuarioBuilder().criar();
+		repository.save(usuario);
+		try {
+			LoginCommand command = new LoginCommand(usuario.getEmail().getValue(), usuario.getSenha().getValue());
+			UsuarioId id = targetService.realizarLogin(command);
+			Assert.assertTrue(usuario.getId().equals(id.getId()));
+		} catch (Exception e) {
+			// TODO: handle exception
+			repository.delete(usuario);
+		}
+	}
 	
-	
-
 }

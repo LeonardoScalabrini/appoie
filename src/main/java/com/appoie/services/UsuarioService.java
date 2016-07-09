@@ -38,10 +38,13 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioQuery usuarioQuery;
 	
+<<<<<<< HEAD
 
 	
 	
 
+=======
+>>>>>>> c72c8b950a938951549416e14a65af3c8d072e39
 	public UsuarioRepository getUsuarioRepository() {
 		return usuarioRepository;
 	}
@@ -49,10 +52,16 @@ public class UsuarioService {
 	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
 	}
+<<<<<<< HEAD
 
 	@Autowired
 	private FotoPerfilRepository fotoPerfilRepository;
 
+=======
+    
+	@Autowired
+	private FotoPerfilRepository fotoPerfilRepository;
+>>>>>>> c72c8b950a938951549416e14a65af3c8d072e39
 
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
 		
@@ -65,7 +74,10 @@ public class UsuarioService {
 
 		if (!usuario.getEmail().getValue().equals(command.confirmarEmail))
 			throw new CamposCadastrarException();
-
+		
+		if (!usuario.getSenha().getValue().equals(command.confirmarSenha))
+			throw new CamposCadastrarException();
+		
 		if (usuarioQuery.existeEmail(usuario.getEmail()))
 			throw new EmailCadastradoException();
 

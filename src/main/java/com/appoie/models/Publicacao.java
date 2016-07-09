@@ -88,6 +88,59 @@ public class Publicacao extends BasicEntity<PublicacaoId>{
 	public CidadeId getCidadeId() {
 		return cidadeId;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
+		result = prime * result + ((cidadeId == null) ? 0 : cidadeId.hashCode());
+		result = prime * result + ((dataPublicação == null) ? 0 : dataPublicação.hashCode());
+		result = prime * result + ((descrição == null) ? 0 : descrição.hashCode());
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+		result = prime * result + ((usuarioId == null) ? 0 : usuarioId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Publicacao other = (Publicacao) obj;
+		if (categoria != other.categoria)
+			return false;
+		if (cidadeId == null) {
+			if (other.cidadeId != null)
+				return false;
+		} else if (!cidadeId.equals(other.cidadeId))
+			return false;
+		if (dataPublicação == null) {
+			if (other.dataPublicação != null)
+				return false;
+		} else if (!dataPublicação.equals(other.dataPublicação))
+			return false;
+		if (descrição == null) {
+			if (other.descrição != null)
+				return false;
+		} else if (!descrição.equals(other.descrição))
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
+			return false;
+		if (usuarioId == null) {
+			if (other.usuarioId != null)
+				return false;
+		} else if (!usuarioId.equals(other.usuarioId))
+			return false;
+		return true;
+	}
+	
 	
 
 }

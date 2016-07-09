@@ -31,6 +31,7 @@ public class Cidade extends BasicEntity<CidadeId>{
 		return estadoId;
 	}
 
+<<<<<<< HEAD
 	public String getNomeCidade() {
 		return nomeCidade;
 	}
@@ -39,4 +40,32 @@ public class Cidade extends BasicEntity<CidadeId>{
 	
 	
 
+=======
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((estadoId == null) ? 0 : estadoId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cidade other = (Cidade) obj;
+		if (estadoId == null) {
+			if (other.estadoId != null)
+				return false;
+		} else if (!estadoId.equals(other.estadoId))
+			return false;
+		return true;
+	}
+	
+	
+>>>>>>> c72c8b950a938951549416e14a65af3c8d072e39
 }

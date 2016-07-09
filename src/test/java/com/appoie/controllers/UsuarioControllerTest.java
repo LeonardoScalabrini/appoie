@@ -1,0 +1,237 @@
+package com.appoie.controllers;
+
+import org.junit.After;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.appoie.AppoieApplication;
+import com.appoie.builders.UsuarioBuilder;
+import com.appoie.exceptions.EmailFormatoException;
+import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.models.Email;
+import com.appoie.models.Senha;
+import com.appoie.models.Usuario;
+import com.appoie.pages.CadastrarPage;
+import com.appoie.pages.HomePage;
+import com.appoie.repositorys.UsuarioRepository;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = AppoieApplication.class)
+public class UsuarioControllerTest {
+	
+	@Autowired
+	private UsuarioRepository repository; 
+	
+	private WebDriver driver;
+	
+	private HomePage home;
+	
+	private CadastrarPage cadastrarPage;
+	
+	@Before
+	public void antes(){
+		driver = new FirefoxDriver();
+		home = new HomePage(driver);
+		home.visita();
+		home.entrar();
+	}
+	
+	@After
+	public void depois(){
+		driver.close();
+		repository.deleteAll();
+	}
+	
+	@Test
+	public void deveCadastrarUsuario(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Concluído!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemNome(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.nome("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComSobrenomeVazio(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.sobrenome("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemDataDeNascimento(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.nascimento("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemInformarSexo(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.sexo("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemEmail(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.email("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemConfirmarEmail(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.confirmarEmail("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComEmailDiferente(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.confirmarEmail("diferente@diferente.com.br");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComEmailInvalido(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.email("emailInvalido");
+		cadastrarPage.confirmarEmail("emailInvalido");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemSenha(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.senha("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemConfirmarSenha(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.confirmarSenha("");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComSenhaDiferente(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.confirmarSenha("diferente");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComSenhaMenorDe6Digitos(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.senha("12345");
+		cadastrarPage.confirmarSenha("12345");
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarSemAceitarTermoDeUso(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.termo(false);
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComCamposVazios(){
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+	}
+	
+	@Test
+	public void nãoDeveCadastrarComEmailJaExistente() throws Exception{
+		String email = "teste@teste.com.br";
+		Usuario usuario = new UsuarioBuilder().email(new Email(email)).criar();
+		repository.save(usuario);
+		
+		cadastrarPage = home.cadastrar();
+		cadastrarPage.email(email);
+		cadastrarPage.confirmarEmail(email);
+		cadastrarPage.preencher();
+		cadastrarPage.enviar();
+		assertTrue(cadastrarPage.contem("O email já existe no sistema!"));
+	}
+	
+	@Test
+	public void deveRealizarLogin() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
+		String email = "teste@teste.com.br";
+		String senha = "123456";
+		Usuario usuario = new UsuarioBuilder().email(new Email(email)).senha(new Senha(senha)).criar();
+		repository.save(usuario);
+		
+		home.email(email);
+		home.senha(senha);
+		home.preencher();
+		home.logar();
+		home.esperar();
+		assertTrue(driver.getCurrentUrl().contains("home"));
+	}
+	
+	@Test
+	public void naoDeveRealizarLoginComCamposVazios(){
+		home.logar();
+		assertTrue(home.contem("Email e/ou senha inválidos!"));
+	}
+	
+	@Test
+	public void naoDeveRealizarLoginSemEmail(){
+		home.email("teste@teste.com.br");
+		home.preencher();
+		home.logar();
+		assertTrue(home.contem("Email e/ou senha inválidos!"));
+	}
+	
+	@Test
+	public void naoDeveRealizarLoginSemSenha(){
+		home.senha("123456");
+		home.preencher();
+		home.logar();
+		assertTrue(home.contem("Email e/ou senha inválidos!"));
+	}
+
+}
