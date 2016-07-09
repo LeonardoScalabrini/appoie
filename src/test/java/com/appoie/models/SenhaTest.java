@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.CidadeId;
 
 public class SenhaTest {
 
@@ -41,5 +42,6 @@ public class SenhaTest {
 		
 		Assert.assertTrue(senha.getValue().equals(senhaCom7Digitos));
 	}
+
 	
 }

@@ -38,7 +38,7 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioQuery usuarioQuery;
 	
-<<<<<<< HEAD
+
 	
 	
 
@@ -49,10 +49,10 @@ public class UsuarioService {
 	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
 		this.usuarioRepository = usuarioRepository;
 	}
-=======
+
 	@Autowired
 	private FotoPerfilRepository fotoPerfilRepository;
->>>>>>> 986589fea01abc4037c5ab2f90eee3e2779c2852
+
 
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
 		

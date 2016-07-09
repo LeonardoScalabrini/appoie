@@ -15,10 +15,11 @@ import com.appoie.models.Usuario;
 public class UsuarioQuery extends BasicQuery {
 
 	public UsuarioId buscar(Email email, Senha senha){
-		Query query = em.createNativeQuery("select id from usuario where email = :email and senha = :senha", UsuarioId.class);
+		Query query = em.createNativeQuery("select id from usuario where email = :email and senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
-		return (UsuarioId) query.getSingleResult();
+		String id = (String) query.getSingleResult();
+		return new UsuarioId(id); 
 	}
 	
 	public Usuario buscar(Email email){

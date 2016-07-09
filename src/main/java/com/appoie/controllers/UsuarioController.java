@@ -31,6 +31,7 @@ public class UsuarioController {
 		usuarioService.cadastrar(command);
 	}
 	
+	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand, HttpSession session) throws Exception{
 		UsuarioId id = usuarioService.realizarLogin(loginCommand);

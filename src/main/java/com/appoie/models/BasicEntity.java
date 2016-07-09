@@ -6,16 +6,16 @@ import javax.persistence.MappedSuperclass;
 import com.appoie.ids.BasicId;
 
 @MappedSuperclass
-public abstract class BasicEntity<IdBasic extends BasicId>{
+public abstract class BasicEntity<EntidadeId extends BasicId>{
 
 	@EmbeddedId
-	private final IdBasic id;
+	private EntidadeId id;
 	
-	protected BasicEntity(IdBasic id) {
+	protected BasicEntity(EntidadeId id) {
 		this.id = id;
 	}
 	
-	public final IdBasic getId(){
+	public final EntidadeId getId(){
 		return id;
 	}
 }
