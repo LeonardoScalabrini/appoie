@@ -13,22 +13,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PublicacaoCommand {
 	
-	public final CidadeId cidadeId;
 	public final String titulo;
 	public final String descricao;
 	public final Categoria categoria;
 	public final Calendar dataPublicação;
-	public final List<byte[]> fotos;
+	public final List<String> fotos;
 
 	@JsonCreator
-	public PublicacaoCommand(@JsonProperty(value = "cidadeId") CidadeId cidadeId,
-			@JsonProperty(value = "titulo") String titulo,
+	public PublicacaoCommand(@JsonProperty(value = "titulo") String titulo,
 			@JsonProperty(value = "descricao") String descricao, @JsonProperty(value = "categoria") Categoria categoria,
 			@JsonProperty(value = "dataPublicacao") Calendar dataPublicacao,
-			@JsonProperty(value = "fotos") List<byte[]> fotos) {
+			@JsonProperty(value = "fotos") List<String> fotos) {
 
 		
-		this.cidadeId = cidadeId;
+		
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.categoria = Categoria.valueOf(categoria.toString());
