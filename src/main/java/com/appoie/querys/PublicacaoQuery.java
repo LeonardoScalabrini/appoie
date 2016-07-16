@@ -24,8 +24,8 @@ public class PublicacaoQuery extends BasicQuery {
 		Query query = em.createNativeQuery("select * from foto_publicacao where publicacao_id = :id",
 				FotoPublicacao.class);
 		query.setParameter("id", id);
-		List<FotoPublicacao> fotosPublicacao = (List<FotoPublicacao>) query.getResultList();
-		return fotosPublicacao;
+		/*List<FotoPublicacao> fotosPublicacao = (List<FotoPublicacao>)*/ 
+		return query.getResultList();
 	}
 	
 

@@ -10,9 +10,9 @@ import com.appoie.ids.CidadeId;
 public class CidadeQuery extends BasicQuery {
 
 	public CidadeId getCidadeId(String cidade) {
-		Query query = em.createNativeQuery("select id from cidade where nome = :cidade", CidadeId.class);
+		Query query = em.createNativeQuery("select id from cidade where nome = :cidade");
 		query.setParameter("cidade", cidade);
-		return (CidadeId) query.getSingleResult();
+		return new CidadeId(query.getSingleResult().toString());
 
 	}
 

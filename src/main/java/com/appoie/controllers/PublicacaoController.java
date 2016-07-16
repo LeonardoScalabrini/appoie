@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.commands.PublicacaoEditarCommand;
+import com.appoie.commands.PublicacaoRecuperarCommand;
 import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
 import com.appoie.exceptions.PublicacaoNaoEncontradaException;
 import com.appoie.ids.PublicacaoId;
@@ -39,14 +40,8 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/recuperar")
-	public List<Publicacao> recuperar() {
+	public List<PublicacaoRecuperarCommand> recuperar() {
 		return service.recuperar();
-
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/recuperarFotos")
-	public List<FotoPublicacao> recuperarFotos(@PathVariable String idPublicacao) {
-		return service.recuperarFotos(new PublicacaoId(idPublicacao));
 
 	}
 

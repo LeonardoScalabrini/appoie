@@ -41,6 +41,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	private Categoria categoria;
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicacao = Calendar.getInstance();
+	private String localizacao;
 
 	@ElementCollection
 	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
@@ -83,6 +84,8 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.descricao = command.descricao;
 		this.categoria = command.categoria;
 		this.dataPublicacao = command.dataPublicação;
+		this.localizacao = command.coordenadasLocalizacao;
+		
 
 		if (fotos.size() < 1 || fotos.size() > 3) {
 

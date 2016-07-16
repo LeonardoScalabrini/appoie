@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.commands.PublicacaoEditarCommand;
+import com.appoie.commands.PublicacaoRecuperarCommand;
 import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
 import com.appoie.exceptions.PublicacaoNaoEncontradaException;
 import com.appoie.ids.CidadeId;
@@ -68,14 +69,22 @@ public class PublicacaoService {
 
 	}
 
-	public List<Publicacao> recuperar() {
-		return publicacaoRepo.findAll();
+	public List<PublicacaoRecuperarCommand> recuperar() {
+		
+		List<Publicacao> publicacoes = publicacaoRepo.findAll();
+		List<PublicacaoRecuperarCommand> recuperarCommands = new ArrayList<>();
+		List<String> base64Fotos = new ArrayList<>();
+		for (Publicacao publicacao : publicacoes) {
+			base64Fotos.clear();
+			List<FotoPublicacao> fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
+			for (FotoPublicacao fotoPublicacao : fotos) {
+				base64Fotos.add(fotoPublicacao.getFoto());
 
-	}
+			}
+			recuperarCommands.add(new PublicacaoRecuperarCommand(publicacao, base64Fotos));
+		}
+		return recuperarCommands;
 
-	public List<FotoPublicacao> recuperarFotos(PublicacaoId idPublicacao) {
-		return publicacaoQuery.recuperarFotosPublicacao(idPublicacao);
-		 
 	}
 
 	public void editar(PublicacaoEditarCommand command, HttpSession session) throws PublicacaoNaoEncontradaException {
@@ -85,14 +94,15 @@ public class PublicacaoService {
 		} else {
 			UsuarioLogado usuarioLogado = new UsuarioLogado(session);
 			UsuarioId usuarioId = new UsuarioId(publicacaoQuery.recuperarIdUsuarioPublicacao(command.id));
-			Publicacao publicacao = publicacaoQuery.recuperarPublicacao(command.id);		
+			Publicacao publicacao = publicacaoQuery.recuperarPublicacao(command.id);
 			if (usuarioId != usuarioLogado.getId()) {
 				return;
 			} else {
-				publicacaoRepo.save(new Publicacao(command, publicacao.getCidadeId(), publicacao.getDataPublicacao(), publicacao.getUsuarioId(), publicacao.getFotosId()));
+				publicacaoRepo.save(new Publicacao(command, publicacao.getCidadeId(), publicacao.getDataPublicacao(),
+						publicacao.getUsuarioId(), publicacao.getFotosId()));
 			}
 		}
-		
+
 	}
 
 }

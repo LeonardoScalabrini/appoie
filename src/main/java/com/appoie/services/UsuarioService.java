@@ -49,8 +49,8 @@ public class UsuarioService {
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
 		
 		Usuario usuario;
-		CidadeId cidadeId = cidadeQuery.getCidadeId(command.cidade);
-		command.setCidadeId(cidadeId);
+//		CidadeId cidadeId = cidadeQuery.getCidadeId(command.cidade);
+	//	command.setCidadeId(cidadeId);
 		try {
 			usuario = new Usuario(command);
 		} catch (Exception e) {
