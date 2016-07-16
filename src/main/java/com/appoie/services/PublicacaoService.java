@@ -40,8 +40,10 @@ public class PublicacaoService {
 		CidadeId cidadeId = usuarioLogado.getCidadeId();
 		List<FotoPublicacao> fotos = new ArrayList<>();
 
+	
 		for (String fotoPublicacao : command.fotos) {
-			fotos.add(new FotoPublicacao(fotoPublicacao));
+			if(!fotoPublicacao.isEmpty()) 
+				fotos.add(new FotoPublicacao(fotoPublicacao));
 
 		}
 		Publicacao publicacao = new Publicacao(command, usuarioLogado.getId(), fotos, cidadeId);

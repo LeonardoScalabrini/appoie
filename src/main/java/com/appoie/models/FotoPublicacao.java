@@ -14,10 +14,14 @@ public class FotoPublicacao extends BasicEntity<FotoPublicacaoId> {
 	@AttributeOverride(name="id",column=@Column(name="publicacaoId"))
 	private PublicacaoId publicacaoId;
 	
+	
 	public String foto;
+	public FotoPublicacao() {
+		super(new FotoPublicacaoId());
+	}
 
 	public FotoPublicacao(String foto) {
-		super(new FotoPublicacaoId());
+		this();
 		isNull(foto);
 		this.foto = foto;
 
