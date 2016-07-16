@@ -83,8 +83,8 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.titulo = command.titulo;
 		this.descricao = command.descricao;
 		this.categoria = command.categoria;
-		this.dataPublicacao = command.dataPublicação;
-		this.localizacao = command.coordenadasLocalizacao;
+		
+		//this.localizacao = command.coordenadasLocalizacao;
 		
 
 		if (fotos.size() < 1 || fotos.size() > 3) {

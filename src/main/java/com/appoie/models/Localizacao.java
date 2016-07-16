@@ -19,7 +19,7 @@ public class Localizacao extends BasicEntity<LocalizacaoId> {
 	public Localizacao(PublicacaoCommand command){
 		this();
 		
-		this.coordenadas = command.coordenadasLocalizacao;
+		//this.coordenadas = command.coordenadasLocalizacao;
 		
 	}
 
