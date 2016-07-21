@@ -77,8 +77,9 @@ public class PublicacaoService {
 		List<PublicacaoRecuperarCommand> recuperarCommands = new ArrayList<>();
 		List<String> base64Fotos = new ArrayList<>();
 		for (Publicacao publicacao : publicacoes) {
+			List<FotoPublicacao> fotos = new ArrayList<>();
 			base64Fotos.clear();
-			List<FotoPublicacao> fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
+		    fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
 			for (FotoPublicacao fotoPublicacao : fotos) {
 				base64Fotos.add(fotoPublicacao.getFoto());
 

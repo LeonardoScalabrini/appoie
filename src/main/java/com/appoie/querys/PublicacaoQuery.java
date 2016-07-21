@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
+import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
@@ -20,12 +21,13 @@ public class PublicacaoQuery extends BasicQuery {
 		return quantidade.longValue() == 1L;
 	}
 
-	public List<FotoPublicacao> recuperarFotosPublicacao(PublicacaoId id) {
+	public List<FotoPublicacao> recuperarFotosPublicacao(PublicacaoId publicacaoId) {
+		String id = publicacaoId.getId();
 		Query query = em.createNativeQuery("select * from foto_publicacao where publicacao_id = :id",
 				FotoPublicacao.class);
 		query.setParameter("id", id);
 		/*List<FotoPublicacao> fotosPublicacao = (List<FotoPublicacao>)*/ 
-		return query.getResultList();
+		return (List<FotoPublicacao>)query.getResultList();
 	}
 	
 
