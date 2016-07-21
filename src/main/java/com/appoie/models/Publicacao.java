@@ -133,7 +133,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	public CidadeId getCidadeId() {
 		return cidadeId;
 	}
-<<<<<<< HEAD
+
 
 	@Override
 	public int hashCode() {
@@ -188,7 +188,6 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	}
 	
 	
-=======
->>>>>>> 965d571481b94a573f411ca0db11be076890ab90
+
 
 }
