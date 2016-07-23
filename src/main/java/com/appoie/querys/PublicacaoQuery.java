@@ -16,13 +16,13 @@ import com.appoie.models.Publicacao;
 public class PublicacaoQuery extends BasicQuery {
 	public Boolean existe(PublicacaoId id) {
 		Query query = em.createNativeQuery("select count(1) from publicacao where id = :id");
-		query.setParameter("id", id.getId());
+		query.setParameter("id", id.getValue());
 		BigInteger quantidade = (BigInteger) query.getSingleResult();
 		return quantidade.longValue() == 1L;
 	}
 
 	public List<FotoPublicacao> recuperarFotosPublicacao(PublicacaoId publicacaoId) {
-		String id = publicacaoId.getId();
+		String id = publicacaoId.getValue();
 		Query query = em.createNativeQuery("select * from foto_publicacao where publicacao_id = :id",
 				FotoPublicacao.class);
 		query.setParameter("id", id);

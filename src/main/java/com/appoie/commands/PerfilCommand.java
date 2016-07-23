@@ -14,7 +14,7 @@ public class PerfilCommand {
 	public final String sobrenome;
 	public final Sexo sexo;
 	public final Calendar dataDeNascimento;
-	public final byte[] foto;
+	public final String foto;
 	
 	public PerfilCommand(Usuario usuario, FotoPerfil fotoPerfil) {
 		this.nome = usuario.getNome();
@@ -29,7 +29,7 @@ public class PerfilCommand {
 					 	 @JsonProperty("sobrenome") String sobrenome,
 					 	 @JsonProperty("sexo") String sexo,
 					 	 @JsonProperty("dataDeNascimento") Calendar dataDeNascimento,
-					 	 @JsonProperty("foto") byte[] foto){
+					 	 @JsonProperty("foto") String foto){
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.sexo = Sexo.valueOf(sexo.toUpperCase());

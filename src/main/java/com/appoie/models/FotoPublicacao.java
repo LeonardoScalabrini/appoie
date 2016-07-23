@@ -39,6 +39,12 @@ public class FotoPublicacao extends BasicEntity<FotoPublicacaoId> {
 	public PublicacaoId getPublicacaoId() {
 		return this.publicacaoId;
 	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+	
+	
 	
 
 }

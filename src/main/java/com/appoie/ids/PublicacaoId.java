@@ -15,7 +15,7 @@ public class PublicacaoId extends BasicId{
 	
 	@Override
 	public String toString() {
-		return super.getId();
+		return super.getValue();
 		
 	}
 

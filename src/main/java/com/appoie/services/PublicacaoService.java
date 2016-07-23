@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.commands.PublicacaoEditarCommand;
 import com.appoie.commands.PublicacaoRecuperarCommand;
+import com.appoie.exceptions.ErroAoCriarDiretoriosExeception;
 import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
 import com.appoie.exceptions.PublicacaoNaoEncontradaException;
 import com.appoie.ids.CidadeId;
@@ -21,6 +22,7 @@ import com.appoie.models.Publicacao;
 import com.appoie.querys.PublicacaoQuery;
 import com.appoie.repositorys.FotoPublicacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
+import com.appoie.utils.GerenciadorDiretorio;
 import com.appoie.utils.UsuarioLogado;
 
 @Service
@@ -40,17 +42,23 @@ public class PublicacaoService {
 		CidadeId cidadeId = usuarioLogado.getCidadeId();
 		List<FotoPublicacao> fotos = new ArrayList<>();
 
-	
 		for (String fotoPublicacao : command.fotos) {
-			if(!fotoPublicacao.isEmpty()) 
+			if (!fotoPublicacao.isEmpty())
 				fotos.add(new FotoPublicacao(fotoPublicacao));
 
 		}
 		Publicacao publicacao = new Publicacao(command, usuarioLogado.getId(), fotos, cidadeId);
 		for (FotoPublicacao fotoPublicacao : fotos) {
 			fotoPublicacao.setPublicacaoId(publicacao.getId());
+			try {
+				fotoPublicacao.setFoto(
+						GerenciadorDiretorio.salvarFotoPublicacao(fotoPublicacao, usuarioLogado.getId().getValue()));
+			} catch (ErroAoCriarDiretoriosExeception e) {
+				e.printStackTrace();
+			}
 
 		}
+
 		publicacaoRepo.save(publicacao);
 		fotoPublicacaoRepo.save(fotos);
 	}
@@ -72,13 +80,13 @@ public class PublicacaoService {
 	}
 
 	public List<PublicacaoRecuperarCommand> recuperar() {
-		
+
 		List<Publicacao> publicacoes = publicacaoRepo.findAll();
 		List<PublicacaoRecuperarCommand> recuperarCommands = new ArrayList<>();
 		for (Publicacao publicacao : publicacoes) {
 			List<FotoPublicacao> fotos = new ArrayList<>();
 			List<String> base64Fotos = new ArrayList<>();
-		    fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
+			fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
 			for (FotoPublicacao fotoPublicacao : fotos) {
 				base64Fotos.add(fotoPublicacao.getFoto());
 
