@@ -13,11 +13,16 @@ import com.appoie.models.FotoPublicacao;
 
 public class GerenciadorDiretorio {
 
-	private static void criaDiretoriosPadrao() {
-		new File("c:\\fotos\\perfil").mkdirs();
-
-		new File("c:\\fotos\\publicacao").mkdirs();
-
+	private static boolean criaDiretoriosPadrao() {
+		boolean success = (new File("/fotos/perfil")).mkdirs();
+		if (!success) {
+			return false;
+		}
+		success = (new File("/fotos/publicacao")).mkdirs();
+		if (!success) {
+			return false;
+		}
+		return true;
 	}
 
 	private static String trataBase64(String base64) {
@@ -36,45 +41,48 @@ public class GerenciadorDiretorio {
 
 	public static String salvarFotoPublicacao(FotoPublicacao fotoPublicacao, String usuarioId)
 			throws ErroAoCriarDiretoriosExeception {
-		String diretorio = "c:\\fotos\\publicacao\\" + usuarioId + "\\" + fotoPublicacao.getId().getValue();
-		criaDiretoriosPadrao();
+		String diretorio = "/fotos/publicacao/" + usuarioId + "/" + fotoPublicacao.getId().getValue();
+		if (!criaDiretoriosPadrao()) {
+			throw new ErroAoCriarDiretoriosExeception();
 
-		new File(diretorio).mkdirs();
-		
-		try {
+		} else {
 
-			byte[] decoded = Base64.getDecoder().decode(trataBase64(fotoPublicacao.getFoto()));
-			diretorio += ".jpg";
-			FileOutputStream file = new FileOutputStream(diretorio);
-			file.write(decoded);
-			file.close();
+			try {
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				byte[] decoded = Base64.getDecoder().decode(trataBase64(fotoPublicacao.getFoto()));
+				FileOutputStream file = new FileOutputStream(diretorio);
+				file.write(decoded);
+				file.close();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 		return diretorio;
 
 	}
-
+	
 	public static String salvarFotoPerfil(FotoPerfil fotoPerfil, String usuarioId)
 			throws ErroAoCriarDiretoriosExeception {
-		String diretorio = "c:\\fotos\\perfil\\" + usuarioId + "\\" + fotoPerfil.getId().getValue();
-		criaDiretoriosPadrao();
+		String diretorio = "/fotos/perfil/" + usuarioId + "/" + fotoPerfil.getId().getValue();
+		if (!criaDiretoriosPadrao()) {
+			throw new ErroAoCriarDiretoriosExeception();
 
-		try {
+		} else {
 
-			byte[] decoded = Base64.getDecoder().decode(trataBase64(fotoPerfil.getFoto()));
-			FileOutputStream file = new FileOutputStream(diretorio);
-			file.write(decoded);
-			file.close();
+			try {
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				byte[] decoded = Base64.getDecoder().decode(trataBase64(fotoPerfil.getFoto()));
+				FileOutputStream file = new FileOutputStream(diretorio);
+				file.write(decoded);
+				file.close();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 		return diretorio;
 
 	}
