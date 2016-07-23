@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.appoie.commands.PublicacaoCommand;
+import com.appoie.commands.PublicacaoEditarCommand;
 import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
@@ -40,6 +41,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	private Categoria categoria;
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicacao = Calendar.getInstance();
+	private String localizacao;
 
 	@ElementCollection
 	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
@@ -58,7 +60,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.usuarioId = usuarioId;
 		this.cidadeId = cidadeId;
 		setTitulo(titulo);
-		setDescrição(descricao);
+		setDescricao(descricao);
 		setCategoria(categoria);
 
 		if (fotosId.size() < 1 || fotosId.size() > 3) {
@@ -72,26 +74,62 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		}
 	}
 
-	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, List<FotoPublicacao> fotos) throws NumeroFotosPublicacaoInvalido {
+	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, List<FotoPublicacao> fotos, CidadeId cidadeId)
+			throws NumeroFotosPublicacaoInvalido {
 		this();
 		isNull(command);
-		this.usuarioId = usuarioId;				
-		this.cidadeId = command.cidadeId;
+		this.usuarioId = usuarioId;
+		this.cidadeId = cidadeId;
 		this.titulo = command.titulo;
 		this.descricao = command.descricao;
 		this.categoria = command.categoria;
-		this.dataPublicacao = command.dataPublicação;
 		
+		//this.localizacao = command.coordenadasLocalizacao;
+		
+
 		if (fotos.size() < 1 || fotos.size() > 3) {
 
 			throw new NumeroFotosPublicacaoInvalido();
 
 		} else {
 			for (FotoPublicacao foto : fotos) {
-				
+
 				this.fotosId.add(foto.getId());
 			}
 		}
+
+	}
+
+	public Publicacao(PublicacaoEditarCommand command, CidadeId cidadeId, Calendar dataPublicacao, UsuarioId usuarioId, List<FotoPublicacaoId> fotosId) {
+		super(command.id);
+		isNull(command);
+		setUsuarioId(usuarioId);
+		setCidadeId(cidadeId);
+		setTitulo(command.titulo);
+		setDescricao(command.descricao);
+		setCategoria(command.categoria);
+		setDataPublicacao(dataPublicacao);
+		setFotosId(fotosId);
+
+	}
+
+	private void setFotosId(List<FotoPublicacaoId> fotosId) {
+		this.fotosId = fotosId;
+
+	}
+
+	private void setDataPublicacao(Calendar dataPublicacao) {
+		this.dataPublicacao = dataPublicacao;
+
+	}
+
+	private void setCidadeId(CidadeId cidadeId) {
+		this.cidadeId = cidadeId;
+
+	}
+
+	private void setUsuarioId(UsuarioId usuarioId) {
+		this.usuarioId = usuarioId;
 
 	}
 
@@ -100,9 +138,9 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.titulo = titulo;
 	}
 
-	public void setDescrição(String descrição) {
-		isNullOrEmpty(descrição);
-		this.descricao = descrição;
+	public void setDescricao(String descricao) {
+		isNullOrEmpty(descricao);
+		this.descricao = descricao;
 	}
 
 	public void setCategoria(Categoria categoria) {
@@ -114,7 +152,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return titulo;
 	}
 
-	public String getDescrição() {
+	public String getDescricao() {
 		return descricao;
 	}
 
@@ -126,7 +164,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return usuarioId;
 	}
 
-	public Calendar getDataPublicação() {
+	public Calendar getDataPublicacao() {
 		return dataPublicacao;
 	}
 
@@ -134,6 +172,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return cidadeId;
 	}
 
+<<<<<<< HEAD
 
 	@Override
 	public int hashCode() {
@@ -188,6 +227,12 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	}
 	
 	
+=======
+	public List<FotoPublicacaoId> getFotosId() {
+		return fotosId;
+	}
+	
+>>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
 
 
 }

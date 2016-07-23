@@ -15,6 +15,7 @@ import com.appoie.exceptions.EmailSenhaInvalidoException;
 import com.appoie.exceptions.NovaSenhaIgualException;
 import com.appoie.exceptions.NovoEmailIgualException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Email;
 import com.appoie.models.FotoPerfil;
@@ -22,6 +23,7 @@ import com.appoie.models.Senha;
 import com.appoie.commands.RecuperarSenhaCommand;
 import com.appoie.exceptions.EmailNaoCadastradoExcpetion;
 import com.appoie.models.Usuario;
+import com.appoie.querys.CidadeQuery;
 import com.appoie.querys.UsuarioQuery;
 import com.appoie.repositorys.FotoPerfilRepository;
 import com.appoie.repositorys.UsuarioRepository;
@@ -47,11 +49,16 @@ public class UsuarioService {
 	}
     
 	@Autowired
+	private CidadeQuery cidadeQuery;
+	
+	@Autowired
 	private FotoPerfilRepository fotoPerfilRepository;
 
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
 		
 		Usuario usuario;
+//		CidadeId cidadeId = cidadeQuery.getCidadeId(command.cidade);
+	//	command.setCidadeId(cidadeId);
 		try {
 			usuario = new Usuario(command);
 		} catch (Exception e) {

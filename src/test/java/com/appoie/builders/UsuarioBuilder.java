@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.CidadeId;
 import com.appoie.models.Email;
 import com.appoie.models.Senha;
 import com.appoie.models.Sexo;
@@ -17,6 +18,7 @@ public class UsuarioBuilder {
 	private Sexo sexo;
 	private Email email;
 	private Senha senha;
+	private CidadeId cidadeId;
 	
 	public UsuarioBuilder() throws EmailFormatoException, SenhaTamanhoMinimoException {
 		nome = "teste"; 
@@ -25,10 +27,12 @@ public class UsuarioBuilder {
 		sexo = Sexo.MASCULINO;
 		email = new Email("teste@teste.com.br");
 		senha = new Senha("123456");
+		cidadeId = new CidadeId();
+		
 	}
 	
 	public Usuario criar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
-		return new Usuario(nome, sobrenome, dataDeNascimento, sexo, email, senha);
+		return new Usuario(nome, sobrenome, dataDeNascimento, sexo, email, senha, cidadeId);
 	}
 	
 	public UsuarioBuilder nome(String nome){

@@ -19,8 +19,12 @@ public class UsuarioQuery extends BasicQuery {
 		Query query = em.createNativeQuery("select id from usuario where email = :email and senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
+<<<<<<< HEAD
 		String id = (String) query.getSingleResult();
 		return new UsuarioId(id);
+=======
+		return new UsuarioId(query.getSingleResult().toString()); 
+>>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
 	}
 	
 	public Usuario buscar(Email email){
