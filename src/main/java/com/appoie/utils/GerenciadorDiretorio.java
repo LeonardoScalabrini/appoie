@@ -1,11 +1,19 @@
 package com.appoie.utils;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Stream;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
 
 import com.appoie.exceptions.ErroAoCriarDiretoriosExeception;
 import com.appoie.models.FotoPerfil;
@@ -77,6 +85,24 @@ public class GerenciadorDiretorio {
 
 		return diretorio;
 
+	}
+	
+	public static String recuperarFoto(String endereco){
+		try {
+			
+			File file = new File(endereco);
+		    BufferedImage img = ImageIO.read(file);
+
+		    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+
+		    ImageIO.write(img, "jpg", bao);
+
+		    byte[] arrayByte = bao.toByteArray();;
+		   
+		    return "data:image/jpg;base64," + Base64.getEncoder().encodeToString(arrayByte);
+		} catch (IOException e) {
+		    throw new RuntimeException(e);
+		}
 	}
 
 }
