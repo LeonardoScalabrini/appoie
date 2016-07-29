@@ -9,6 +9,7 @@ public class UsuarioLogado {
 
 	public final String USUARIO_LOGADO = "usuarioLogado";
 	public final String CIDADE_ATUAL = "cidadeAtual";
+	private int contPublicacoesRecuperadas;
 
 	private HttpSession session;
 
@@ -18,6 +19,15 @@ public class UsuarioLogado {
 
 	public UsuarioId getId() {
 		return (UsuarioId) session.getAttribute(USUARIO_LOGADO);
+	}
+
+	public void incrementaContPublicacoesRecuperadas() {
+		if (this.contPublicacoesRecuperadas == 0) {
+			this.contPublicacoesRecuperadas = 1;
+
+		} else {
+			this.contPublicacoesRecuperadas++;
+		}
 	}
 
 	public void setId(UsuarioId id) {

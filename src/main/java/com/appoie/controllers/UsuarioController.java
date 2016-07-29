@@ -33,8 +33,10 @@ public class UsuarioController {
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand, HttpSession session) throws Exception{
+		UsuarioLogado usuario = new UsuarioLogado(session);
 		UsuarioId id = usuarioService.realizarLogin(loginCommand);
-		new UsuarioLogado(session).setId(id);
+		usuario.setId(id);
+		usuario.incrementaContPublicacoesRecuperadas();
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
