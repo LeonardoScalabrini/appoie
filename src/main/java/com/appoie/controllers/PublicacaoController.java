@@ -61,7 +61,7 @@ public class PublicacaoController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/excluir")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	public void deletar(@PathVariable PublicacaoId id, HttpSession session) {
 		try {
 			service.excluir(id, session);

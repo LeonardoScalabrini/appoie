@@ -13,8 +13,9 @@ public class PublicacaoRecuperarCommand {
 	//public final String cidadeId;
 	public final String descricao;
 	public final Categoria categoria;
-	public final Calendar dataPublicação;
+	public final String dataPublicação;
 	public final List<String> fotos;
+	public final int numFotos;
 
 	public PublicacaoRecuperarCommand(Publicacao publicacao, List<String> fotos) {
 		// TODO Auto-generated constructor stub
@@ -24,8 +25,9 @@ public class PublicacaoRecuperarCommand {
 		this.titulo = publicacao.getTitulo();
 		this.descricao = publicacao.getDescricao();
 		this.categoria = publicacao.getCategoria();
-		this.dataPublicação = publicacao.getDataPublicacao();
+		this.dataPublicação = publicacao.getDataPublicacao().toString();
 		this.fotos = fotos;
+		this.numFotos = fotos.size();
 
 	}
 
