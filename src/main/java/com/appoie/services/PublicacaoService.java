@@ -79,9 +79,12 @@ public class PublicacaoService {
 
 	}
 
-	public List<PublicacaoRecuperarCommand> recuperar() {
-
-		List<Publicacao> publicacoes = publicacaoRepo.findAll();
+	public List<PublicacaoRecuperarCommand> recuperar(HttpSession session) {
+		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
+		
+		String debug = usuarioLogado.getContPublicacoesRecuperadas();
+		List<Publicacao> publicacoes = publicacaoQuery.recuperarPublicacoesPaginadas(Integer.parseInt(usuarioLogado.getContPublicacoesRecuperadas()));
+		usuarioLogado.incrementaContPublicacoesRecuperadas();
 		List<PublicacaoRecuperarCommand> recuperarCommands = new ArrayList<>();
 		for (Publicacao publicacao : publicacoes) {
 			List<FotoPublicacao> fotos = new ArrayList<>();
@@ -113,6 +116,11 @@ public class PublicacaoService {
 			}
 		}
 
+	}
+
+	public void zerarContadorPosts(HttpSession session) {
+		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
+		usuarioLogado.initContPublicacoesRecuperas();
 	}
 
 }

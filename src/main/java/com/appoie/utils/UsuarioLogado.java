@@ -9,7 +9,7 @@ public class UsuarioLogado {
 
 	public final String USUARIO_LOGADO = "usuarioLogado";
 	public final String CIDADE_ATUAL = "cidadeAtual";
-	private int contPublicacoesRecuperadas;
+	public final String CONT_PUBLICACOES_RECUPERADAS = "0";
 
 	private HttpSession session;
 
@@ -22,11 +22,13 @@ public class UsuarioLogado {
 	}
 
 	public void incrementaContPublicacoesRecuperadas() {
-		if (this.contPublicacoesRecuperadas == 0) {
-			this.contPublicacoesRecuperadas = 1;
+		if (session.getAttribute(CONT_PUBLICACOES_RECUPERADAS) == "0") {
+			session.setAttribute(CONT_PUBLICACOES_RECUPERADAS, 1);
 
 		} else {
-			this.contPublicacoesRecuperadas++;
+			int valor = Integer.parseInt( session.getAttribute(CONT_PUBLICACOES_RECUPERADAS).toString());
+			valor++;
+			session.setAttribute(CONT_PUBLICACOES_RECUPERADAS, Integer.toString(valor));
 		}
 	}
 
@@ -42,5 +44,20 @@ public class UsuarioLogado {
 		session.setAttribute(CIDADE_ATUAL, id);
 
 	}
+
+	public String getContPublicacoesRecuperadas() {
+		return (String)session.getAttribute(CONT_PUBLICACOES_RECUPERADAS);
+		 //(String) session.getAttribute(CONT_PUBLICACOES_RECUPERADAS);
+	}
+	
+	public void initContPublicacoesRecuperas() {
+		session.setAttribute(CONT_PUBLICACOES_RECUPERADAS, Integer.toString(0));
+	}
+	
+	
+
+
+
+	
 
 }

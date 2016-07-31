@@ -45,8 +45,8 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/recuperar")
-	public List<PublicacaoRecuperarCommand> recuperar() {
-		return service.recuperar();
+	public List<PublicacaoRecuperarCommand> recuperar(HttpSession session) {
+		return service.recuperar(session);
 
 	}
 
@@ -70,21 +70,28 @@ public class PublicacaoController {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "/image", method = RequestMethod.GET, produces = "image/jpg")
 	public @ResponseBody String getFile() {
-	try {
-	
-		File file = new File("C:/fotos/publicacao/67a22832-1738-4f48-8503-4ffb12fff0ad/9dc916c0-ddb5-4984-ad54-797d2b9ca78f.jpg");
-	    BufferedImage img = ImageIO.read(file);
+		try {
 
-	    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+			File file = new File(
+					"C:/fotos/publicacao/67a22832-1738-4f48-8503-4ffb12fff0ad/9dc916c0-ddb5-4984-ad54-797d2b9ca78f.jpg");
+			BufferedImage img = ImageIO.read(file);
 
-	    ImageIO.write(img, "jpg", bao);
-	    
-	    return Base64.getEncoder().encodeToString(bao.toByteArray());
-	} catch (IOException e) {
-	    throw new RuntimeException(e);
+			ByteArrayOutputStream bao = new ByteArrayOutputStream();
+
+			ImageIO.write(img, "jpg", bao);
+
+			return Base64.getEncoder().encodeToString(bao.toByteArray());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
+
+	@RequestMapping(value = "/zerarContador", method = RequestMethod.POST)
+	public void zerarContadorPosts(HttpSession session) {
+		service.zerarContadorPosts(session);
+
 	}
 }

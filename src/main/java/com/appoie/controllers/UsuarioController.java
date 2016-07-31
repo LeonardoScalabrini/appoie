@@ -36,7 +36,7 @@ public class UsuarioController {
 		UsuarioLogado usuario = new UsuarioLogado(session);
 		UsuarioId id = usuarioService.realizarLogin(loginCommand);
 		usuario.setId(id);
-		usuario.incrementaContPublicacoesRecuperadas();
+		usuario.initContPublicacoesRecuperas();
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
