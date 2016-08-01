@@ -49,7 +49,7 @@ public class PublicacaoQuery extends BasicQuery {
 		
 		String sql = "select p.id, p.categoria, p.cidade_id, p.data_publicacao,"
 				+ "		p.descricao, p.localizacao, p.titulo, p.usuario_id "
-				+ "	 		from publicacao p order by data_publicacao"
+				+ "	 		from publicacao p order by data_publicacao desc"
 				+ " limit 1 offset " + Integer.toString(publicacoesPaginadas);
 		Query query = em.createNativeQuery(sql, Publicacao.class);
 		//where p.cidade_id = :cidade_id

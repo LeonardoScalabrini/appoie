@@ -13,7 +13,7 @@ public class PublicacaoRecuperarCommand {
 	//public final String cidadeId;
 	public final String descricao;
 	public final Categoria categoria;
-	public final String dataPublicação;
+	public final String dataPublicacao;
 	public final List<String> fotos;
 	public final int numFotos;
 
@@ -25,7 +25,7 @@ public class PublicacaoRecuperarCommand {
 		this.titulo = publicacao.getTitulo();
 		this.descricao = publicacao.getDescricao();
 		this.categoria = publicacao.getCategoria();
-		this.dataPublicação = publicacao.getDataPublicacao().toString();
+		this.dataPublicacao = publicacao.getDataPublicacao().toString();
 		this.fotos = fotos;
 		this.numFotos = fotos.size();
 
