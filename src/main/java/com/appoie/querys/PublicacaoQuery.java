@@ -7,8 +7,6 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
-import com.appoie.ids.CidadeId;
-import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
@@ -27,7 +25,6 @@ public class PublicacaoQuery extends BasicQuery {
 		Query query = em.createNativeQuery("select * from foto_publicacao where publicacao_id = :id",
 				FotoPublicacao.class);
 		query.setParameter("id", id);
-		/* List<FotoPublicacao> fotosPublicacao = (List<FotoPublicacao>) */
 		return (List<FotoPublicacao>) query.getResultList();
 	}
 
@@ -52,9 +49,6 @@ public class PublicacaoQuery extends BasicQuery {
 				+ "	 		from publicacao p order by data_publicacao desc"
 				+ " limit 1 offset " + Integer.toString(publicacoesPaginadas);
 		Query query = em.createNativeQuery(sql, Publicacao.class);
-		//where p.cidade_id = :cidade_id
-		//query.setParameter("numero_publicacoes_ja_recuperadas", publicacoesPaginadas);
-		
 		return (List<Publicacao>) query.getResultList();
 		
 	}

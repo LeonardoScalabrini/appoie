@@ -115,7 +115,6 @@ public class PublicacaoService {
 						publicacao.getUsuarioId(), publicacao.getFotosId()));
 			}
 		}
-
 	}
 
 	public void zerarContadorPosts(HttpSession session) {

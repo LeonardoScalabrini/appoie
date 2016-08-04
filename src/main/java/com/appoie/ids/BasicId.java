@@ -23,10 +23,6 @@ public abstract class BasicId implements Serializable{
 	public BasicId() {		
 		this.id = UUID.randomUUID().toString();
 	}
-	
-	public BasicId(String id) {
-		this.id = id;
-	}
 
 	public final String getValue() {
 		return this.id;

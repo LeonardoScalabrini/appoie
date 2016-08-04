@@ -41,13 +41,11 @@ public class PublicacaoController {
 		} catch (PublicacaoNaoEncontradaException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/recuperar")
 	public List<PublicacaoRecuperarCommand> recuperar(HttpSession session) {
 		return service.recuperar(session);
-
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/salvar")
@@ -55,10 +53,8 @@ public class PublicacaoController {
 		try {
 			service.salvar(command, session);
 		} catch (NumeroFotosPublicacaoInvalido e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
@@ -68,7 +64,6 @@ public class PublicacaoController {
 		} catch (PublicacaoNaoEncontradaException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@RequestMapping(value = "/image", method = RequestMethod.GET, produces = "image/jpg")
