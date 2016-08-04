@@ -40,6 +40,14 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioQuery usuarioQuery;
 	
+	public UsuarioRepository getUsuarioRepository() {
+		return usuarioRepository;
+	}
+    @Autowired
+	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
+		this.usuarioRepository = usuarioRepository;
+	}
+    
 	@Autowired
 	private CidadeQuery cidadeQuery;
 	
@@ -59,7 +67,10 @@ public class UsuarioService {
 
 		if (!usuario.getEmail().getValue().equals(command.confirmarEmail))
 			throw new CamposCadastrarException();
-
+		
+		if (!usuario.getSenha().getValue().equals(command.confirmarSenha))
+			throw new CamposCadastrarException();
+		
 		if (usuarioQuery.existeEmail(usuario.getEmail()))
 			throw new EmailCadastradoException();
 

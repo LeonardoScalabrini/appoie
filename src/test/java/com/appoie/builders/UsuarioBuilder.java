@@ -1,4 +1,4 @@
-package com.appoie.biulders;
+package com.appoie.builders;
 
 import java.util.Calendar;
 
@@ -10,7 +10,7 @@ import com.appoie.models.Senha;
 import com.appoie.models.Sexo;
 import com.appoie.models.Usuario;
 
-public class UsuarioBiulder {
+public class UsuarioBuilder {
 	
 	private String nome;
 	private String sobrenome;
@@ -20,7 +20,7 @@ public class UsuarioBiulder {
 	private Senha senha;
 	private CidadeId cidadeId;
 	
-	public UsuarioBiulder() throws EmailFormatoException, SenhaTamanhoMinimoException {
+	public UsuarioBuilder() throws EmailFormatoException, SenhaTamanhoMinimoException {
 		nome = "teste"; 
 		sobrenome = "teste";
 		dataDeNascimento = Calendar.getInstance();
@@ -35,32 +35,32 @@ public class UsuarioBiulder {
 		return new Usuario(nome, sobrenome, dataDeNascimento, sexo, email, senha, cidadeId);
 	}
 	
-	public UsuarioBiulder nome(String nome){
+	public UsuarioBuilder nome(String nome){
 		this.nome = nome;
 		return this;
 	}
 	
-	public UsuarioBiulder sobrenome(String sobrenome){
+	public UsuarioBuilder sobrenome(String sobrenome){
 		this.sobrenome = sobrenome;
 		return this;
 	}
 	
-	public UsuarioBiulder dataDeNascimento(Calendar dataDeNascimento){
+	public UsuarioBuilder dataDeNascimento(Calendar dataDeNascimento){
 		this.dataDeNascimento = dataDeNascimento;
 		return this;
 	}
 	
-	public UsuarioBiulder sexo(Sexo sexo){
+	public UsuarioBuilder sexo(Sexo sexo){
 		this.sexo = sexo;
 		return this;
 	}
 	
-	public UsuarioBiulder email(Email email){
+	public UsuarioBuilder email(Email email){
 		this.email = email;
 		return this;
 	}
 	
-	public UsuarioBiulder senha(Senha senha){
+	public UsuarioBuilder senha(Senha senha){
 		this.senha = senha;
 		return this;
 	}

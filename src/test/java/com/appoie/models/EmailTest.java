@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.appoie.biulders.EmailBiulder;
+import com.appoie.builders.EmailBuilder;
 import com.appoie.exceptions.EmailFormatoException;
 
 public class EmailTest {
@@ -58,49 +58,49 @@ public class EmailTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveSetarEmailNulo() throws Exception{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue(null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveSetarEmailVazio() throws Exception{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("");
 	}
 	
 	@Test(expected=EmailFormatoException.class)
 	public void nãoDeveSetarEmailSemArroba() throws EmailFormatoException{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("teste");
 	}
 	
 	@Test(expected=EmailFormatoException.class)
 	public void nãoDeveSetarEmailComMaisDeUmaArroba() throws EmailFormatoException{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("teste@@");
 	}
 	
 	@Test(expected=EmailFormatoException.class)
 	public void nãoDeveSetarEmailComNadaAntesArroba() throws EmailFormatoException{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("@teste");
 	}
 	
 	@Test(expected=EmailFormatoException.class)
 	public void nãoDeveSetarEmailComNadaDepoisArroba() throws EmailFormatoException{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("teste@");
 	}
 	
 	@Test(expected=EmailFormatoException.class)
 	public void nãoDeveSetarEmailSemPonto() throws EmailFormatoException{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("teste@teste");
 	}
 	
 	@Test(expected=EmailFormatoException.class)
 	public void nãoDeveSetarEmailNadaDepoisDoPonto() throws EmailFormatoException{
-		email = new EmailBiulder().criar();
+		email = new EmailBuilder().criar();
 		email.setValue("teste@teste.");
 	}
 	
