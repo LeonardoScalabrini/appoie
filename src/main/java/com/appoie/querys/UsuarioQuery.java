@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
+import com.appoie.commands.PerfilCommand;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Email;
@@ -16,7 +17,11 @@ import com.appoie.models.Usuario;
 public class UsuarioQuery extends BasicQuery {
 
 	public UsuarioId buscar(Email email, Senha senha){
-		Query query = em.createNativeQuery("select id from usuario where email = :email and senha = :senha");
+		Query query = em.createNativeQuery("select id, "
+				                                + "estado_id"
+				                          + " from cidade where "
+				                                       + "email = :email and "
+				                                       + "senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
 		return new UsuarioId(query.getSingleResult().toString()); 
@@ -48,7 +53,9 @@ public class UsuarioQuery extends BasicQuery {
 		query.setParameter("email", email.getValue());
 		String senha = query.getSingleResult().toString();
 		return new Senha(senha); 
-
 	}
 
+	public PerfilCommand buscarPerfil(UsuarioId id) {
+		return null;
+	}
 }

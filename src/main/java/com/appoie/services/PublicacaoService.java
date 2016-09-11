@@ -1,9 +1,6 @@
 package com.appoie.services;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,115 +8,34 @@ import org.springframework.stereotype.Service;
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.commands.PublicacaoEditarCommand;
 import com.appoie.commands.PublicacaoRecuperarCommand;
-import com.appoie.exceptions.ErroAoCriarDiretoriosExeception;
-import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
-import com.appoie.exceptions.PublicacaoNaoEncontradaException;
-import com.appoie.ids.CidadeId;
+import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.PublicacaoId;
-import com.appoie.ids.UsuarioId;
-import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
-import com.appoie.querys.PublicacaoQuery;
-import com.appoie.repositorys.FotoPublicacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
-import com.appoie.utils.GerenciadorDiretorio;
-import com.appoie.utils.UsuarioLogado;
+import com.appoie.utils.Sessao;
 
 @Service
 public class PublicacaoService {
+	
 	@Autowired
-	private PublicacaoRepository publicacaoRepo;
+	private PublicacaoRepository publicacaoRepository;
 
-	@Autowired
-	private FotoPublicacaoRepository fotoPublicacaoRepo;
-
-	@Autowired
-	private PublicacaoQuery publicacaoQuery;
-
-	public void salvar(PublicacaoCommand command, HttpSession session) throws NumeroFotosPublicacaoInvalido {
-
-		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
-		CidadeId cidadeId = usuarioLogado.getCidadeId();
-		List<FotoPublicacao> fotos = new ArrayList<>();
-
-		for (String fotoPublicacao : command.fotos) {
-			if (!fotoPublicacao.isEmpty())
-				fotos.add(new FotoPublicacao(fotoPublicacao));
-
-		}
-		Publicacao publicacao = new Publicacao(command, usuarioLogado.getId(), fotos, cidadeId);
-		for (FotoPublicacao fotoPublicacao : fotos) {
-			fotoPublicacao.setPublicacaoId(publicacao.getId());
-			try {
-				fotoPublicacao.setFoto(
-						GerenciadorDiretorio.salvarFotoPublicacao(fotoPublicacao, usuarioLogado.getId().getValue()));
-			} catch (ErroAoCriarDiretoriosExeception e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		publicacaoRepo.save(publicacao);
-		fotoPublicacaoRepo.save(fotos);
+	public void salvar(PublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
+		//Publicacao publicacao = new Publicacao(command, sessao.getUsuarioId() , sessao.getCidadeId());
+		//publicacaoRepository.save(publicacao);
 	}
 
-	public void excluir(PublicacaoId id, HttpSession session) throws PublicacaoNaoEncontradaException {
-		if (!publicacaoQuery.existe(id)) {
-			throw new PublicacaoNaoEncontradaException();
-
-		} else {
-			UsuarioLogado usuarioLogado = new UsuarioLogado(session);
-			Publicacao publicacao = publicacaoRepo.findOne(id.toString());
-			if (publicacao.getUsuarioId() != usuarioLogado.getId()) {
-				return;
-			} else {
-				publicacaoRepo.delete(publicacao.getId().toString());
-			}
-		}
-
+	public void excluir(PublicacaoId id) {
+		publicacaoRepository.delete(id);
 	}
 
-	public List<PublicacaoRecuperarCommand> recuperar(HttpSession session) {
-		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
-		
-		String debug = usuarioLogado.getContPublicacoesRecuperadas();
-		List<Publicacao> publicacoes = publicacaoQuery.recuperarPublicacoesPaginadas(Integer.parseInt(usuarioLogado.getContPublicacoesRecuperadas()));
-		usuarioLogado.incrementaContPublicacoesRecuperadas();
-		List<PublicacaoRecuperarCommand> recuperarCommands = new ArrayList<>();
-		for (Publicacao publicacao : publicacoes) {
-			List<FotoPublicacao> fotos = new ArrayList<>();
-			List<String> base64Fotos = new ArrayList<>();
-			fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
-			for (FotoPublicacao fotoPublicacao : fotos) {
-				base64Fotos.add(GerenciadorDiretorio.recuperarFoto(fotoPublicacao.getFoto()));
-
-			}
-			recuperarCommands.add(new PublicacaoRecuperarCommand(publicacao, base64Fotos));
-		}
-		return recuperarCommands;
-
+	public List<PublicacaoRecuperarCommand> recuperar(Sessao sessao) {
+		return null;
 	}
 
-	public void editar(PublicacaoEditarCommand command, HttpSession session) throws PublicacaoNaoEncontradaException {
-		if (!publicacaoQuery.existe(command.id)) {
-			throw new PublicacaoNaoEncontradaException();
-
-		} else {
-			UsuarioLogado usuarioLogado = new UsuarioLogado(session);
-			UsuarioId usuarioId = new UsuarioId(publicacaoQuery.recuperarIdUsuarioPublicacao(command.id));
-			Publicacao publicacao = publicacaoQuery.recuperarPublicacao(command.id);
-			if (usuarioId != usuarioLogado.getId()) {
-				return;
-			} else {
-				publicacaoRepo.save(new Publicacao(command, publicacao.getCidadeId(), publicacao.getDataPublicacao(),
-						publicacao.getUsuarioId(), publicacao.getFotosId()));
-			}
-		}
+	public void editar(PublicacaoEditarCommand command) {
+			Publicacao publicacao = publicacaoRepository.findOne(command.id);
+			publicacao.editar(command);
+			publicacaoRepository.save(publicacao);
 	}
-
-	public void zerarContadorPosts(HttpSession session) {
-		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
-		usuarioLogado.initContPublicacoesRecuperas();
-	}
-
 }

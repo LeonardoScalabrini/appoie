@@ -40,7 +40,6 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
 	private CidadeId cidadeId;
 	
-	
 	private Usuario() {
 		super(new UsuarioId());
 	}
@@ -57,11 +56,11 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	}
 	
 	private void setCidadeId(CidadeId cidadeId) {
+		isNull(cidadeId);
 		this.cidadeId = cidadeId;
-		
 	}
 
-	public Usuario(CadastrarCommand command) throws Exception{
+	public Usuario(CadastrarCommand command, CidadeId id) throws Exception{
 		this();
 		isNull(command);
 		setNome(command.nome);
@@ -70,7 +69,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setSexo(command.sexo); 
 		setEmail(new Email(command.email)); 
 		setSenha(new Senha(command.senha));
-		setCidadeId(command.getCidadeId());
+		setCidadeId(id);
 	}
 	
 	public void setNome(String nome) throws Exception{
@@ -132,6 +131,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	}
 
 	public void alterarPerfil(PerfilCommand perfilCommand) throws Exception {
+		isNull(perfilCommand);
 		setNome(perfilCommand.nome);
 		setSobrenome(perfilCommand.sobrenome);
 		setSexo(perfilCommand.sexo);

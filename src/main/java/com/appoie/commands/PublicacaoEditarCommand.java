@@ -1,23 +1,6 @@
 package com.appoie.commands;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.appoie.ids.CidadeId;
-import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
-import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

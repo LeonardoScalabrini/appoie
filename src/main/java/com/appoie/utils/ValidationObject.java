@@ -6,9 +6,4 @@ public class ValidationObject {
 			throw new IllegalArgumentException("O objeto não pode ser nulo");
 		}
 	}
-	public static void isNull(Object objetos[]){
-		for (Object object : objetos) {
-			isNull(object);
-		}
-	}
 }

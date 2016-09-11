@@ -105,7 +105,6 @@ public class UsuarioQueryTest {
 	@Test(expected=NoResultException.class)
 	public void nãoDeveEncontrarSenha() throws Exception{
 		Usuario usuario = new UsuarioBuilder().criar();
-		
 		query.buscarSenha(usuario.getEmail());
 	}
 }

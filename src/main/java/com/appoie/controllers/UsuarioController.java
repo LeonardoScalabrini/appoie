@@ -15,9 +15,9 @@ import com.appoie.commands.LoginCommand;
 import com.appoie.commands.PerfilCommand;
 import com.appoie.commands.SenhaCommand;
 import com.appoie.ids.UsuarioId;
-import com.appoie.commands.RecuperarSenhaCommand;
+import com.appoie.commands.SenhaRecuperarCommand;
 import com.appoie.services.UsuarioService;
-import com.appoie.utils.UsuarioLogado;
+import com.appoie.utils.Sessao;
 
 @RestController
 @RequestMapping("/usuario")
@@ -31,43 +31,37 @@ public class UsuarioController {
 		usuarioService.cadastrar(command);
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+	@RequestMapping(value="/auth", method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand, HttpSession session) throws Exception{
-		UsuarioLogado usuario = new UsuarioLogado(session);
-		UsuarioId id = usuarioService.realizarLogin(loginCommand);
-		usuario.setId(id);
-		usuario.initContPublicacoesRecuperas();
+		usuarioService.autenticar(loginCommand, session);
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
 	public @ResponseBody PerfilCommand buscarPerfil(HttpSession session) throws Exception{
-		UsuarioId id = new UsuarioLogado(session).getId();
+		UsuarioId id = new Sessao(session).getUsuarioId();
 		return usuarioService.buscarPerfil(id);
-		
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.PUT)
 	public void alterarPerfil(@RequestBody PerfilCommand perfilCommand, HttpSession session) throws Exception{
-		UsuarioId id = new UsuarioLogado(session).getId();
+		UsuarioId id = new Sessao(session).getUsuarioId();
 		usuarioService.alterarPerfil(perfilCommand, id);
-		
 	}
 
 	@RequestMapping(value="/email", method=RequestMethod.PUT)
 	public void alterarEmail(@RequestBody EmailCommand emailCommand, HttpSession session) throws Exception{
-		UsuarioId id = new UsuarioLogado(session).getId();
+		UsuarioId id = new Sessao(session).getUsuarioId();
 		usuarioService.alterarEmail(emailCommand, id);
 	}
 	
 	@RequestMapping(value="/senha", method=RequestMethod.PUT)
 	public void alterarSenha(@RequestBody SenhaCommand senhaCommand, HttpSession session) throws Exception{
-		UsuarioId id = new UsuarioLogado(session).getId();
+		UsuarioId id = new Sessao(session).getUsuarioId();
 		usuarioService.alterarSenha(senhaCommand, id);	
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
-	public void recuperarSenha(@RequestBody RecuperarSenhaCommand command) throws Exception {
+	public void recuperarSenha(@RequestBody SenhaRecuperarCommand command) throws Exception {
 		usuarioService.recuperarSenha(command);
-
 	}
 }

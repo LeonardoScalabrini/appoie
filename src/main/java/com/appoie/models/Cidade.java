@@ -8,6 +8,7 @@ import com.appoie.ids.CidadeId;
 import com.appoie.ids.EstadoId;
 
 import static com.appoie.utils.ValidationObject.*;
+import static com.appoie.utils.ValidationString.*;
 
 @Entity
 public class Cidade extends BasicEntity<CidadeId> {
@@ -23,6 +24,7 @@ public class Cidade extends BasicEntity<CidadeId> {
 	public Cidade(EstadoId estadoId, String nome) {
 		this();
 		isNull(estadoId);
+		isNullOrEmpty(nome);
 		this.estadoId = estadoId;
 		this.nome = nome;
 	}

@@ -1,50 +1,26 @@
 package com.appoie.models;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import static com.appoie.utils.ValidationObject.*;
 
 import com.appoie.ids.FotoPublicacaoId;
-import com.appoie.ids.PublicacaoId;
+import static com.appoie.utils.ValidationString.*;
 
 @Entity
-
 public class FotoPublicacao extends BasicEntity<FotoPublicacaoId> {
-	@AttributeOverride(name="id",column=@Column(name="publicacaoId"))
-	private PublicacaoId publicacaoId;
 	
+	private String endereco;
 	
-	public String foto;
-	public FotoPublicacao() {
+	private FotoPublicacao() {
 		super(new FotoPublicacaoId());
 	}
 
-	public FotoPublicacao(String foto) {
+	public FotoPublicacao(String endereco) {
 		this();
-		isNull(foto);
-		this.foto = foto;
-
-	}
-
-	public String getFoto() {
-		return foto;
+		isNullOrEmpty(endereco);
+		this.endereco = endereco;
 	}
 	
-	
-	public void setPublicacaoId(PublicacaoId publicacaoId) {
-		this.publicacaoId = publicacaoId;
+	public String getEndereco(){
+		return endereco;
 	}
-
-	public PublicacaoId getPublicacaoId() {
-		return this.publicacaoId;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
-	}
-	
-	
-	
-
 }

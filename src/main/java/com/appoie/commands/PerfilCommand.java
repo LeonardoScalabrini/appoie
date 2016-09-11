@@ -2,9 +2,7 @@ package com.appoie.commands;
 
 import java.util.Calendar;
 
-import com.appoie.models.FotoPerfil;
 import com.appoie.models.Sexo;
-import com.appoie.models.Usuario;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,14 +13,6 @@ public class PerfilCommand {
 	public final Sexo sexo;
 	public final Calendar dataDeNascimento;
 	public final String foto;
-	
-	public PerfilCommand(Usuario usuario, FotoPerfil fotoPerfil) {
-		this.nome = usuario.getNome();
-		this.sobrenome = usuario.getSobrenome();
-		this.sexo = usuario.getSexo();
-		this.dataDeNascimento = usuario.getDataDeNascimento();
-		this.foto = fotoPerfil.foto;
-	}
 	
 	@JsonCreator
 	public PerfilCommand(@JsonProperty("nome") String nome,
