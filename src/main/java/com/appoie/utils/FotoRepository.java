@@ -9,6 +9,9 @@ import java.util.Base64;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class FotoRepository {
 
 	private final String CAMINHO_PADRAO = "c:\\fotosAppoie\\";
@@ -31,6 +34,7 @@ public class FotoRepository {
 	}
 
 	public String save(String base64, String id) {
+		
 		String diretorio = CAMINHO_PADRAO + id;
 
 		try {

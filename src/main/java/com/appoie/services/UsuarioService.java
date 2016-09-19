@@ -22,6 +22,7 @@ import com.appoie.exceptions.EmailSenhaInvalidoException;
 import com.appoie.exceptions.NovaSenhaIgualException;
 import com.appoie.exceptions.NovoEmailIgualException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Cidade;
 import com.appoie.models.Email;
@@ -52,6 +53,8 @@ public class UsuarioService {
 		
 		Usuario usuario;
 		try {
+			isNullOrEmpty(command.cidade);
+			isNullOrEmpty(command.estado);
 			Cidade cidade = cidadeService.recuperarCidade(command.cidade, command.estado);
 			usuario = new Usuario(command, cidade.getId());
 		} catch (Exception e) {
@@ -81,23 +84,25 @@ public class UsuarioService {
 		Email email;
 		Senha senha;
 		UsuarioId id;
+		CidadeId cidadeId;
 		try {
 			email = new Email(command.email);
 			senha = new Senha(command.senha);
 			id = usuarioQuery.buscar(email, senha);
 			isNull(id);
+			cidadeId = cidadeService.recuperarCidadeUsuario(id);
 		} catch (Exception e) {
 			throw new EmailSenhaInvalidoException();
 		}
 		Sessao sessao = new Sessao(session);
 		sessao.setUsuarioId(id);
+		sessao.setCidadeId(cidadeId);
 	}
 
 	public void alterarPerfil(PerfilCommand perfilCommand, UsuarioId id) throws CamposCadastrarException {
 		Usuario usuario = usuarioRepository.findOne(id);
 		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(id);
 		try {
-			//fotoPerfil.setFoto(perfilCommand.foto);
 			usuario.alterarPerfil(perfilCommand);
 		} catch (Exception e) {
 			throw new CamposCadastrarException();

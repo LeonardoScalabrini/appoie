@@ -47,7 +47,12 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	@ElementCollection
 	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
 	private List<FotoPublicacaoId> fotosId = new ArrayList<>();
-
+	
+	private Long qtdCurtidas;
+	
+	private Double latitude;
+	private Double longitude;
+	
 	private Publicacao() {
 		super(new PublicacaoId());
 	}
@@ -73,12 +78,18 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		setDescricao(command.descricao);
 		setCategoria(command.categoria);
 		setFotos(fotosId);
+		this.latitude = command.lat;
+		this.longitude = command.lng;
 	}
 	
 	public void editar(PublicacaoEditarCommand command) {
 		setTitulo(command.titulo);
 		setDescricao(command.descricao);
 		setCategoria(command.categoria);
+	}
+	
+	public void curtir(){
+		this.qtdCurtidas++;
 	}
 
 	private void setFotos(List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException {
@@ -98,17 +109,17 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.usuarioId = usuarioId;
 	}
 
-	public void setTitulo(String titulo) {
+	private void setTitulo(String titulo) {
 		isNullOrEmpty(titulo);
 		this.titulo = titulo;
 	}
 
-	public void setDescricao(String descricao) {
+	private void setDescricao(String descricao) {
 		isNullOrEmpty(descricao);
 		this.descricao = descricao;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	private void setCategoria(Categoria categoria) {
 		isNull(categoria);
 		this.categoria = categoria;
 	}
@@ -135,5 +146,13 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 
 	public CidadeId getCidadeId() {
 		return cidadeId;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
 	}
 }

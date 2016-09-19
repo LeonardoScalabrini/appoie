@@ -34,14 +34,14 @@ public class CadastrarCommand {
 
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.dataDeNascimento = dataDeNascimento;
+		this.cidade = cidade;
+		this.estado = estado;
 		this.sexo = Sexo.valueOf(sexo.toUpperCase());
+		this.dataDeNascimento = dataDeNascimento;
 		this.email = email;
 		this.confirmarEmail = confirmarEmail;
 		this.senha = senha;
 		this.confirmarSenha = confirmarSenha;
-		this.cidade = cidade;
-		this.estado = estado;
 	}
 
 }

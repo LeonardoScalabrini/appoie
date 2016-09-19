@@ -1,14 +1,16 @@
 package com.appoie.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import com.appoie.ids.CidadeId;
+import com.appoie.ids.UsuarioId;
 import com.appoie.models.Cidade;
 import com.appoie.models.Estado;
 import com.appoie.querys.CidadeQuery;
 import com.appoie.repositorys.CidadeRepository;
 
-@Component
+@Service
 public class CidadeService {
 	
 	@Autowired
@@ -31,4 +33,7 @@ public class CidadeService {
 		return cidade; 
 	}
 
+	public CidadeId recuperarCidadeUsuario(UsuarioId id) {
+		return cidadeQuery.getCidadeUsuario(id);
+	}
 }
