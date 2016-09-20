@@ -22,18 +22,18 @@ public class CidadeService {
 	@Autowired
 	private CidadeRepository cidadeRepository;
 	
-	public Cidade recuperarCidade(String nomeCidade, String nomeEstado){
+	public Cidade getCidade(String nomeCidade, String nomeEstado){
 		
 		if (cidadeQuery.existe(nomeCidade, nomeEstado))
-			return cidadeQuery.buscar(nomeCidade, nomeEstado);
+			return cidadeQuery.getCidade(nomeCidade, nomeEstado);
 		
-		Estado estado = estadoService.recuperarEstado(nomeEstado);
+		Estado estado = estadoService.getEstado(nomeEstado);
 		Cidade cidade = new Cidade(estado.getId(), nomeCidade);
 		cidadeRepository.save(cidade);
 		return cidade; 
 	}
 
-	public CidadeId recuperarCidadeUsuario(UsuarioId id) {
-		return cidadeQuery.getCidadeUsuario(id);
+	public CidadeId getCidadeIdUsuario(UsuarioId id) {
+		return cidadeQuery.getCidadeIdUsuario(id);
 	}
 }

@@ -14,6 +14,8 @@ import com.appoie.commands.PublicacaoPreviaCommand;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.models.Categoria;
+import com.appoie.models.Status;
+import com.appoie.utils.FotoRepository;
 
 @Component
 public class PublicacaoQuery extends BasicQuery {
@@ -21,46 +23,50 @@ public class PublicacaoQuery extends BasicQuery {
 	@Autowired
 	private FotoPublicacaoQuery fotoPublicacaoQuery;
 	
+	@Autowired 
+	private FotoRepository fotoRepository;
+	
+	
 	@SuppressWarnings("unchecked")
-	public List<PublicacaoMarcacaoCommand> buscarMarcadores(CidadeId cidadeId) {
+	public List<PublicacaoMarcacaoCommand> getMarcadoresCidadeId(CidadeId cidadeId) {
 		
-		Query query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, p.qtd_Curtidas"
-          + " from publicacao p where p.cidade_Id = :cidadeId");
+		Query query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+										   + "p.qtd_Curtidas from publicacao p where "
+										   + "p.cidade_Id = :cidadeId");
+		
 		query.setParameter("cidadeId", cidadeId.getValue());
-		List<Object[]> marcadores = query.getResultList();
+		List<Object[]> publicacoes = query.getResultList();
 		
 		List<PublicacaoMarcacaoCommand> commands = new ArrayList<>();
-		for (Object[] marcador : marcadores) {
-			Categoria categoria = Categoria.valueOf(marcador[3].toString().toUpperCase());
-			commands.add(new PublicacaoMarcacaoCommand(marcador[0].toString(), 
-										   	   (Double)marcador[1],
-										   	   (Double)marcador[2],
-										   	   categoria,
-										   	   categoria.getMarcador()));
+		for (Object[] publicacao : publicacoes) {
+			Categoria categoria = Categoria.valueOf(publicacao[3].toString().toUpperCase());
+			commands.add(new PublicacaoMarcacaoCommand(publicacao[0].toString(), 
+										   	   (Double)publicacao[1],
+										   	   (Double)publicacao[2],
+										   	   categoria));
 		}
-		
 		return commands; 
 	}
 
-	public PublicacaoPreviaCommand buscarPrevia(PublicacaoId id) {
-		Query query = em.createNativeQuery("select id, titulo, qtdeApoiares, status, foto"
-		          + " from publicacao where id = :id");
+	public PublicacaoPreviaCommand getPublicacaoPreviaCommand(PublicacaoId id) {
+		Query query = em.createNativeQuery("select id, titulo, qtdeApoiares, status, endereco"
+		          						   + " from publicacao where id = :id");
 		query.setParameter("id", id.getValue());
 		
-		Object[] objeto = (Object[]) query.getSingleResult();
-		
-		return new PublicacaoPreviaCommand(objeto[0].toString(),
-										   objeto[1].toString(), 
-										   Integer.parseInt(objeto[2].toString()), 
-										   objeto[3].toString(), 
-										   objeto[4].toString());
+		Object[] publicacao = (Object[]) query.getSingleResult();
+
+		return new PublicacaoPreviaCommand(publicacao[0].toString(),
+										   publicacao[1].toString(), 
+										   Integer.parseInt(publicacao[2].toString()), 
+										   Status.valueOf(publicacao[3].toString()), 
+										   fotoRepository.getBase64(publicacao[4].toString()));
 														
 	}
 
-	public PublicacaoDetalhadaCommand buscarDetalhada(PublicacaoId id) {
-		Query query = em.createNativeQuery("select id, titulo, descricao, categoria, "
-				+ "localizacao, dataPublicacao, qtdeApoiares, status"
-		          + " from publicacao where id = :id");
+	public PublicacaoDetalhadaCommand getPublicacaoDetalhadaCommand(PublicacaoId id) {
+		Query query = em.createNativeQuery("select id, titulo, descricao, categoria, dataPublicacao, qtd_Apoiares, status"
+										   + " from publicacao where id = :id");
+		
 		query.setParameter("id", id.getValue());
 		
 		Object[] publicacao = (Object[]) query.getSingleResult();
@@ -69,11 +75,10 @@ public class PublicacaoQuery extends BasicQuery {
 										   	  publicacao[1].toString(), 
 										   	  publicacao[2].toString(), 
 										   	  publicacao[3].toString(), 
-										   	  publicacao[4].toString(),
 										   	  publicacao[5].toString(),
 										   	  Integer.parseInt(publicacao[6].toString()),
-										   	  publicacao[7].toString(),
-										   	  fotoPublicacaoQuery.recuperarFotos(id));
+										   	  Status.valueOf(publicacao[7].toString()),
+										   	  fotoPublicacaoQuery.getFotosPublicacaoCommand(id));
 	}
 	
 }

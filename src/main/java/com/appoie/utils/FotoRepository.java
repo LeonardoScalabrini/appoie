@@ -33,7 +33,7 @@ public class FotoRepository {
 		return base64Tratado;
 	}
 
-	public String save(String base64, String id) {
+	public String salvar(String base64, String id) {
 		
 		String diretorio = CAMINHO_PADRAO + id;
 
@@ -51,7 +51,7 @@ public class FotoRepository {
 
 	}
 	
-	public String find(String endereco){
+	public String getBase64(String endereco){
 		String base64 = "";
 		
 		try {

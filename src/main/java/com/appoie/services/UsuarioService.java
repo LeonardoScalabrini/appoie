@@ -55,7 +55,7 @@ public class UsuarioService {
 		try {
 			isNullOrEmpty(command.cidade);
 			isNullOrEmpty(command.estado);
-			Cidade cidade = cidadeService.recuperarCidade(command.cidade, command.estado);
+			Cidade cidade = cidadeService.getCidade(command.cidade, command.estado);
 			usuario = new Usuario(command, cidade.getId());
 		} catch (Exception e) {
 			throw new CamposCadastrarException();
@@ -76,7 +76,7 @@ public class UsuarioService {
 	public void recuperarSenha(SenhaRecuperarCommand command)
 			throws EmailFormatoException, EmailNaoCadastradoExcpetion {
 
-		if (!usuarioQuery.existeEmail(new Email(command.getEmail())))
+		if (!usuarioQuery.existeEmail(new Email(command.email)))
 			throw new EmailNaoCadastradoExcpetion();
 	}
 	
@@ -90,7 +90,7 @@ public class UsuarioService {
 			senha = new Senha(command.senha);
 			id = usuarioQuery.buscar(email, senha);
 			isNull(id);
-			cidadeId = cidadeService.recuperarCidadeUsuario(id);
+			cidadeId = cidadeService.getCidadeIdUsuario(id);
 		} catch (Exception e) {
 			throw new EmailSenhaInvalidoException();
 		}

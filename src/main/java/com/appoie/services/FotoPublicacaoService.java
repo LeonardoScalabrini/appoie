@@ -21,14 +21,14 @@ public class FotoPublicacaoService {
 		List<FotoPublicacao> fotosPublicacao = new ArrayList<>();
 		for (String foto : fotos) {
 			FotoPublicacaoId id = new FotoPublicacaoId();
-			FotoPublicacao fotoPublicacao = new FotoPublicacao(id, repository.save(foto, id.getValue()));
+			FotoPublicacao fotoPublicacao = new FotoPublicacao(id, repository.salvar(foto, id.getValue()));
 			fotosPublicacao.add(fotoPublicacao);
 		}
 		
 		return fotosPublicacao;
 	}
 
-	public List<FotoPublicacaoId> getIds(List<FotoPublicacao> fotosPublicacao) {
+	public List<FotoPublicacaoId> getFotosPublicacaoId(List<FotoPublicacao> fotosPublicacao) {
 		
 		List<FotoPublicacaoId> fotosPublicacaoId = new ArrayList<>();
 		

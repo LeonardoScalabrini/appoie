@@ -16,10 +16,10 @@ public class EstadoService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
-	public Estado recuperarEstado(String nomeEstado) {
+	public Estado getEstado(String nomeEstado) {
 		
 		if(query.existe(nomeEstado))
-			return query.buscar(nomeEstado);
+			return query.getEstado(nomeEstado);
 		
 		Estado estado = new Estado(nomeEstado);
 		estadoRepository.save(estado);

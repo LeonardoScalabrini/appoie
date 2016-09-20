@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.appoie.commands.IconeCommand;
 import com.appoie.commands.PublicacaoCommand;
 import com.appoie.commands.PublicacaoDetalhadaCommand;
 import com.appoie.commands.PublicacaoEditarCommand;
@@ -29,7 +30,12 @@ public class PublicacaoController {
 
 	@Autowired
 	private PublicacaoService service;
-
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/icone")
+	public List<IconeCommand> icone(){
+		return service.getIconesCommand();
+	}
+	
 	@RequestMapping(method = RequestMethod.PUT, value = "/editar")
 	public void editar(@RequestBody PublicacaoEditarCommand command) {
 		service.editar(command);
@@ -38,17 +44,17 @@ public class PublicacaoController {
 	@RequestMapping(method = RequestMethod.GET, value = "/marcadores")
 	public List<PublicacaoMarcacaoCommand> recuperarMarcadores(HttpSession session) {
 		Sessao sessao = new Sessao(session);
-		return service.recuperarMarcadores(sessao.getCidadeId());
+		return service.getMarcadoresCidadeId(sessao.getCidadeId());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "detalhada/{id}")
 	public PublicacaoDetalhadaCommand recuperarDetalhada(@PathVariable PublicacaoId id) {
-			return service.recuperarDetalhada(id);
+			return service.getPublicacaoDetalhadaCommand(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "previa/{id}")
 	public PublicacaoPreviaCommand recuperarPrevia(@PathVariable PublicacaoId id) {
-			return service.recuperarPrevia(id);
+			return service.getPublicacaoPreviaCommand(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/salvar")

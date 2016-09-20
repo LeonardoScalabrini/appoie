@@ -9,11 +9,5 @@ public class SenhaRecuperarCommand {
 	@JsonCreator
 	public SenhaRecuperarCommand(@JsonProperty(value = "email") String email) {
 		this.email = email;
-
-	}
-
-	public String getEmail() {
-
-		return this.email;
 	}
 }

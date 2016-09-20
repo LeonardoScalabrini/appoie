@@ -44,17 +44,6 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		super(new UsuarioId());
 	}
 	
-	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha, CidadeId cidadeId) throws Exception{
-		this();
-		setNome(nome);
-		setSobrenome(sobrenome);
-		setDataDeNascimento(dataDeNascimento);
-		setSexo(sexo);
-		setEmail(email);
-		setSenha(senha);
-		setCidadeId(cidadeId);
-	}
-	
 	private void setCidadeId(CidadeId cidadeId) {
 		isNull(cidadeId);
 		this.cidadeId = cidadeId;
@@ -70,6 +59,14 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setEmail(new Email(command.email)); 
 		setSenha(new Senha(command.senha));
 		setCidadeId(id);
+	}
+	
+	public void alterarPerfil(PerfilCommand perfilCommand) throws Exception {
+		isNull(perfilCommand);
+		setNome(perfilCommand.nome);
+		setSobrenome(perfilCommand.sobrenome);
+		setSexo(perfilCommand.sexo);
+		setDataDeNascimento(perfilCommand.dataDeNascimento);
 	}
 	
 	public void setNome(String nome) throws Exception{
@@ -128,14 +125,6 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	
 	public Senha getSenha(){
 		return senha;
-	}
-
-	public void alterarPerfil(PerfilCommand perfilCommand) throws Exception {
-		isNull(perfilCommand);
-		setNome(perfilCommand.nome);
-		setSobrenome(perfilCommand.sobrenome);
-		setSexo(perfilCommand.sexo);
-		setDataDeNascimento(perfilCommand.dataDeNascimento);
 	}
 	
 }

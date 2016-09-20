@@ -8,12 +8,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PerfilCommand {
 
+	public final String idUsuario;
 	public final String nome;
 	public final String sobrenome;
 	public final Sexo sexo;
 	public final Calendar dataDeNascimento;
 	public final String foto;
-	public final String idUsuario;
 	public final String cep;
 	public final String cidade;
 	public final String estado;

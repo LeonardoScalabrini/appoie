@@ -74,6 +74,6 @@ public class UsuarioQuery extends BasicQuery {
 								 perfil[5].toString(), 
 								 perfil[6].toString(), 
 								 SimpleCalendarFormat.parse(perfil[7].toString()),
-								 fotoRepository.find(perfil[8].toString()));
+								 fotoRepository.getBase64(perfil[8].toString()));
 	}
 }

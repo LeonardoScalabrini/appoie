@@ -32,7 +32,7 @@ public class UsuarioBuilder {
 	}
 	
 	public Usuario criar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
-		return new Usuario(nome, sobrenome, dataDeNascimento, sexo, email, senha, cidadeId);
+		return null; //new Usuario(nome, sobrenome, dataDeNascimento, sexo, email, senha, cidadeId);
 	}
 	
 	public UsuarioBuilder nome(String nome){

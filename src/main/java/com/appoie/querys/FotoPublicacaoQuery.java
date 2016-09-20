@@ -19,22 +19,23 @@ public class FotoPublicacaoQuery extends BasicQuery{
 	private FotoRepository fotoRepository;
 	
 	@SuppressWarnings("unchecked")
-	public List<FotoPublicacaoCommand> recuperarFotos(PublicacaoId id) {
+	public List<FotoPublicacaoCommand> getFotosPublicacaoCommand(PublicacaoId id) {
 		
-		Query query = em.createNativeQuery("select id, endereco from fotoPublicacao f, publicacao p "
-				+ "where f.id = p.fotoPublicacaoId and p.id = :id");
+		Query query = em.createNativeQuery("select id, endereco from fotoPublicacao f, "
+										 + "publicacao p where f.id = p.fotoPublicacaoId "
+										 + "and p.id = :id");
+		
 		query.setParameter("id", id.getValue());
-		
 		List<Object[]> fotosPublicacao = query.getResultList();
 		
-		List<FotoPublicacaoCommand> fotoPublicacaoCommands = new ArrayList<>();
+		List<FotoPublicacaoCommand> fotosPublicacaoCommand = new ArrayList<>();
 		
 		for (Object[] fotoPublicacao : fotosPublicacao) {
-			String foto = fotoRepository.find(fotoPublicacao[1].toString());
-			fotoPublicacaoCommands.add(new FotoPublicacaoCommand(fotoPublicacao[0].toString(), foto));
+			String foto = fotoRepository.getBase64(fotoPublicacao[1].toString());
+			fotosPublicacaoCommand.add(new FotoPublicacaoCommand(fotoPublicacao[0].toString(), foto));
 		}
 		
-		return fotoPublicacaoCommands; 
+		return fotosPublicacaoCommand; 
 	}
 
 }

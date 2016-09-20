@@ -14,16 +14,18 @@ public class EstadoQuery extends BasicQuery{
 	public boolean existe(String nomeEstado){
 		Query query = em.createNativeQuery("select count(1) "
 									   	   + "from estado e where "
-									   	                 + "e.nome = :nomeEstado");
+									   	   + "e.nome = :nomeEstado");
+		
 		query.setParameter("nomeEstado", nomeEstado);
 		BigInteger quantidade = (BigInteger) query.getResultList().get(0);
 		return quantidade.intValue() > 0 ; 
 	}
 	
-	public Estado buscar(String nomeEstado){
+	public Estado getEstado(String nomeEstado){
 		Query query = em.createNativeQuery("select e.id, e.nome"			
 									   	   + "from estado e where "
-									   	                 + "e.nome = :nomeEstado", Estado.class);
+									   	   + "e.nome = :nomeEstado", Estado.class);
+		
 		query.setParameter("nomeEstado", nomeEstado);
 		
 		return (Estado) query.getSingleResult(); 

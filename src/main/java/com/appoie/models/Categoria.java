@@ -28,11 +28,11 @@ public enum Categoria {
 	}
 	
 	public String getImage(){
-		return repository.find(getPatch());
+		return repository.getBase64(getPatch());
 	}
 	
 	public String getMarcador(){
-		return repository.find(getPatchMarcadores());
+		return repository.getBase64(getPatchMarcadores());
 	}
 
 }
