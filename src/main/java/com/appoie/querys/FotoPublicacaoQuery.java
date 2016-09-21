@@ -21,9 +21,8 @@ public class FotoPublicacaoQuery extends BasicQuery{
 	@SuppressWarnings("unchecked")
 	public List<FotoPublicacaoCommand> getFotosPublicacaoCommand(PublicacaoId id) {
 		
-		Query query = em.createNativeQuery("select id, endereco from fotoPublicacao f, "
-										 + "publicacao p where f.id = p.fotoPublicacaoId "
-										 + "and p.id = :id");
+		Query query = em.createNativeQuery("select id, endereco from foto_Publicacao f "
+										 + "where f.Publicacao_Id = :id");
 		
 		query.setParameter("id", id.getValue());
 		List<Object[]> fotosPublicacao = query.getResultList();

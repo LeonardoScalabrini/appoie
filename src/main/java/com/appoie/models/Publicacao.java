@@ -41,6 +41,9 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
 	
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicacao = Calendar.getInstance();
 
@@ -48,7 +51,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
 	private List<FotoPublicacaoId> fotosId = new ArrayList<>();
 	
-	private Long qtdCurtidas = 0L;
+	private Long qtdApoiadores = 0L;
 	
 	private Double latitude;
 	private Double longitude;
@@ -67,6 +70,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		setFotos(fotosId);
 		setLatitude(command.lat);
 		setLongitude(command.lng);
+		status = Status.ABERTO;
 	}
 
 	public void editar(PublicacaoEditarCommand command) {
@@ -76,9 +80,13 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	}
 	
 	public void curtir(){
-		this.qtdCurtidas++;
+		this.qtdApoiadores++;
 	}
 
+	public void fechar(){
+		status = Status.FECHADO;
+	}
+	
 	private void setFotos(List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException {
 		if (fotosId.size() < 1 || fotosId.size() > 3)
 			throw new QuantidadeFotosPublicacaoException();

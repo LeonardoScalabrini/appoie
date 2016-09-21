@@ -49,22 +49,22 @@ public class PublicacaoController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "detalhada/{id}")
 	public PublicacaoDetalhadaCommand recuperarDetalhada(@PathVariable PublicacaoId id) {
-			return service.getPublicacaoDetalhadaCommand(id);
+		return service.getPublicacaoDetalhadaCommand(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "previa/{id}")
 	public PublicacaoPreviaCommand recuperarPrevia(@PathVariable PublicacaoId id) {
-			return service.getPublicacaoPreviaCommand(id);
+		return service.getPublicacaoPreviaCommand(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/salvar")
 	public void salvar(@RequestBody PublicacaoCommand command, HttpSession session) throws QuantidadeFotosPublicacaoException {
-			service.salvar(command, new Sessao(session));
+		service.salvar(command, new Sessao(session));
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "excluir/{id}")
 	public void deletar(@PathVariable PublicacaoId id) {
-			service.excluir(id);
+		service.excluir(id);
 	}
 	
 }

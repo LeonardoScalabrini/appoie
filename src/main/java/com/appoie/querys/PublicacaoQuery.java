@@ -1,5 +1,6 @@
 package com.appoie.querys;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class PublicacaoQuery extends BasicQuery {
 	public List<PublicacaoMarcacaoCommand> getMarcadoresCidadeId(CidadeId cidadeId) {
 		
 		Query query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-										   + "p.qtd_Curtidas from publicacao p where "
+										   + "p.qtd_apoiadores from publicacao p where "
 										   + "p.cidade_Id = :cidadeId");
 		
 		query.setParameter("cidadeId", cidadeId.getValue());
@@ -39,32 +40,39 @@ public class PublicacaoQuery extends BasicQuery {
 		
 		List<PublicacaoMarcacaoCommand> commands = new ArrayList<>();
 		for (Object[] publicacao : publicacoes) {
+			
 			Categoria categoria = Categoria.valueOf(publicacao[3].toString().toUpperCase());
-			commands.add(new PublicacaoMarcacaoCommand(publicacao[0].toString(), 
+			BigInteger qtdCurtidas = (BigInteger)publicacao[4];
+			
+		    commands.add(new PublicacaoMarcacaoCommand(publicacao[0].toString(), 
 										   	   (Double)publicacao[1],
 										   	   (Double)publicacao[2],
-										   	   categoria));
+										   	   categoria,
+										   	   qtdCurtidas.longValue()));
 		}
 		return commands; 
 	}
 
 	public PublicacaoPreviaCommand getPublicacaoPreviaCommand(PublicacaoId id) {
-		Query query = em.createNativeQuery("select id, titulo, qtdeApoiares, status, endereco"
-		          						   + " from publicacao where id = :id");
+		Query query = em.createNativeQuery("(select p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco"
+		          						   + " from publicacao p, foto_publicacao f "
+		          						   + "where p.id = :id and p.id = f.publicacao_id) limit 1");
 		query.setParameter("id", id.getValue());
 		
 		Object[] publicacao = (Object[]) query.getSingleResult();
-
+		
+		BigInteger qtdApoiadores = (BigInteger)publicacao[2];
+		
 		return new PublicacaoPreviaCommand(publicacao[0].toString(),
 										   publicacao[1].toString(), 
-										   Integer.parseInt(publicacao[2].toString()), 
+										   qtdApoiadores.longValue(), 
 										   Status.valueOf(publicacao[3].toString()), 
 										   fotoRepository.getBase64(publicacao[4].toString()));
 														
 	}
 
 	public PublicacaoDetalhadaCommand getPublicacaoDetalhadaCommand(PublicacaoId id) {
-		Query query = em.createNativeQuery("select id, titulo, descricao, categoria, dataPublicacao, qtd_Apoiares, status"
+		Query query = em.createNativeQuery("select id, titulo, descricao, categoria, data_Publicacao, qtd_apoiadores, status"
 										   + " from publicacao where id = :id");
 		
 		query.setParameter("id", id.getValue());
@@ -75,9 +83,9 @@ public class PublicacaoQuery extends BasicQuery {
 										   	  publicacao[1].toString(), 
 										   	  publicacao[2].toString(), 
 										   	  publicacao[3].toString(), 
-										   	  publicacao[5].toString(),
-										   	  Integer.parseInt(publicacao[6].toString()),
-										   	  Status.valueOf(publicacao[7].toString()),
+										   	  publicacao[4].toString(),
+										   	  Integer.parseInt(publicacao[5].toString()),
+										   	  Status.valueOf(publicacao[6].toString()),
 										   	  fotoPublicacaoQuery.getFotosPublicacaoCommand(id));
 	}
 	

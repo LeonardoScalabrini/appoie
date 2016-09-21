@@ -6,13 +6,15 @@ public class PublicacaoMarcacaoCommand {
 
 	public final String idPublicacao;
 	public final Double lat;
-	public final Double lgt;
+	public final Double lng;
 	public final Categoria categoria;
+	public final Long qtdApoiadores;
 	
-	public PublicacaoMarcacaoCommand(String idPublicacao, Double lat, Double lgt, Categoria categoria) {
+	public PublicacaoMarcacaoCommand(String idPublicacao, Double lat, Double lng, Categoria categoria, Long qtdCurtidas) {
 		this.idPublicacao = idPublicacao;
 		this.lat = lat;
-		this.lgt = lgt;
+		this.lng = lng;
 		this.categoria = categoria;
+		this.qtdApoiadores = qtdCurtidas;
 	}
 }

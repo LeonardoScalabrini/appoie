@@ -54,9 +54,9 @@ public class PublicacaoService {
 	}
 
 	public void editar(PublicacaoEditarCommand command) {
-			Publicacao publicacao = publicacaoRepository.findOne(new PublicacaoId(command.id));
-			publicacao.editar(command);
-			publicacaoRepository.save(publicacao);
+		Publicacao publicacao = publicacaoRepository.findOne(new PublicacaoId(command.id));
+		publicacao.editar(command);
+		publicacaoRepository.save(publicacao);
 	}
 
 	public List<PublicacaoMarcacaoCommand> getMarcadoresCidadeId(CidadeId cidadeId) {

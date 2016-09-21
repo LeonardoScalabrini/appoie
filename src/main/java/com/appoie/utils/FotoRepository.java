@@ -33,27 +33,8 @@ public class FotoRepository {
 		return base64Tratado;
 	}
 
-	public String salvar(String base64, String id) {
-		
-		String diretorio = CAMINHO_PADRAO + id;
-
-		try {
-			byte[] decoded = Base64.getDecoder().decode(trataBase64(base64));
-			diretorio += ".jpg";
-			FileOutputStream file = new FileOutputStream(diretorio);
-			file.write(decoded);
-			file.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return diretorio;
-
-	}
-	
-	public String getBase64(String endereco){
+	private String Encoder(String endereco) {
 		String base64 = "";
-		
 		try {
 			File file = new File(endereco);
 		    BufferedImage img = ImageIO.read(file);
@@ -68,8 +49,33 @@ public class FotoRepository {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return base64;
 	}
+	
+	private String Decoder(String base64, String diretorio) {
+		try {
+			byte[] decoded = Base64.getDecoder().decode(trataBase64(base64));
+			diretorio += ".jpg";
+			FileOutputStream file = new FileOutputStream(diretorio);
+			file.write(decoded);
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return diretorio;
+	}
+	
+	public String salvar(String base64, String id) {
+		
+		String diretorio = CAMINHO_PADRAO + id;
 
+		diretorio = Decoder(base64, diretorio);
+
+		return diretorio;
+	}
+	
+	public String getBase64(String endereco){
+		
+		return Encoder(endereco);
+	}
 }
