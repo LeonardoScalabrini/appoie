@@ -4,9 +4,9 @@ import com.appoie.utils.FotoRepository;
 
 public enum Categoria {
 	
-	ARBORIZACAO("Arborização"), DEFESACIVIL("DefesaCivil"), FUNDODEVALE("FundoDeVale"), ILUMINACAO("Iluminação"),
-	PAVIMENTACAO("Pavimentacão"), SANEAMENTOBASICO("SaneamentoBasico"), SEGURANCA("Segurança"), TERRENOBALDIO("TerrenoBaldio"), 
-	TRANSPORTEPUBLICO("TransportePublico");
+	ARBORIZACAO("Arborização"), DEFESACIVIL("DefCivil"), FUNDODEVALE("Fundo"), ILUMINACAO("Iluminação"),
+	PAVIMENTACAO("Pavimentacao"), SANEAMENTOBASICO("Saneamento"), SEGURANCA("Segurança"), TERRENOBALDIO("Terreno"), 
+	TRANSPORTEPUBLICO("Transporte");
 	
 	private FotoRepository repository = new FotoRepository();
 	

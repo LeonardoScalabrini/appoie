@@ -31,7 +31,7 @@ public class PublicacaoController {
 	@Autowired
 	private PublicacaoService service;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/icone")
+	@RequestMapping(method = RequestMethod.GET, value = "/icones")
 	public List<IconeCommand> icone(){
 		return service.getIconesCommand();
 	}
