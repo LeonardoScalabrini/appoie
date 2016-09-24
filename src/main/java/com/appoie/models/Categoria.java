@@ -24,7 +24,7 @@ public enum Categoria {
 	}
 	
 	private String getPatchMarcadores(){
-		return PATCH_MARCADORES_PADRAO + nome + ".png"; 
+		return PATCH_MARCADORES_PADRAO + name() + ".png"; 
 	}
 	
 	public String getImage(){

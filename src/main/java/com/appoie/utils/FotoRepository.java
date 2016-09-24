@@ -33,7 +33,7 @@ public class FotoRepository {
 		return base64Tratado;
 	}
 
-	private String Encoder(String endereco) {
+	private String Encoder(String endereco, String tipoImagem) {
 		String base64 = "";
 		try {
 			File file = new File(endereco);
@@ -41,11 +41,11 @@ public class FotoRepository {
 
 		    ByteArrayOutputStream bao = new ByteArrayOutputStream();
 
-		    ImageIO.write(img, "jpg", bao);
+		    ImageIO.write(img, tipoImagem, bao);
 
 		    byte[] arrayByte = bao.toByteArray();;
 		   
-		    base64 = "data:image/jpg;base64," + Base64.getEncoder().encodeToString(arrayByte);
+		    base64 = "data:image/" + tipoImagem + ";base64," + Base64.getEncoder().encodeToString(arrayByte);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,6 +76,6 @@ public class FotoRepository {
 	
 	public String getBase64(String endereco){
 		
-		return Encoder(endereco);
+		return Encoder(endereco, "png");
 	}
 }
