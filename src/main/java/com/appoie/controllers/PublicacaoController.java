@@ -67,10 +67,4 @@ public class PublicacaoController {
 		service.excluir(id);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "apoiar/{id}")
-	public void apoiar(@PathVariable PublicacaoId id, HttpSession session){
-		Sessao sessao = new Sessao(session);
-		service.apoiar(sessao.getUsuarioId(), id);
-	}
-	
 }

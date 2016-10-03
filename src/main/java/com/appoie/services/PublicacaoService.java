@@ -15,13 +15,10 @@ import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
-import com.appoie.ids.UsuarioId;
-import com.appoie.models.Apoiador;
 import com.appoie.models.Categoria;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
 import com.appoie.querys.PublicacaoQuery;
-import com.appoie.repositorys.ApoieRepository;
 import com.appoie.repositorys.FotoPublicacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
 import com.appoie.utils.Sessao;
@@ -43,9 +40,6 @@ public class PublicacaoService {
 	
 	@Autowired
 	private PublicacaoQuery publicacaoQuery;
-
-	@Autowired
-	private ApoieRepository apoieRepository;
 
 	public void salvar(SalvarPublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
@@ -84,13 +78,5 @@ public class PublicacaoService {
 			dto.add(new IconesDTO(categoria));
 		}
 		return dto;
-	}
-
-	public void apoiar(UsuarioId usuarioId, PublicacaoId publicacaoId) {
-		Publicacao p = publicacaoRepository.getOne(publicacaoId);
-		p.apoiar();
-		Apoiador a = new Apoiador(usuarioId, publicacaoId);
-		publicacaoRepository.save(p);
-		apoieRepository.save(a);
 	}
 }
