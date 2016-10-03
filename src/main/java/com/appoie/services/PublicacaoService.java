@@ -6,19 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appoie.commands.IconeCommand;
-import com.appoie.commands.PublicacaoCommand;
-import com.appoie.commands.PublicacaoDetalhadaCommand;
-import com.appoie.commands.PublicacaoEditarCommand;
-import com.appoie.commands.PublicacaoMarcacaoCommand;
-import com.appoie.commands.PublicacaoPreviaCommand;
+import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.EditarPublicacaoCommand;
+import com.appoie.dto.IconesDTO;
+import com.appoie.dto.PublicacaoDetalhadaDTO;
+import com.appoie.dto.PublicacaoMarcacaoDTO;
+import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
+import com.appoie.ids.UsuarioId;
+import com.appoie.models.Apoiador;
 import com.appoie.models.Categoria;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
 import com.appoie.querys.PublicacaoQuery;
+import com.appoie.repositorys.ApoieRepository;
 import com.appoie.repositorys.FotoPublicacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
 import com.appoie.utils.Sessao;
@@ -41,7 +44,10 @@ public class PublicacaoService {
 	@Autowired
 	private PublicacaoQuery publicacaoQuery;
 
-	public void salvar(PublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
+	@Autowired
+	private ApoieRepository apoieRepository;
+
+	public void salvar(SalvarPublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
 		List<FotoPublicacao> fotosPublicacao = fotoPublicacaoService.salvar(command.fotos);
 		Publicacao publicacao = new Publicacao(command, sessao.getUsuarioId(), cidadeId, fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
@@ -53,30 +59,38 @@ public class PublicacaoService {
 		publicacaoRepository.delete(id);
 	}
 
-	public void editar(PublicacaoEditarCommand command) {
+	public void editar(EditarPublicacaoCommand command) {
 		Publicacao publicacao = publicacaoRepository.findOne(new PublicacaoId(command.id));
 		publicacao.editar(command);
 		publicacaoRepository.save(publicacao);
 	}
 
-	public List<PublicacaoMarcacaoCommand> getMarcadoresCidadeId(CidadeId cidadeId) {
-		return publicacaoQuery.getMarcadoresCidadeId(cidadeId);
+	public List<PublicacaoMarcacaoDTO> getMarcadores(CidadeId cidadeId) {
+		return publicacaoQuery.getMarcadores(cidadeId);
 	}
 
-	public PublicacaoPreviaCommand getPublicacaoPreviaCommand(PublicacaoId id) {
-		return publicacaoQuery.getPublicacaoPreviaCommand(id);
+	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) {
+		return publicacaoQuery.getPreviaPublicacao(id);
 	}
 
-	public PublicacaoDetalhadaCommand getPublicacaoDetalhadaCommand(PublicacaoId id) {
-		return publicacaoQuery.getPublicacaoDetalhadaCommand(id);
+	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
+		return publicacaoQuery.getDetalhesPublicacao(id);
 	}
 
-	public List<IconeCommand> getIconesCommand() {
+	public List<IconesDTO> getIconesDTO() {
 		Categoria[] categorias = Categoria.values();
-		List<IconeCommand> commands = new ArrayList<>();
+		List<IconesDTO> dto = new ArrayList<>();
 		for (Categoria categoria : categorias) {
-			commands.add(new IconeCommand(categoria));
+			dto.add(new IconesDTO(categoria));
 		}
-		return commands;
+		return dto;
+	}
+
+	public void apoiar(UsuarioId usuarioId, PublicacaoId publicacaoId) {
+		Publicacao p = publicacaoRepository.getOne(publicacaoId);
+		p.apoiar();
+		Apoiador a = new Apoiador(usuarioId, publicacaoId);
+		publicacaoRepository.save(p);
+		apoieRepository.save(a);
 	}
 }

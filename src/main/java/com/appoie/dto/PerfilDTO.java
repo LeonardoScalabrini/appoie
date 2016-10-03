@@ -1,4 +1,4 @@
-package com.appoie.commands;
+package com.appoie.dto;
 
 import java.util.Calendar;
 
@@ -6,7 +6,7 @@ import com.appoie.models.Sexo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PerfilCommand {
+public class PerfilDTO {
 
 	public final String idUsuario;
 	public final String nome;
@@ -19,7 +19,7 @@ public class PerfilCommand {
 	public final String estado;
 	
 	@JsonCreator
-	public PerfilCommand(@JsonProperty("idUsuario") String idUsuario,
+	public PerfilDTO(@JsonProperty("idUsuario") String idUsuario,
 						 @JsonProperty("nome") String nome,
 					 	 @JsonProperty("sobrenome") String sobrenome,
 					 	 @JsonProperty("sexo") String sexo,

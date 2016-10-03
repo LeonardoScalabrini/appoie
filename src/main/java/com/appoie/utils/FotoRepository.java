@@ -11,16 +11,25 @@ import javax.imageio.ImageIO;
 
 import org.springframework.stereotype.Component;
 
+import com.appoie.models.TipoImagem;
+
 @Component
 public class FotoRepository {
 
 	private final String CAMINHO_PADRAO = "c:\\fotosAppoie\\";
+	private final TipoImagem tipoImagem;
+	
+	public FotoRepository(TipoImagem tipoImagem) {
+		new File(CAMINHO_PADRAO).mkdirs();
+		this.tipoImagem = tipoImagem;
+	}
 	
 	public FotoRepository() {
 		new File(CAMINHO_PADRAO).mkdirs();
+		this.tipoImagem = TipoImagem.JPG;
 	}
-
-	private String trataBase64(String base64) {
+	
+	private String tratarBase64(String base64) {
 		String base64Tratado = "";
 		for (int i = 0; i < base64.length(); i++) {
 			int indice;
@@ -32,50 +41,62 @@ public class FotoRepository {
 		}
 		return base64Tratado;
 	}
-
-	private String Encoder(String endereco, String tipoImagem) {
-		String base64 = "";
+	
+	private String formatarBase64(byte[] arrayByte) {
+		return "data:image/" + tipoImagem.name() + ";base64," 
+				+ Base64.getEncoder().encodeToString(arrayByte);
+	}
+	
+	private String Encoder(String enderecoCompleto) {
+		
+		String base64 = null;
 		try {
-			File file = new File(endereco);
+			File file = new File(getEnderecoCompleto(enderecoCompleto));
 		    BufferedImage img = ImageIO.read(file);
 
 		    ByteArrayOutputStream bao = new ByteArrayOutputStream();
 
-		    ImageIO.write(img, tipoImagem, bao);
+		    ImageIO.write(img, tipoImagem.name(), bao);
 
 		    byte[] arrayByte = bao.toByteArray();;
 		   
-		    base64 = "data:image/" + tipoImagem + ";base64," + Base64.getEncoder().encodeToString(arrayByte);
+		    base64 = formatarBase64(arrayByte);
+		    
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return base64;
 	}
 	
-	private String Decoder(String base64, String diretorio) {
+	private String getEnderecoCompleto(String endereco) {
+		return endereco + "." + tipoImagem.name();
+	}
+
+	private String Decoder(String base64, String endereco, TipoImagem tipoImagem) {
+		
+		String enderecoCompleto = getEnderecoCompleto(endereco);
 		try {
-			byte[] decoded = Base64.getDecoder().decode(trataBase64(base64));
-			diretorio += ".jpg";
-			FileOutputStream file = new FileOutputStream(diretorio);
+			byte[] decoded = Base64.getDecoder().decode(tratarBase64(base64));
+			FileOutputStream file = new FileOutputStream(enderecoCompleto);
 			file.write(decoded);
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return diretorio;
+		return enderecoCompleto;
 	}
 	
-	public String salvar(String base64, String id) {
+	public String save(String base64, String id) {
 		
 		String diretorio = CAMINHO_PADRAO + id;
-
-		diretorio = Decoder(base64, diretorio);
+		
+		diretorio = Decoder(base64, diretorio, tipoImagem);
 
 		return diretorio;
 	}
 	
 	public String getBase64(String endereco){
 		
-		return Encoder(endereco, "png");
+		return Encoder(endereco);
 	}
 }

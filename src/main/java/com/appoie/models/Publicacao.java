@@ -18,8 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.appoie.commands.PublicacaoCommand;
-import com.appoie.commands.PublicacaoEditarCommand;
+import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
@@ -60,7 +60,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		super(new PublicacaoId());
 	}
 
-	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException{
+	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException{
 		this();
 		setUsuarioId(usuarioId);
 		setCidadeId(cidadeId);
@@ -73,13 +73,13 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		status = Status.ABERTO;
 	}
 
-	public void editar(PublicacaoEditarCommand command) {
+	public void editar(EditarPublicacaoCommand command) {
 		setTitulo(command.titulo);
 		setDescricao(command.descricao);
 		setCategoria(command.categoria);
 	}
 	
-	public void curtir(){
+	public void apoiar(){
 		this.qtdApoiadores++;
 	}
 

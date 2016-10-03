@@ -6,7 +6,7 @@ import com.appoie.models.Categoria;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PublicacaoCommand {
+public class SalvarPublicacaoCommand {
 
 	public final String titulo;
 	public final String descricao;
@@ -18,7 +18,7 @@ public class PublicacaoCommand {
 	public final Double lng;
 
 	@JsonCreator
-	public PublicacaoCommand(@JsonProperty(value = "titulo") String titulo,
+	public SalvarPublicacaoCommand(@JsonProperty(value = "titulo") String titulo,
 							 @JsonProperty(value = "descricao") String descricao, 
 							 @JsonProperty(value = "categoria") String categoria,
 							 @JsonProperty(value = "cidade") String cidade, 

@@ -1,10 +1,11 @@
-package com.appoie.commands;
+package com.appoie.dto;
 
 import java.util.List;
 
+import com.appoie.commands.SalvarFotoPublicacaoCommand;
 import com.appoie.models.Status;
 
-public class PublicacaoDetalhadaCommand {
+public class PublicacaoDetalhadaDTO {
 
 	public final String idPublicacao;
 	public final String titulo;
@@ -12,10 +13,10 @@ public class PublicacaoDetalhadaCommand {
 	public final String dataPublicacao;
 	public final int qtdApoiadores; 
 	public final Status status;
-	public final List<FotoPublicacaoCommand> fotos;
+	public final List<SalvarFotoPublicacaoCommand> fotos;
 	
-	public PublicacaoDetalhadaCommand(String idPublicacao, String titulo, String descricao, String categoria,
-			String dataPublicacao, int qtdApoiadores, Status status, List<FotoPublicacaoCommand> fotos) {
+	public PublicacaoDetalhadaDTO(String idPublicacao, String titulo, String descricao, String categoria,
+			String dataPublicacao, int qtdApoiadores, Status status, List<SalvarFotoPublicacaoCommand> fotos) {
 		this.idPublicacao = idPublicacao;
 		this.titulo = titulo;
 		this.descricao = descricao;

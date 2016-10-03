@@ -11,7 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.commands.PerfilCommand;
+import com.appoie.dto.PerfilDTO;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
 
@@ -61,7 +61,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setCidadeId(id);
 	}
 	
-	public void alterarPerfil(PerfilCommand perfilCommand) throws Exception {
+	public void alterarPerfil(PerfilDTO perfilCommand) throws Exception {
 		isNull(perfilCommand);
 		setNome(perfilCommand.nome);
 		setSobrenome(perfilCommand.sobrenome);

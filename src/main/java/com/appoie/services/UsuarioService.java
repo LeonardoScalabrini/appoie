@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.commands.EmailCommand;
-import com.appoie.commands.LoginCommand;
-import com.appoie.commands.PerfilCommand;
-import com.appoie.commands.SenhaCommand;
-import com.appoie.commands.SenhaRecuperarCommand;
+import com.appoie.commands.AlterarEmailCommand;
+import com.appoie.commands.AutenticarCommand;
+import com.appoie.commands.AlterarSenhaCommand;
+import com.appoie.commands.RecuperarSenhaCommand;
+import com.appoie.dto.PerfilDTO;
 import com.appoie.exceptions.CamposCadastrarException;
 import com.appoie.exceptions.EmailCadastradoException;
 import com.appoie.exceptions.EmailFormatoException;
@@ -73,14 +73,14 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public void recuperarSenha(SenhaRecuperarCommand command)
+	public void recuperarSenha(RecuperarSenhaCommand command)
 			throws EmailFormatoException, EmailNaoCadastradoExcpetion {
 
 		if (!usuarioQuery.existeEmail(new Email(command.email)))
 			throw new EmailNaoCadastradoExcpetion();
 	}
 	
-	public void autenticar(LoginCommand command, HttpSession session) throws EmailSenhaInvalidoException{
+	public void autenticar(AutenticarCommand command, HttpSession session) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
 		UsuarioId id;
@@ -99,7 +99,7 @@ public class UsuarioService {
 		sessao.setCidadeId(cidadeId);
 	}
 
-	public void alterarPerfil(PerfilCommand perfilCommand, UsuarioId id) throws CamposCadastrarException {
+	public void alterarPerfil(PerfilDTO perfilCommand, UsuarioId id) throws CamposCadastrarException {
 		Usuario usuario = usuarioRepository.findOne(id);
 		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(id);
 		try {
@@ -111,7 +111,7 @@ public class UsuarioService {
 		fotoPerfilRepository.save(fotoPerfil);
 	}
 
-	public void alterarEmail(EmailCommand c, UsuarioId id) throws EmailFormatoException, CamposCadastrarException, NovoEmailIgualException {
+	public void alterarEmail(AlterarEmailCommand c, UsuarioId id) throws EmailFormatoException, CamposCadastrarException, NovoEmailIgualException {
 		Usuario usuario = usuarioRepository.findOne(id);
 		try{
 			isNullOrEmpty(c.emailAtual);
@@ -131,7 +131,7 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public void alterarSenha(SenhaCommand c, UsuarioId id) throws SenhaTamanhoMinimoException, Exception {
+	public void alterarSenha(AlterarSenhaCommand c, UsuarioId id) throws SenhaTamanhoMinimoException, Exception {
 		Usuario usuario = usuarioRepository.findOne(id);
 		try {
 			isNullOrEmpty(c.senhaAtual);
@@ -151,8 +151,8 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public PerfilCommand buscarPerfil(UsuarioId id) {
-		return usuarioQuery.buscarPerfil(id);
+	public PerfilDTO getPerfil(UsuarioId id) {
+		return usuarioQuery.getPerfil(id);
 	}
 	
 }

@@ -1,8 +1,8 @@
-package com.appoie.commands;
+package com.appoie.dto;
 
 import com.appoie.models.Categoria;
 
-public class PublicacaoMarcacaoCommand {
+public class PublicacaoMarcacaoDTO {
 
 	public final String idPublicacao;
 	public final Double lat;
@@ -10,7 +10,7 @@ public class PublicacaoMarcacaoCommand {
 	public final Categoria categoria;
 	public final Long qtdApoiadores;
 	
-	public PublicacaoMarcacaoCommand(String idPublicacao, Double lat, Double lng, Categoria categoria, Long qtdCurtidas) {
+	public PublicacaoMarcacaoDTO(String idPublicacao, Double lat, Double lng, Categoria categoria, Long qtdCurtidas) {
 		this.idPublicacao = idPublicacao;
 		this.lat = lat;
 		this.lng = lng;

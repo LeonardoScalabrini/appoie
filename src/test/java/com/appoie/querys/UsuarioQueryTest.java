@@ -38,7 +38,7 @@ public class UsuarioQueryTest {
 		Usuario usuario = new UsuarioBuilder().criar();
 		repository.save(usuario);
 		UsuarioId recuperado = query.buscar(usuario.getEmail(), usuario.getSenha());
-		assertTrue(recuperado.equals(usuario.getId()));
+		assertTrue(recuperado.getValue().equals(usuario.getId().getValue()));
 	}
 	
 	@Test(expected=NoResultException.class)
@@ -53,7 +53,7 @@ public class UsuarioQueryTest {
 		Usuario usuario = new UsuarioBuilder().criar();
 		repository.save(usuario);
 		Usuario recuperado = query.buscar(usuario.getEmail());
-		assertTrue(recuperado.equals(usuario));
+		assertTrue(recuperado.getId().getValue().equals(usuario.getId().getValue()));
 	}
 	
 	@Test(expected=NoResultException.class)
@@ -99,7 +99,7 @@ public class UsuarioQueryTest {
 		Usuario usuario = new UsuarioBuilder().criar();
 		repository.save(usuario);
 		Senha recuperada = query.buscarSenha(usuario.getEmail());
-		assertTrue(recuperada.equals(usuario.getSenha()));
+		assertTrue(recuperada.getValue().equals(usuario.getSenha().getValue()));
 	}
 	
 	@Test(expected=NoResultException.class)

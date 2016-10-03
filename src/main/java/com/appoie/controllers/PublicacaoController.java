@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appoie.commands.IconeCommand;
-import com.appoie.commands.PublicacaoCommand;
-import com.appoie.commands.PublicacaoDetalhadaCommand;
-import com.appoie.commands.PublicacaoEditarCommand;
-import com.appoie.commands.PublicacaoMarcacaoCommand;
-import com.appoie.commands.PublicacaoPreviaCommand;
+import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.EditarPublicacaoCommand;
+import com.appoie.dto.IconesDTO;
+import com.appoie.dto.PublicacaoDetalhadaDTO;
+import com.appoie.dto.PublicacaoMarcacaoDTO;
+import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.services.PublicacaoService;
@@ -32,39 +32,45 @@ public class PublicacaoController {
 	private PublicacaoService service;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/icones")
-	public List<IconeCommand> icone(){
-		return service.getIconesCommand();
+	public List<IconesDTO> icone(){
+		return service.getIconesDTO();
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/editar")
-	public void editar(@RequestBody PublicacaoEditarCommand command) {
+	public void editar(@RequestBody EditarPublicacaoCommand command) {
 		service.editar(command);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/marcadores")
-	public List<PublicacaoMarcacaoCommand> recuperarMarcadores(HttpSession session) {
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadores(HttpSession session) {
 		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresCidadeId(sessao.getCidadeId());
+		return service.getMarcadores(sessao.getCidadeId());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "detalhada/{id}")
-	public PublicacaoDetalhadaCommand recuperarDetalhada(@PathVariable PublicacaoId id) {
-		return service.getPublicacaoDetalhadaCommand(id);
+	public PublicacaoDetalhadaDTO recuperarDetalhada(@PathVariable PublicacaoId id) {
+		return service.getDetalhesPublicacao(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "previa/{id}")
-	public PublicacaoPreviaCommand recuperarPrevia(@PathVariable PublicacaoId id) {
-		return service.getPublicacaoPreviaCommand(id);
+	public PublicacaoPreviaDTO recuperarPrevia(@PathVariable PublicacaoId id) {
+		return service.getPreviaPublicacao(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/salvar")
-	public void salvar(@RequestBody PublicacaoCommand command, HttpSession session) throws QuantidadeFotosPublicacaoException {
+	public void salvar(@RequestBody SalvarPublicacaoCommand command, HttpSession session) throws QuantidadeFotosPublicacaoException {
 		service.salvar(command, new Sessao(session));
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "excluir/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/excluir/{id}")
 	public void deletar(@PathVariable PublicacaoId id) {
 		service.excluir(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "apoiar/{id}")
+	public void apoiar(@PathVariable PublicacaoId id, HttpSession session){
+		Sessao sessao = new Sessao(session);
+		service.apoiar(sessao.getUsuarioId(), id);
 	}
 	
 }

@@ -13,7 +13,6 @@ public class CadastrarPage extends BasicPage{
 	private String confirmarEmail = "teste@teste.com.br";
 	private String senha = "123456";
 	private String confirmarSenha = "123456";
-	private Boolean termo = true;
 	
 	public CadastrarPage(WebDriver driver) {
 		super(driver);
@@ -21,7 +20,7 @@ public class CadastrarPage extends BasicPage{
 	
 	public void enviar(){
 		esperar();
-		driver.findElement(By.id("btn-cadastrar")).click();
+		driver.findElement(By.name("cadastrar")).click();
 		
 	}
 	
@@ -29,14 +28,13 @@ public class CadastrarPage extends BasicPage{
 		esperar();
 		driver.findElement(By.name("nome")).sendKeys(nome);
 		driver.findElement(By.name("sobrenome")).sendKeys(sobrenome);
-		driver.findElement(By.name("nascimento")).sendKeys(nascimento);
+		driver.findElement(By.name("dataNascimento")).sendKeys(nascimento);
 		driver.findElement(By.name("sexo")).sendKeys(sexo);
 		driver.findElement(By.name("email")).sendKeys(email);
 		driver.findElement(By.name("confirmaEmail")).sendKeys(confirmarEmail);
 		driver.findElement(By.name("senha")).sendKeys(senha);
 		driver.findElement(By.name("confirmaSenha")).sendKeys(confirmarSenha);
-		if(termo)
-			driver.findElement(By.name("termo")).click();
+		driver.findElement(By.name("cep")).sendKeys("87111220");
 	}
 	
 	public CadastrarPage nome(String nome){
@@ -78,12 +76,4 @@ public class CadastrarPage extends BasicPage{
 		this.confirmarSenha = confirmarSenha;
 		return this;
 	}
-	
-	public CadastrarPage termo(boolean aceita){
-		this.termo = aceita;
-		return this;
-	}
-	
-	
-	
 }
