@@ -51,7 +51,7 @@ public class FotoRepository {
 		
 		String base64 = null;
 		try {
-			File file = new File(getEnderecoCompleto(enderecoCompleto));
+			File file = new File(getEnderecoArquivo(enderecoCompleto));
 		    BufferedImage img = ImageIO.read(file);
 
 		    ByteArrayOutputStream bao = new ByteArrayOutputStream();
@@ -66,6 +66,12 @@ public class FotoRepository {
 			e.printStackTrace();
 		}
 		return base64;
+	}
+	
+	private String getEnderecoArquivo(String endereco) {
+		if(tipoImagem == TipoImagem.PNG)
+			return endereco + "." + tipoImagem.name();
+		return endereco;
 	}
 	
 	private String getEnderecoCompleto(String endereco) {
