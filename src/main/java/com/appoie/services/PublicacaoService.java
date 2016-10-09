@@ -79,4 +79,8 @@ public class PublicacaoService {
 		}
 		return dto;
 	}
+
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, List<String> command) {
+		return publicacaoQuery.getMarcadoresPorCategoria(cidadeId, command);
+	}
 }
