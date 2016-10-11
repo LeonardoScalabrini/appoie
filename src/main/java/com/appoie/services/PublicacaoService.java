@@ -1,6 +1,8 @@
 package com.appoie.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +84,9 @@ public class PublicacaoService {
 
 	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, List<String> command) {
 		return publicacaoQuery.getMarcadoresPorCategoria(cidadeId, command);
+	}
+
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Date dataInicio, Date dataFim) {
+		return publicacaoQuery.getMarcadoresPorData(cidadeId, dataInicio, dataFim);
 	}
 }

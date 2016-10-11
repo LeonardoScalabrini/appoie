@@ -2,6 +2,7 @@ package com.appoie.querys;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -84,6 +85,30 @@ public class PublicacaoQuery extends BasicQuery {
 
 		query.setParameter("cidadeId", cidadeId.getValue());
 		query.setParameter("valoresCategorias", categorias);
+		List<Object[]> publicacoes = query.getResultList();
+
+		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
+		for (Object[] publicacao : publicacoes) {
+
+			Categoria categoria = Categoria.valueOf(publicacao[3].toString().toUpperCase());
+			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
+
+			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
+					(Double) publicacao[2], categoria, qtdCurtidas.longValue()));
+		}
+		return commands;
+	}
+
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Date dataInicio, Date dataFim) {
+		java.sql.Date dataInicioTratada = new java.sql.Date(dataInicio.getTime());
+		java.sql.Date dataFimTratada = new java.sql.Date(dataFim.getTime());
+		Query query = em.createNativeQuery(
+				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
+						+ "p.cidade_Id = :cidadeId" + " and p.data_publicacao between :dataInicio and :dataFim");
+
+		query.setParameter("cidadeId", cidadeId.getValue());
+		query.setParameter("dataInicio", dataInicioTratada);
+		query.setParameter("dataFim", dataFimTratada);
 		List<Object[]> publicacoes = query.getResultList();
 
 		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();

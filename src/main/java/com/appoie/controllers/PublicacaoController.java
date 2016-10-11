@@ -1,5 +1,10 @@
 package com.appoie.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
@@ -70,11 +76,34 @@ public class PublicacaoController {
 		service.excluir(id);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/marcadores/filtro")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorFiltro(HttpSession session,
+	@RequestMapping(method = RequestMethod.GET, value = "/marcadores/categoria")
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorCategoria(HttpSession session,
 			@RequestHeader(value = "categorias") List<String> command) {
 		Sessao sessao = new Sessao(session);
 		return service.getMarcadoresPorCategoria(sessao.getCidadeId(), command);
 	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/marcadores/data")
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorData(HttpSession session,
+			@RequestHeader(value = "dataInicio") String dataInicio, @RequestHeader(value = "dataFim") String dataFim ) {
+		
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date dataInicioFormatada = null;
+		Date dataFimFormatada = null;
+		try {
+			dataInicioFormatada = (Date)formatter.parse(dataInicio);
+			dataFimFormatada = (Date)formatter.parse(dataFim);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Sessao sessao = new Sessao(session);
+		return service.getMarcadoresPorData(sessao.getCidadeId(), dataInicioFormatada, dataFimFormatada);
+	}
+	
+	
+	
 
 }
