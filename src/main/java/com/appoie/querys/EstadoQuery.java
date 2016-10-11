@@ -22,7 +22,7 @@ public class EstadoQuery extends BasicQuery{
 	}
 	
 	public Estado getEstado(String nomeEstado){
-		Query query = em.createNativeQuery("select e.id, e.nome"			
+		Query query = em.createNativeQuery("select e.id, e.nome "			
 									   	   + "from estado e where "
 									   	   + "e.nome = :nomeEstado", Estado.class);
 		
