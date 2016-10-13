@@ -15,20 +15,9 @@ public class Cidade extends BasicEntity<CidadeId> {
 
 	@AttributeOverride(name = "id", column = @Column(name = "estado_id") )
 	private EstadoId estadoId;
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-	private Cidade(){
-=======
 	private String nome;
-
 	private Cidade() {
->>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
-=======
-	private String nome;
 
-	private Cidade() {
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 		super(new CidadeId());
 	}
 
@@ -44,8 +33,7 @@ public class Cidade extends BasicEntity<CidadeId> {
 		return estadoId;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -72,15 +60,10 @@ public class Cidade extends BasicEntity<CidadeId> {
 	}
 	
 	
-=======
-=======
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 	public String getNome() {
 		return nome;
 	}
 
-<<<<<<< HEAD
->>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
-=======
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 }

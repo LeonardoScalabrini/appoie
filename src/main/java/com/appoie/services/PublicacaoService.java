@@ -6,13 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import com.appoie.commands.PublicacaoCommand;
-import com.appoie.commands.PublicacaoEditarCommand;
-import com.appoie.commands.PublicacaoRecuperarCommand;
-import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
-import com.appoie.exceptions.PublicacaoNaoEncontradaException;
-
 import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.dto.IconesDTO;
@@ -20,7 +13,6 @@ import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
-
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.models.Categoria;
@@ -29,11 +21,7 @@ import com.appoie.models.Publicacao;
 import com.appoie.querys.PublicacaoQuery;
 import com.appoie.repositorys.FotoPublicacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
-
-import com.appoie.utils.UsuarioLogado;
-
 import com.appoie.utils.Sessao;
-
 
 @Service
 public class PublicacaoService {
@@ -53,58 +41,23 @@ public class PublicacaoService {
 	@Autowired
 	private PublicacaoQuery publicacaoQuery;
 
-
-	public void salvar(PublicacaoCommand command, HttpSession session) throws NumeroFotosPublicacaoInvalido {
-
-		UsuarioLogado usuarioLogado = new UsuarioLogado(session);
-		CidadeId cidadeId = usuarioLogado.getCidadeId();
-		List<FotoPublicacao> fotos = new ArrayList<>();
-
-	
-		for (String fotoPublicacao : command.fotos) {
-			if(!fotoPublicacao.isEmpty()) 
-				fotos.add(new FotoPublicacao(fotoPublicacao));
-
-		}
-		Publicacao publicacao = new Publicacao(command, usuarioLogado.getId(), fotos, cidadeId);
-		for (FotoPublicacao fotoPublicacao : fotos) {
-			fotoPublicacao.setPublicacaoId(publicacao.getId());
-
-		}
-		publicacaoRepo.save(publicacao);
-		fotoPublicacaoRepo.save(fotos);
-
 	public void salvar(SalvarPublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
 		List<FotoPublicacao> fotosPublicacao = fotoPublicacaoService.salvar(command.fotos);
 		Publicacao publicacao = new Publicacao(command, sessao.getUsuarioId(), cidadeId, fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
 		publicacaoRepository.save(publicacao);
 		fotosPublicacaoRepository.save(fotosPublicacao);
-
 	}
 
 	public void excluir(PublicacaoId id) {
 		publicacaoRepository.delete(id);
 	}
 
-
-	public List<PublicacaoRecuperarCommand> recuperar() {
-		
-		List<Publicacao> publicacoes = publicacaoRepo.findAll();
-		List<PublicacaoRecuperarCommand> recuperarCommands = new ArrayList<>();
-		for (Publicacao publicacao : publicacoes) {
-			List<FotoPublicacao> fotos = new ArrayList<>();
-			List<String> base64Fotos = new ArrayList<>();
-		    fotos = publicacaoQuery.recuperarFotosPublicacao(publicacao.getId());
-			for (FotoPublicacao fotoPublicacao : fotos) {
-				base64Fotos.add(fotoPublicacao.getFoto());
-
 	public void editar(EditarPublicacaoCommand command) {
 		Publicacao publicacao = publicacaoRepository.findOne(new PublicacaoId(command.id));
 		publicacao.editar(command);
 		publicacaoRepository.save(publicacao);
 	}
-
 
 	public List<PublicacaoMarcacaoDTO> getMarcadores(CidadeId cidadeId) {
 		return publicacaoQuery.getMarcadores(cidadeId);

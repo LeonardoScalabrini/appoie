@@ -20,8 +20,6 @@ import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.PublicacaoId;
-import com.appoie.models.FotoPublicacao;
-import com.appoie.models.Publicacao;
 import com.appoie.services.PublicacaoService;
 import com.appoie.utils.Sessao;
 
@@ -39,19 +37,8 @@ public class PublicacaoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/editar")
-<<<<<<< HEAD
-	public void editar(@RequestBody PublicacaoEditarCommand command, HttpSession session) {
-		try {
-			service.editar(command, session);
-		} catch (PublicacaoNaoEncontradaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-=======
 	public void editar(@RequestBody EditarPublicacaoCommand command) {
 		service.editar(command);
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/marcadores")
@@ -60,29 +47,6 @@ public class PublicacaoController {
 		return service.getMarcadores(sessao.getCidadeId());
 	}
 
-<<<<<<< HEAD
-	@RequestMapping(method = RequestMethod.POST, value = "/salvar")
-	public void salvar(@RequestBody PublicacaoCommand command, HttpSession session) {
-		try {
-			service.salvar(command, session);
-		} catch (NumeroFotosPublicacaoInvalido e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	@RequestMapping(method = RequestMethod.DELETE, value = "/excluir")
-	public void deletar(@PathVariable PublicacaoId id, HttpSession session) {
-		try {
-			service.excluir(id, session);
-		} catch (PublicacaoNaoEncontradaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-=======
 	@RequestMapping(method = RequestMethod.GET, value = "detalhada/{id}")
 	public PublicacaoDetalhadaDTO recuperarDetalhada(@PathVariable PublicacaoId id) {
 		return service.getDetalhesPublicacao(id);
@@ -103,5 +67,4 @@ public class PublicacaoController {
 		service.excluir(id);
 	}
 	
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 }

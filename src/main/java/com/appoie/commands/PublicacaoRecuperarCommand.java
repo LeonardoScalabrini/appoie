@@ -18,7 +18,7 @@ public class PublicacaoRecuperarCommand {
 
 	public PublicacaoRecuperarCommand(Publicacao publicacao, List<String> fotos) {
 		// TODO Auto-generated constructor stub
-		this.id = publicacao.getId().getId();
+		this.id = publicacao.getId().getValue();
 		//this.usuarioId = publicacao.getUsuarioId().toString();
 		//this.cidadeId = publicacao.getCidadeId().toString();
 		this.titulo = publicacao.getTitulo();

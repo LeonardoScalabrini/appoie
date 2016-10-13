@@ -161,8 +161,8 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		int result = super.hashCode();
 		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
 		result = prime * result + ((cidadeId == null) ? 0 : cidadeId.hashCode());
-		result = prime * result + ((dataPublicação == null) ? 0 : dataPublicação.hashCode());
-		result = prime * result + ((descrição == null) ? 0 : descrição.hashCode());
+		result = prime * result + ((dataPublicacao == null) ? 0 : dataPublicacao.hashCode());
+		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
 		result = prime * result + ((usuarioId == null) ? 0 : usuarioId.hashCode());
 		return result;
@@ -184,15 +184,15 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 				return false;
 		} else if (!cidadeId.equals(other.cidadeId))
 			return false;
-		if (dataPublicação == null) {
-			if (other.dataPublicação != null)
+		if (dataPublicacao == null) {
+			if (other.dataPublicacao != null)
 				return false;
-		} else if (!dataPublicação.equals(other.dataPublicação))
+		} else if (!dataPublicacao.equals(other.dataPublicacao))
 			return false;
-		if (descrição == null) {
-			if (other.descrição != null)
+		if (descricao == null) {
+			if (other.descricao != null)
 				return false;
-		} else if (!descrição.equals(other.descrição))
+		} else if (!descricao.equals(other.descricao))
 			return false;
 		if (titulo == null) {
 			if (other.titulo != null)

@@ -22,7 +22,7 @@ public abstract class BasicId implements Serializable{
 		this.id = UUID.randomUUID().toString();
 	}
 
-	public final String getId() {
+	public final String getValue() {
 		return this.id;
 	}
 }
