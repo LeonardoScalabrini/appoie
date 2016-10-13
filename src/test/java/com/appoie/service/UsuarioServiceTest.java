@@ -1,4 +1,4 @@
-package com.appoie.service;
+/*package com.appoie.service;
 import static com.appoie.utils.ValidationString.isNullOrEmpty;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -229,7 +229,7 @@ public class UsuarioServiceTest {
   
 	
 	
-	
+	*/
 	
 	
 

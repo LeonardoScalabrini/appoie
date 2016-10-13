@@ -10,15 +10,15 @@ public class PublicacaoId extends BasicId{
 	}
 
 	public PublicacaoId() {
-<<<<<<< HEAD
+
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public String toString() {
 		return super.getId();
-=======
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
+
 		
 	}
 

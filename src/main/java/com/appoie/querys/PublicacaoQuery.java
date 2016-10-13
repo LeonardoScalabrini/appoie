@@ -21,7 +21,7 @@ import com.appoie.utils.FotoRepository;
 
 @Component
 public class PublicacaoQuery extends BasicQuery {
-<<<<<<< HEAD
+
 	public Boolean existe(PublicacaoId id) {
 		Query query = em.createNativeQuery("select count(1) from publicacao where id = :id");
 		query.setParameter("id", id.getId());
@@ -37,8 +37,8 @@ public class PublicacaoQuery extends BasicQuery {
 		/*List<FotoPublicacao> fotosPublicacao = (List<FotoPublicacao>)*/ 
 		return (List<FotoPublicacao>)query.getResultList();
 	}
-=======
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
+
 	
 	@Autowired
 	private FotoPublicacaoQuery fotoPublicacaoQuery;

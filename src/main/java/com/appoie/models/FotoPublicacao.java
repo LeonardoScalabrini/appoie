@@ -24,9 +24,9 @@ public class FotoPublicacao extends BasicEntity<FotoPublicacaoId> {
 	public String getEndereco(){
 		return endereco;
 	}
-<<<<<<< HEAD
+
 	
 
-=======
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
+
 }

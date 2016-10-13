@@ -29,16 +29,16 @@ public class UsuarioQuery extends BasicQuery {
 				                                       + "senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
 		String id = (String) query.getSingleResult();
 		return new UsuarioId(id);
-=======
+
 		return new UsuarioId(query.getSingleResult().toString()); 
->>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
-=======
+
+
 		return new UsuarioId(query.getSingleResult().toString()); 
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 	}
 	
 	public Usuario buscar(Email email){

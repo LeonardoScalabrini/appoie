@@ -11,14 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.commands.AlterarEmailCommand;
-import com.appoie.commands.AutenticarCommand;
-import com.appoie.commands.AlterarSenhaCommand;
-import com.appoie.ids.UsuarioId;
+import com.appoie.commands.LoginCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
-import com.appoie.dto.PerfilDTO;
+import com.appoie.ids.UsuarioId;
 import com.appoie.services.UsuarioService;
-import com.appoie.utils.Sessao;
 
 @CrossOrigin
 @RestController
@@ -33,16 +29,16 @@ public class UsuarioController {
 		usuarioService.cadastrar(command);
 	}
 	
-<<<<<<< HEAD
+
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody LoginCommand loginCommand, HttpSession session) throws Exception{
 		UsuarioId id = usuarioService.realizarLogin(loginCommand);
 		new UsuarioLogado(session).setId(id);
-=======
+
 	@RequestMapping(value="/auth", method=RequestMethod.POST)
 	public void realizarLogin(@RequestBody AutenticarCommand loginCommand, HttpSession session) throws Exception{
 		usuarioService.autenticar(loginCommand, session);
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)

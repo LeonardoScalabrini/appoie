@@ -153,8 +153,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return cidadeId;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 	@Override
 	public int hashCode() {
@@ -209,18 +208,17 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	}
 	
 	
-=======
 	public List<FotoPublicacaoId> getFotosId() {
 		return fotosId;
 	}
 	
->>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
 
-=======
+
+
 	public Double getLatitude() {
 		return latitude;
 	}
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 
 	public Double getLongitude() {
 		return longitude;

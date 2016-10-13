@@ -3,12 +3,12 @@ package com.appoie.models;
 import com.appoie.utils.FotoRepository;
 
 public enum Categoria {
-<<<<<<< HEAD
-	ILUMINACAO;
+
+	
 	
 
 	
-=======
+
 	
 	ARBORIZACAO, DEFESACIVIL, FUNDODEVALE, ILUMINACAO,
 	PAVIMENTACAO, SANEAMENTOBASICO, SEGURANCA, TERRENOBALDIO, 
@@ -25,5 +25,5 @@ public enum Categoria {
 	public String getMarcador(){
 		return repository.getBase64(getPatchMarcadores());
 	}
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 }

@@ -7,7 +7,7 @@ import com.appoie.ids.UsuarioId;
 @Entity
 public class FotoPerfil extends BasicEntity<UsuarioId>{
 	
-<<<<<<< HEAD
+
 	public byte[] foto;
 	
 	private FotoPerfil(){
@@ -43,7 +43,7 @@ public class FotoPerfil extends BasicEntity<UsuarioId>{
 	}
 	
 	
-=======
+
 	private String endereco;
 	
 	public FotoPerfil(UsuarioId id, String base64) {
@@ -53,5 +53,5 @@ public class FotoPerfil extends BasicEntity<UsuarioId>{
 	public String getEndereco(){
 		return endereco; 
 	}
->>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
+
 }
