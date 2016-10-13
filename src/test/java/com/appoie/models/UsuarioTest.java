@@ -28,8 +28,8 @@ public class UsuarioTest {
 		Usuario usuario = biulder.nome("teste").
 								  sobrenome("teste").
 								  dataDeNascimento(dataDeNascimento).
-								  email(new Email("teste@teste.com.br")).
-								  senha(new Senha("123456")).
+								  email("teste@teste.com.br").
+								  senha("123456").
 								  criar();
 
 		Assert.assertTrue(usuario.getNome().equals("teste"));
@@ -63,11 +63,6 @@ public class UsuarioTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarDataDeNascimentoNula() throws Exception {
 		usuario = biulder.dataDeNascimento(null).criar();
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveAceitarSexoNulo() throws Exception {
-		usuario = biulder.sexo(null).criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

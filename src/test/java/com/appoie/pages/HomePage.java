@@ -18,24 +18,24 @@ public class HomePage extends BasicPage{
 	
 	public void entrar(){
 		esperar();
-		driver.findElement(By.id("bs-example-navbar-collapse-1 entrar")).click();
+		driver.findElement(By.name("loginForm")).click();
 	}
 	
 	public CadastrarPage cadastrar(){
 		esperar();
-		driver.findElement(By.name("cadastrar")).click();
+		driver.findElement(By.name("cadastrar-se")).click();
 		return new CadastrarPage(driver);
 	}
 	
 	public void preencher(){
 		esperar();
-		driver.findElement(By.name("user")).sendKeys(email);
-		driver.findElement(By.name("pass")).sendKeys(senha);
+		driver.findElement(By.name("emailLogin")).sendKeys(email);
+		driver.findElement(By.name("senhaLogin")).sendKeys(senha);
 	}
 	
 	public void logar(){
 		esperar();
-		driver.findElement(By.name("user")).submit();
+		driver.findElement(By.name("botaoEntrar")).click();
 	}
 	
 	public HomePage email(String email){

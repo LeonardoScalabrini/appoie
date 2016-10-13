@@ -1,8 +1,5 @@
 package com.appoie.models;
 
-import static com.appoie.utils.ValidationObject.isNull;
-import static com.appoie.utils.ValidationString.isNullOrEmpty;
-
 import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
@@ -14,9 +11,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.commands.PerfilCommand;
+import com.appoie.dto.PerfilDTO;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
+
+import static com.appoie.utils.ValidationObject.*;
+
+import static com.appoie.utils.ValidationString.*;
 
 @Entity
 public class Usuario extends BasicEntity<UsuarioId>{
@@ -39,11 +40,11 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
 	private CidadeId cidadeId;
 	
-	
 	private Usuario() {
 		super(new UsuarioId());
 	}
 	
+<<<<<<< HEAD
 	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha, CidadeId cidadeId) throws Exception{
 		this();
 		setNome(nome);
@@ -57,13 +58,18 @@ public class Usuario extends BasicEntity<UsuarioId>{
 <<<<<<< HEAD
 =======
 	
+=======
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 	private void setCidadeId(CidadeId cidadeId) {
+		isNull(cidadeId);
 		this.cidadeId = cidadeId;
-		
 	}
+<<<<<<< HEAD
 >>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
+=======
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 
-	public Usuario(CadastrarCommand command) throws Exception{
+	public Usuario(CadastrarCommand command, CidadeId id) throws Exception{
 		this();
 		isNull(command);
 		setNome(command.nome);
@@ -72,7 +78,15 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setSexo(command.sexo); 
 		setEmail(new Email(command.email)); 
 		setSenha(new Senha(command.senha));
-		setCidadeId(command.getCidadeId());
+		setCidadeId(id);
+	}
+	
+	public void alterarPerfil(PerfilDTO perfilCommand) throws Exception {
+		isNull(perfilCommand);
+		setNome(perfilCommand.nome);
+		setSobrenome(perfilCommand.sobrenome);
+		setSexo(perfilCommand.sexo);
+		setDataDeNascimento(perfilCommand.dataDeNascimento);
 	}
 	
 	public void setNome(String nome) throws Exception{
@@ -131,64 +145,6 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	
 	public Senha getSenha(){
 		return senha;
-	}
-
-	public void alterarPerfil(PerfilCommand perfilCommand) throws Exception {
-		setNome(perfilCommand.nome);
-		setSobrenome(perfilCommand.sobrenome);
-		setSexo(perfilCommand.sexo);
-		setDataDeNascimento(perfilCommand.dataDeNascimento);
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((dataDeNascimento == null) ? 0 : dataDeNascimento.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		result = prime * result + ((sexo == null) ? 0 : sexo.hashCode());
-		result = prime * result + ((sobrenome == null) ? 0 : sobrenome.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (dataDeNascimento == null) {
-			if (other.dataDeNascimento != null)
-				return false;
-		} else
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		if (senha == null) {
-			if (other.senha != null)
-				return false;
-		} else if (!senha.equals(other.senha))
-			return false;
-		if (sexo != other.sexo)
-			return false;
-		if (sobrenome == null) {
-			if (other.sobrenome != null)
-				return false;
-		} else if (!sobrenome.equals(other.sobrenome))
-			return false;
-		return true;
 	}
 	
 }

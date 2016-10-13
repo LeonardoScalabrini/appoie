@@ -3,13 +3,11 @@ package com.appoie.models;
 import javax.persistence.Entity;
 
 import com.appoie.ids.UsuarioId;
-import static com.appoie.utils.ValidationObject.*;
-
-import java.util.Arrays;
 
 @Entity
 public class FotoPerfil extends BasicEntity<UsuarioId>{
 	
+<<<<<<< HEAD
 	public byte[] foto;
 	
 	private FotoPerfil(){
@@ -45,4 +43,15 @@ public class FotoPerfil extends BasicEntity<UsuarioId>{
 	}
 	
 	
+=======
+	private String endereco;
+	
+	public FotoPerfil(UsuarioId id, String base64) {
+		super(id);
+	}
+	
+	public String getEndereco(){
+		return endereco; 
+	}
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 }

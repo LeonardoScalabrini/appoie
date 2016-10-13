@@ -15,8 +15,6 @@ import com.appoie.AppoieApplication;
 import com.appoie.builders.UsuarioBuilder;
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
-import com.appoie.models.Email;
-import com.appoie.models.Senha;
 import com.appoie.models.Usuario;
 import com.appoie.pages.CadastrarPage;
 import com.appoie.pages.HomePage;
@@ -25,6 +23,9 @@ import com.appoie.repositorys.UsuarioRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppoieApplication.class)
 public class UsuarioControllerTest {
+	
+	private final String LOGIN_SENHA_INVALIDOS = "Login ou senha inválidos";
+	private final String CAMPOS_ERRADOS = "Informe os campos corretamente";
 	
 	@Autowired
 	private UsuarioRepository repository; 
@@ -63,7 +64,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.nome("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -72,7 +73,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.sobrenome("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -81,7 +82,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.nascimento("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -90,7 +91,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.sexo("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -99,7 +100,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.email("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -108,7 +109,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarEmail("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -117,7 +118,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarEmail("diferente@diferente.com.br");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -127,7 +128,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarEmail("emailInvalido");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -136,7 +137,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.senha("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -145,7 +146,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarSenha("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -154,7 +155,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarSenha("diferente");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
@@ -164,29 +165,20 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarSenha("12345");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
-	}
-	
-	@Test
-	public void nãoDeveCadastrarSemAceitarTermoDeUso(){
-		cadastrarPage = home.cadastrar();
-		cadastrarPage.termo(false);
-		cadastrarPage.preencher();
-		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
 	public void nãoDeveCadastrarComCamposVazios(){
 		cadastrarPage = home.cadastrar();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Preencha todos os campos corretamente!"));
+		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
 	@Test
 	public void nãoDeveCadastrarComEmailJaExistente() throws Exception{
 		String email = "teste@teste.com.br";
-		Usuario usuario = new UsuarioBuilder().email(new Email(email)).criar();
+		Usuario usuario = new UsuarioBuilder().email(email).criar();
 		repository.save(usuario);
 		
 		cadastrarPage = home.cadastrar();
@@ -201,7 +193,7 @@ public class UsuarioControllerTest {
 	public void deveRealizarLogin() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
 		String email = "teste@teste.com.br";
 		String senha = "123456";
-		Usuario usuario = new UsuarioBuilder().email(new Email(email)).senha(new Senha(senha)).criar();
+		Usuario usuario = new UsuarioBuilder().email(email).senha(senha).criar();
 		repository.save(usuario);
 		
 		home.email(email);
@@ -215,7 +207,7 @@ public class UsuarioControllerTest {
 	@Test
 	public void naoDeveRealizarLoginComCamposVazios(){
 		home.logar();
-		assertTrue(home.contem("Email e/ou senha inválidos!"));
+		assertTrue(home.contem(LOGIN_SENHA_INVALIDOS));
 	}
 	
 	@Test
@@ -223,7 +215,7 @@ public class UsuarioControllerTest {
 		home.email("teste@teste.com.br");
 		home.preencher();
 		home.logar();
-		assertTrue(home.contem("Email e/ou senha inválidos!"));
+		assertTrue(home.contem(LOGIN_SENHA_INVALIDOS));
 	}
 	
 	@Test
@@ -231,7 +223,7 @@ public class UsuarioControllerTest {
 		home.senha("123456");
 		home.preencher();
 		home.logar();
-		assertTrue(home.contem("Email e/ou senha inválidos!"));
+		assertTrue(home.contem(LOGIN_SENHA_INVALIDOS));
 	}
 
 }

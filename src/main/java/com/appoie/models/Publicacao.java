@@ -1,5 +1,8 @@
 package com.appoie.models;
 
+import static com.appoie.utils.ValidationObject.isNull;
+import static com.appoie.utils.ValidationString.isNullOrEmpty;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,139 +18,117 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.appoie.commands.PublicacaoCommand;
-import com.appoie.commands.PublicacaoEditarCommand;
-import com.appoie.exceptions.NumeroFotosPublicacaoInvalido;
+import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.EditarPublicacaoCommand;
+import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
-import com.appoie.utils.UsuarioLogado;
-
-import static com.appoie.utils.ValidationObject.*;
-
-import static com.appoie.utils.ValidationString.*;
 
 @Entity
 public class Publicacao extends BasicEntity<PublicacaoId> {
 
 	@AttributeOverride(name = "id", column = @Column(name = "usuario_id") )
 	private UsuarioId usuarioId;
+	
 	@AttributeOverride(name = "id", column = @Column(name = "cidade_id") )
 	private CidadeId cidadeId;
+	
 	private String titulo;
 	private String descricao;
+	
 	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
+	
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicacao = Calendar.getInstance();
-	private String localizacao;
 
 	@ElementCollection
 	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
-
 	private List<FotoPublicacaoId> fotosId = new ArrayList<>();
-
+	
+	private Long qtdApoiadores = 0L;
+	
+	private Double latitude;
+	private Double longitude;
+	
 	private Publicacao() {
 		super(new PublicacaoId());
 	}
 
-	public Publicacao(UsuarioId usuarioId, CidadeId cidadeId, String titulo, String descricao, Categoria categoria,
-			List<FotoPublicacaoId> fotosId) throws NumeroFotosPublicacaoInvalido {
+	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException{
 		this();
-		isNull(usuarioId);
-		isNull(cidadeId);
-		this.usuarioId = usuarioId;
-		this.cidadeId = cidadeId;
-		setTitulo(titulo);
-		setDescricao(descricao);
-		setCategoria(categoria);
-
-		if (fotosId.size() < 1 || fotosId.size() > 3) {
-
-			throw new NumeroFotosPublicacaoInvalido();
-
-		} else {
-			for (FotoPublicacaoId foto : fotosId) {
-				this.fotosId.add(foto);
-			}
-		}
-	}
-
-	public Publicacao(PublicacaoCommand command, UsuarioId usuarioId, List<FotoPublicacao> fotos, CidadeId cidadeId)
-			throws NumeroFotosPublicacaoInvalido {
-		this();
-		isNull(command);
-		this.usuarioId = usuarioId;
-		this.cidadeId = cidadeId;
-		this.titulo = command.titulo;
-		this.descricao = command.descricao;
-		this.categoria = command.categoria;
-		
-		//this.localizacao = command.coordenadasLocalizacao;
-		
-
-		if (fotos.size() < 1 || fotos.size() > 3) {
-
-			throw new NumeroFotosPublicacaoInvalido();
-
-		} else {
-			for (FotoPublicacao foto : fotos) {
-
-				this.fotosId.add(foto.getId());
-			}
-		}
-
-	}
-
-	public Publicacao(PublicacaoEditarCommand command, CidadeId cidadeId, Calendar dataPublicacao, UsuarioId usuarioId, List<FotoPublicacaoId> fotosId) {
-		super(command.id);
-		isNull(command);
 		setUsuarioId(usuarioId);
 		setCidadeId(cidadeId);
 		setTitulo(command.titulo);
 		setDescricao(command.descricao);
 		setCategoria(command.categoria);
-		setDataPublicacao(dataPublicacao);
-		setFotosId(fotosId);
-
+		setFotos(fotosId);
+		setLatitude(command.lat);
+		setLongitude(command.lng);
+		status = Status.ABERTO;
 	}
 
-	private void setFotosId(List<FotoPublicacaoId> fotosId) {
-		this.fotosId = fotosId;
-
+	public void editar(EditarPublicacaoCommand command) {
+		setTitulo(command.titulo);
+		setDescricao(command.descricao);
+		setCategoria(command.categoria);
+	}
+	
+	public void apoiar(){
+		this.qtdApoiadores++;
 	}
 
-	private void setDataPublicacao(Calendar dataPublicacao) {
-		this.dataPublicacao = dataPublicacao;
-
+	public void fechar(){
+		status = Status.FECHADO;
 	}
-
+	
+	private void setFotos(List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException {
+		if (fotosId.size() < 1 || fotosId.size() > 3)
+			throw new QuantidadeFotosPublicacaoException();
+		
+			this.fotosId = fotosId;
+	}
+	
 	private void setCidadeId(CidadeId cidadeId) {
+		isNull(cidadeId);
 		this.cidadeId = cidadeId;
-
 	}
 
 	private void setUsuarioId(UsuarioId usuarioId) {
+		isNull(usuarioId);
 		this.usuarioId = usuarioId;
-
 	}
 
-	public void setTitulo(String titulo) {
+	private void setTitulo(String titulo) {
 		isNullOrEmpty(titulo);
 		this.titulo = titulo;
 	}
 
-	public void setDescricao(String descricao) {
+	private void setDescricao(String descricao) {
 		isNullOrEmpty(descricao);
 		this.descricao = descricao;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	private void setCategoria(Categoria categoria) {
 		isNull(categoria);
 		this.categoria = categoria;
 	}
+	
+	private void setLongitude(Double lng) {
+		isNull(lng);
+		this.longitude = lng;
+	}
 
+	private void setLatitude(Double lat) {
+		isNull(lat);
+		this.latitude = lat;
+	}
+	
 	public String getTitulo() {
 		return titulo;
 	}
@@ -172,6 +153,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return cidadeId;
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 	@Override
@@ -234,5 +216,13 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	
 >>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
 
+=======
+	public Double getLatitude() {
+		return latitude;
+	}
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 
+	public Double getLongitude() {
+		return longitude;
+	}
 }

@@ -8,12 +8,14 @@ import com.appoie.ids.CidadeId;
 import com.appoie.ids.EstadoId;
 
 import static com.appoie.utils.ValidationObject.*;
+import static com.appoie.utils.ValidationString.*;
 
 @Entity
 public class Cidade extends BasicEntity<CidadeId> {
 
 	@AttributeOverride(name = "id", column = @Column(name = "estado_id") )
 	private EstadoId estadoId;
+<<<<<<< HEAD
 <<<<<<< HEAD
 	
 	private Cidade(){
@@ -22,12 +24,18 @@ public class Cidade extends BasicEntity<CidadeId> {
 
 	private Cidade() {
 >>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
+=======
+	private String nome;
+
+	private Cidade() {
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 		super(new CidadeId());
 	}
 
 	public Cidade(EstadoId estadoId, String nome) {
 		this();
 		isNull(estadoId);
+		isNullOrEmpty(nome);
 		this.estadoId = estadoId;
 		this.nome = nome;
 	}
@@ -36,6 +44,7 @@ public class Cidade extends BasicEntity<CidadeId> {
 		return estadoId;
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	@Override
 	public int hashCode() {
@@ -64,9 +73,14 @@ public class Cidade extends BasicEntity<CidadeId> {
 	
 	
 =======
+=======
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 	public String getNome() {
 		return nome;
 	}
 
+<<<<<<< HEAD
 >>>>>>> c689ad998e6d1dda6c9864ec9d71c77ecc5d9757
+=======
+>>>>>>> 04cc248f05638bfe5ce43b6d49990d9e0d208f4f
 }

@@ -2,11 +2,10 @@ package com.appoie.builders;
 
 import java.util.Calendar;
 
+import com.appoie.commands.CadastrarCommand;
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.ids.CidadeId;
-import com.appoie.models.Email;
-import com.appoie.models.Senha;
 import com.appoie.models.Sexo;
 import com.appoie.models.Usuario;
 
@@ -15,24 +14,30 @@ public class UsuarioBuilder {
 	private String nome;
 	private String sobrenome;
 	private Calendar dataDeNascimento;
-	private Sexo sexo;
-	private Email email;
-	private Senha senha;
+	private String sexo;
+	private String email;
+	private String senha;
 	private CidadeId cidadeId;
+	private String cidade;
+	private String cep;
+	private String confirmarEmail;
+	private String estado;
+	private String confirmarSenha;
 	
 	public UsuarioBuilder() throws EmailFormatoException, SenhaTamanhoMinimoException {
 		nome = "teste"; 
 		sobrenome = "teste";
 		dataDeNascimento = Calendar.getInstance();
-		sexo = Sexo.MASCULINO;
-		email = new Email("teste@teste.com.br");
-		senha = new Senha("123456");
+		sexo = Sexo.MASCULINO.toString();
+		email = "teste@teste.com.br";
+		senha = "123456";
 		cidadeId = new CidadeId();
 		
 	}
 	
 	public Usuario criar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
-		return new Usuario(nome, sobrenome, dataDeNascimento, sexo, email, senha, cidadeId);
+		CadastrarCommand cadastrarCommand = new CadastrarCommand(nome, sobrenome, sexo, cep, cidade, estado, dataDeNascimento, email, confirmarEmail, senha, confirmarSenha);
+		return new Usuario(cadastrarCommand, cidadeId);
 	}
 	
 	public UsuarioBuilder nome(String nome){
@@ -50,17 +55,17 @@ public class UsuarioBuilder {
 		return this;
 	}
 	
-	public UsuarioBuilder sexo(Sexo sexo){
+	public UsuarioBuilder sexo(String sexo){
 		this.sexo = sexo;
 		return this;
 	}
 	
-	public UsuarioBuilder email(Email email){
+	public UsuarioBuilder email(String email){
 		this.email = email;
 		return this;
 	}
 	
-	public UsuarioBuilder senha(Senha senha){
+	public UsuarioBuilder senha(String senha){
 		this.senha = senha;
 		return this;
 	}
