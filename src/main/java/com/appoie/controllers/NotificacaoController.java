@@ -1,0 +1,14 @@
+package com.appoie.controllers;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class NotificacaoController {
+
+	@RequestMapping(value="notificar", method=RequestMethod.GET)
+	public void notificar(){
+		System.out.println("chamou");
+	}
+}
