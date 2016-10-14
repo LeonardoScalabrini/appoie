@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
-
+import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
@@ -76,34 +76,24 @@ public class PublicacaoController {
 		service.excluir(id);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/marcadores/categoria")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorCategoria(HttpSession session,
-			@RequestHeader(value = "categorias") List<String> command) {
+	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/categoria")
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorCategoria(HttpSession session, @RequestBody FiltroCommand command) {
 		Sessao sessao = new Sessao(session);
 		return service.getMarcadoresPorCategoria(sessao.getCidadeId(), command);
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/marcadores/data")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorData(HttpSession session,
-			@RequestHeader(value = "dataInicio") String dataInicio, @RequestHeader(value = "dataFim") String dataFim ) {
-		
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date dataInicioFormatada = null;
-		Date dataFimFormatada = null;
-		try {
-			dataInicioFormatada = (Date)formatter.parse(dataInicio);
-			dataFimFormatada = (Date)formatter.parse(dataFim);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/data")
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorData(HttpSession session, @RequestBody FiltroCommand command) {
 		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorData(sessao.getCidadeId(), dataInicioFormatada, dataFimFormatada);
+		return service.getMarcadoresPorData(sessao.getCidadeId(), command.dataInicio, command.dataFim);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/tipo")
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorTipo(HttpSession session, @RequestBody FiltroCommand command) {
+		Sessao sessao = new Sessao(session);
+		return service.getMarcadoresPorTipo(sessao.getCidadeId(), command);
 	}
 	
 	
-	
-
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
+import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
@@ -82,11 +83,15 @@ public class PublicacaoService {
 		return dto;
 	}
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, List<String> command) {
-		return publicacaoQuery.getMarcadoresPorCategoria(cidadeId, command);
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, FiltroCommand command) {
+		return publicacaoQuery.getMarcadoresPorCategoria(cidadeId, command.categorias);
 	}
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Date dataInicio, Date dataFim) {
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Calendar dataInicio, Calendar dataFim) {
 		return publicacaoQuery.getMarcadoresPorData(cidadeId, dataInicio, dataFim);
+	}
+
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
+		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, command);
 	}
 }
