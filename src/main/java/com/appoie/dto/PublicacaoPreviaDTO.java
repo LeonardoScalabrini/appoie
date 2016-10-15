@@ -9,12 +9,15 @@ public class PublicacaoPreviaDTO {
 	public final Long qtdApoiadores;
 	public final Status status;
 	public final String foto;
+	public final boolean publicacaoApoiada;
 
-	public PublicacaoPreviaDTO(String idPublicacao, String titulo, long qtdApoiadores, Status status, String foto) {
+	public PublicacaoPreviaDTO(String idPublicacao, String titulo, long qtdApoiadores, Status status, String foto,
+			String publicacaoApoiada) {
 		this.idPublicacao = idPublicacao;
 		this.titulo = titulo;
 		this.qtdApoiadores = qtdApoiadores;
 		this.status = status;
 		this.foto = foto;
+		this.publicacaoApoiada = publicacaoApoiada.equalsIgnoreCase("s");
 	}
 }

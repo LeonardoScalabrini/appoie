@@ -17,6 +17,7 @@ import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
+import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
 import com.appoie.models.Status;
 import com.appoie.models.TipoImagem;
@@ -52,17 +53,20 @@ public class PublicacaoQuery extends BasicQuery {
 		return commands;
 	}
 
-	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) {
-		Query query = em.createNativeQuery("(select p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco"
-				+ " from publicacao p, foto_publicacao f " + "where p.id = :id and p.id = f.publicacao_id) limit 1");
+	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, UsuarioId usuarioId) {
+		Query query = em.createNativeQuery(
+				"select  p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END "
+						+ "from publicacao p left join apoiador a on p.id = a.publicacao_id inner join foto_publicacao f on (p.id = f.publicacao_id)"
+						+ " where p.id = :id and p.id = f.publicacao_id limit 1");
 		query.setParameter("id", id.getValue());
+		query.setParameter("idUsuario", usuarioId.getValue());
 
 		Object[] publicacao = (Object[]) query.getSingleResult();
 
 		BigInteger qtdApoiadores = (BigInteger) publicacao[2];
 
 		return new PublicacaoPreviaDTO(publicacao[0].toString(), publicacao[1].toString(), qtdApoiadores.longValue(),
-				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()));
+				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()), publicacao[5].toString());
 
 	}
 
@@ -125,37 +129,35 @@ public class PublicacaoQuery extends BasicQuery {
 
 	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
 		Query query;
-		
-		if(command.idUsuario != null && command.categorias != null) {
-			
-			query = em.createNativeQuery(
-				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-						+ "(p.cidade_Id = :cidadeId)" + " and (p.status in (:status) and p.usuario_id = :idUsuario)");
-			
+
+		if (command.idUsuario != null && command.categorias != null) {
+
+			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+					+ "p.qtd_apoiadores from publicacao p where " + "(p.cidade_Id = :cidadeId)"
+					+ " and (p.status in (:status) and p.usuario_id = :idUsuario)");
+
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("status", command.situacoes);
 			query.setParameter("idUsuario", command.idUsuario);
-		}
-		else if(command.idUsuario != null && command.categorias == null) {
-			
+		} else if (command.idUsuario != null && command.categorias == null) {
+
 			query = em.createNativeQuery(
-				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-						+ "(p.cidade_Id = :cidadeId)" + " and (p.usuario_id = :idUsuario)");
-			
+					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
+							+ "(p.cidade_Id = :cidadeId)" + " and (p.usuario_id = :idUsuario)");
+
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("idUsuario", command.idUsuario);
-		}
-		else {
-			
+		} else {
+
 			query = em.createNativeQuery(
 					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
 							+ "p.cidade_Id = :cidadeId" + " and p.status in (:status) ");
-				
-				query.setParameter("cidadeId", cidadeId.getValue());
-				query.setParameter("status", command.situacoes);
-			
+
+			query.setParameter("cidadeId", cidadeId.getValue());
+			query.setParameter("status", command.situacoes);
+
 		}
-		
+
 		List<Object[]> publicacoes = query.getResultList();
 
 		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
@@ -169,5 +171,6 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		return commands;
 	}
+
 
 }

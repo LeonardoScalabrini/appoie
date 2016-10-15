@@ -160,4 +160,14 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	public Double getLongitude() {
 		return longitude;
 	}
+
+	public Long getQtdApoiadores() {
+		return qtdApoiadores;
+	}
+
+	public void setQtdApoiadores() {
+		this.qtdApoiadores++;
+	}
+	
+	
 }

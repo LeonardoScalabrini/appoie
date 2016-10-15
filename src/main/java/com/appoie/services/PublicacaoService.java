@@ -2,13 +2,15 @@ package com.appoie.services;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.ApoiarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
@@ -18,10 +20,13 @@ import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
+import com.appoie.ids.UsuarioId;
+import com.appoie.models.Apoiador;
 import com.appoie.models.Categoria;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
 import com.appoie.querys.PublicacaoQuery;
+import com.appoie.repositorys.ApoiadorRepository;
 import com.appoie.repositorys.FotoPublicacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
 import com.appoie.utils.Sessao;
@@ -34,6 +39,9 @@ public class PublicacaoService {
 	
 	@Autowired
 	private FotoPublicacaoRepository fotosPublicacaoRepository;
+	
+	@Autowired
+	private ApoiadorRepository apoiadorRepository;
 	
 	@Autowired
 	private FotoPublicacaoService fotoPublicacaoService;
@@ -66,8 +74,9 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadores(cidadeId);
 	}
 
-	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) {
-		return publicacaoQuery.getPreviaPublicacao(id);
+	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, HttpSession session) {
+		Sessao sessao = new Sessao(session);
+		return publicacaoQuery.getPreviaPublicacao(id, sessao.getUsuarioId());
 	}
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
@@ -94,4 +103,13 @@ public class PublicacaoService {
 	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
 		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, command);
 	}
+
+	public void apoiarPublicacao(ApoiarPublicacaoCommand command) {
+		Apoiador apoiador = new Apoiador(new PublicacaoId(command.idPublicacao), new UsuarioId(command.idApoiador));
+		Publicacao publicacao = publicacaoRepository.findOne(new PublicacaoId(command.idPublicacao));
+		publicacao.setQtdApoiadores();
+		apoiadorRepository.save(apoiador);
+		publicacaoRepository.save(publicacao);
+	}
+
 }
