@@ -95,8 +95,6 @@ public class PublicacaoController {
 	@RequestMapping(method = RequestMethod.POST, value = "/apoiar")
 	public void apoiarPublicacao(@RequestBody ApoiarPublicacaoCommand command) {
 		service.apoiarPublicacao(command);
-
 	}
-	
-	
+
 }
