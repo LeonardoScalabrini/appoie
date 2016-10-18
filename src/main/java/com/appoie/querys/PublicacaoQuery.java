@@ -3,7 +3,6 @@ package com.appoie.querys;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -22,7 +21,6 @@ import com.appoie.models.Categoria;
 import com.appoie.models.Status;
 import com.appoie.models.TipoImagem;
 import com.appoie.utils.FotoRepository;
-import com.sun.jna.StringArray;
 
 @Component
 public class PublicacaoQuery extends BasicQuery {
@@ -55,7 +53,7 @@ public class PublicacaoQuery extends BasicQuery {
 
 	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, UsuarioId usuarioId) {
 		Query query = em.createNativeQuery(
-				"select  p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END "
+				"select  p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, a.id as idApoiador "
 						+ "from publicacao p left join apoiador a on p.id = a.publicacao_id inner join foto_publicacao f on (p.id = f.publicacao_id)"
 						+ " where p.id = :id and p.id = f.publicacao_id limit 1");
 		query.setParameter("id", id.getValue());
@@ -66,7 +64,7 @@ public class PublicacaoQuery extends BasicQuery {
 		BigInteger qtdApoiadores = (BigInteger) publicacao[2];
 
 		return new PublicacaoPreviaDTO(publicacao[0].toString(), publicacao[1].toString(), qtdApoiadores.longValue(),
-				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()), publicacao[5].toString());
+				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()), publicacao[5].toString(), publicacao[6]);
 
 	}
 
@@ -83,7 +81,8 @@ public class PublicacaoQuery extends BasicQuery {
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id));
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, List<String> categorias) {
 		Query query = em.createNativeQuery(
 				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
@@ -91,6 +90,7 @@ public class PublicacaoQuery extends BasicQuery {
 
 		query.setParameter("cidadeId", cidadeId.getValue());
 		query.setParameter("valoresCategorias", categorias);
+		
 		List<Object[]> publicacoes = query.getResultList();
 
 		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
@@ -105,6 +105,7 @@ public class PublicacaoQuery extends BasicQuery {
 		return commands;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Calendar dataInicio, Calendar dataFim) {
 		Query query = em.createNativeQuery(
 				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
@@ -113,6 +114,7 @@ public class PublicacaoQuery extends BasicQuery {
 		query.setParameter("cidadeId", cidadeId.getValue());
 		query.setParameter("dataInicio", dataInicio);
 		query.setParameter("dataFim", dataFim);
+
 		List<Object[]> publicacoes = query.getResultList();
 
 		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
@@ -126,7 +128,8 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		return commands;
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
 		Query query;
 
@@ -171,6 +174,5 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		return commands;
 	}
-
 
 }

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
-import com.appoie.commands.ApoiarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
@@ -21,8 +21,8 @@ import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
+import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.PublicacaoId;
-import com.appoie.ids.UsuarioId;
 import com.appoie.services.PublicacaoService;
 import com.appoie.utils.Sessao;
 
@@ -92,9 +92,17 @@ public class PublicacaoController {
 		return service.getMarcadoresPorTipo(sessao.getCidadeId(), command);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/apoiar")
-	public void apoiarPublicacao(@RequestBody ApoiarPublicacaoCommand command) {
-		service.apoiarPublicacao(command);
+	@RequestMapping(method = RequestMethod.POST, value = "/apoiar/{id}")
+	@ResponseBody
+	public ApoiadorId apoiar(@PathVariable PublicacaoId id, HttpSession session) {
+		
+		Sessao sessao = new Sessao(session);
+		return service.apoiar(id, sessao.getUsuarioId());
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/desapoiar/{id}")
+	public void desapoiar(@PathVariable ApoiadorId id) {
+		service.desapoiar(id);
 	}
 
 }

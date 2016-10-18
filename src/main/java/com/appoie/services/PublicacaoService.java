@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
-import com.appoie.commands.ApoiarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
@@ -18,6 +17,7 @@ import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
+import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
@@ -104,12 +104,18 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, command);
 	}
 
-	public void apoiarPublicacao(ApoiarPublicacaoCommand command) {
-		Apoiador apoiador = new Apoiador(new PublicacaoId(command.idPublicacao), new UsuarioId(command.idApoiador));
-		Publicacao publicacao = publicacaoRepository.findOne(new PublicacaoId(command.idPublicacao));
-		publicacao.setQtdApoiadores();
+	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {
+		Apoiador apoiador = new Apoiador(publicacaoId, usuarioId);
+		Publicacao p = publicacaoRepository.findOne(publicacaoId);
+		p.apoiar();
 		apoiadorRepository.save(apoiador);
-		publicacaoRepository.save(publicacao);
+		publicacaoRepository.save(p);
+		return apoiador.getId();
+	}
+
+	public void desapoiar(ApoiadorId id) {
+		Apoiador a = apoiadorRepository.findOne(id);
+		apoiadorRepository.delete(a);
 	}
 
 }
