@@ -18,6 +18,7 @@ import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
+import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
@@ -91,7 +92,10 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadoresPorData(cidadeId, dataInicio, dataFim);
 	}
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
-		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, command);
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId usuarioId, FiltroCommand command) {
+		if(!command.filtrarMinhasPublicacoes) {
+			usuarioId = null;
+		}
+		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, usuarioId, command);
 	}
 }

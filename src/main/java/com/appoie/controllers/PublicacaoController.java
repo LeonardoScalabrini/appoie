@@ -91,8 +91,9 @@ public class PublicacaoController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/tipo")
 	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorTipo(HttpSession session, @RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorTipo(sessao.getCidadeId(), command);
+		Sessao sessao = new Sessao(session);		
+		return service.getMarcadoresPorTipo(sessao.getCidadeId(), sessao.getUsuarioId(), command);
+			
 	}
 	
 	

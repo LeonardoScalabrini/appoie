@@ -17,6 +17,7 @@ import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
+import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
 import com.appoie.models.Status;
 import com.appoie.models.TipoImagem;
@@ -123,10 +124,10 @@ public class PublicacaoQuery extends BasicQuery {
 		return commands;
 	}
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId idUsuario, FiltroCommand command) {
 		Query query;
 		
-		if(command.idUsuario != null && command.categorias != null) {
+		if(idUsuario != null && command.categorias != null) {
 			
 			query = em.createNativeQuery(
 				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
@@ -134,16 +135,16 @@ public class PublicacaoQuery extends BasicQuery {
 			
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("status", command.situacoes);
-			query.setParameter("idUsuario", command.idUsuario);
+			query.setParameter("idUsuario", idUsuario.getValue());
 		}
-		else if(command.idUsuario != null && command.categorias == null) {
+		else if(idUsuario != null && command.categorias == null) {
 			
 			query = em.createNativeQuery(
 				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
 						+ "(p.cidade_Id = :cidadeId)" + " and (p.usuario_id = :idUsuario)");
 			
 			query.setParameter("cidadeId", cidadeId.getValue());
-			query.setParameter("idUsuario", command.idUsuario);
+			query.setParameter("idUsuario", idUsuario.getValue());
 		}
 		else {
 			
