@@ -86,10 +86,10 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/tipo")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorTipo(HttpSession session,
-			@RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorTipo(sessao.getCidadeId(), command);
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorTipo(HttpSession session, @RequestBody FiltroCommand command) {
+		Sessao sessao = new Sessao(session);		
+		return service.getMarcadoresPorTipo(sessao.getCidadeId(), sessao.getUsuarioId(), command);
+
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/apoiar/{id}")

@@ -128,30 +128,33 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		return commands;
 	}
+
 	
 	@SuppressWarnings("unchecked")
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId idUsuario, FiltroCommand command) {
 		Query query;
-
-		if (command.idUsuario != null && command.categorias != null) {
-
-			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-					+ "p.qtd_apoiadores from publicacao p where " + "(p.cidade_Id = :cidadeId)"
-					+ " and (p.status in (:status) and p.usuario_id = :idUsuario)");
-
+		
+		if(idUsuario != null && command.categorias != null) {
+			
+			query = em.createNativeQuery(
+				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
+						+ "(p.cidade_Id = :cidadeId)" + " and (p.status in (:status) and p.usuario_id = :idUsuario)");
+			
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("status", command.situacoes);
-			query.setParameter("idUsuario", command.idUsuario);
-		} else if (command.idUsuario != null && command.categorias == null) {
-
+			query.setParameter("idUsuario", idUsuario.getValue());
+		}
+		else if(idUsuario != null && command.categorias == null) {
+			
 			query = em.createNativeQuery(
 					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
 							+ "(p.cidade_Id = :cidadeId)" + " and (p.usuario_id = :idUsuario)");
 
 			query.setParameter("cidadeId", cidadeId.getValue());
-			query.setParameter("idUsuario", command.idUsuario);
-		} else {
-
+			query.setParameter("idUsuario", idUsuario.getValue());
+		}
+		else {
+			
 			query = em.createNativeQuery(
 					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
 							+ "p.cidade_Id = :cidadeId" + " and p.status in (:status) ");

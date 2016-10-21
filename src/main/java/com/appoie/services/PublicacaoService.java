@@ -100,8 +100,11 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadoresPorData(cidadeId, dataInicio, dataFim);
 	}
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, FiltroCommand command) {
-		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, command);
+	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId usuarioId, FiltroCommand command) {
+		if(!command.filtrarMinhasPublicacoes) {
+			usuarioId = null;
+		}
+		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, usuarioId, command);
 	}
 
 	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {
