@@ -41,4 +41,6 @@ public class Sessao {
 	public void setCidadeId(CidadeId id) {
 		session.setAttribute(CIDADE_ATUAL, id);
 	}
+
+	
 }

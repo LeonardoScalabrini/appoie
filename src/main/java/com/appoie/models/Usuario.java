@@ -44,6 +44,10 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		super(new UsuarioId());
 	}
 	
+	public Usuario(UsuarioId usuario){		
+		super(usuario);
+	}
+	
 
 	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha, CidadeId cidadeId) throws Exception{
 		this();
@@ -56,7 +60,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setCidadeId(cidadeId);
 	}
 
-	private void setCidadeId(CidadeId cidadeId) {
+	public void setCidadeId(CidadeId cidadeId) {
 		isNull(cidadeId);
 		this.cidadeId = cidadeId;
 	}
