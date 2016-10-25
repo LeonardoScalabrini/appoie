@@ -24,16 +24,6 @@ public class UsuarioFacebookQuery extends BasicQuery {
 		return new CidadeId(query.getSingleResult().toString());
 		
 	}
-	/*public UsuarioFacebookId buscarUsuarioId(Email email){
-		Query query = em.createNativeQuery("select id from usuario_facebook where email = :email");
-		query.setParameter("email", email.getValue());		
-		return new UsuarioFacebookId(query.getSingleResult().toString()); 
-	}
 	
-	/*public Usuario buscar(Email email){
-		Query query =  em.createNativeQuery("select * from usuario_facebook where email = :email", UsuarioFacebook.class);
-		query.setParameter("email", email.getValue());
-		return (Usuario) query.getSingleResult();
-	}*/
 	
 }
