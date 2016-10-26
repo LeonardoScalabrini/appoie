@@ -120,7 +120,7 @@ public class UsuarioFacebook extends BasicEntity<UsuarioId> {
 			this.foto = foto;
 		}
 		public Calendar formatarData() throws ParseException{
-			SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(sdf.parse(this.dataDeNascimento));
 			return calendar;

@@ -90,9 +90,9 @@ public class UsuarioFacebookService {
 		usuario.setEmail(usuarioFacebook.getEmail());
 		usuario.setSenha(senha);
 		usuario.setCidadeId(cidadeId);
-		usuarioRepository.save(usuario);
-		FotoPerfil foto = new FotoPerfil(usuario.getId(), usuarioFacebook.getFoto());
+		FotoPerfil foto = new FotoPerfil(usuarioFacebook.getId(), usuarioFacebook.getFoto());
 		fotoRepository.save(foto);
+		usuarioRepository.save(usuario);		
 		cidadeId = cidadeService.getCidadeIdUsuario(usuarioId);
 		Sessao sessao = new Sessao(session);
 		sessao.setUsuarioId(usuarioId);
