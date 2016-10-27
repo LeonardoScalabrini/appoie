@@ -22,7 +22,7 @@ public class FotoPerfil extends BasicEntity<FotoPerfilId> {
 
 	public FotoPerfil() {
 		super(new FotoPerfilId());
-		super.setId(new FotoPerfilId());
+		
 	}
 
 	public String getEndereco() {

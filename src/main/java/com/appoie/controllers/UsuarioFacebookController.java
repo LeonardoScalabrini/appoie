@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appoie.commands.AutenticarCommand;
-import com.appoie.commands.AutenticarUsuarioFacebookCommand;
 import com.appoie.commands.SalvarUsuarioFacebookCommand;
 import com.appoie.services.UsuarioFacebookService;
 
@@ -24,8 +22,5 @@ public class UsuarioFacebookController {
 		serviceFacebook.salvar(command,session);
 	}
 	
-	/*@RequestMapping(value="/authFacebook", method=RequestMethod.POST)
-	public void realizarLogin(@RequestBody AutenticarUsuarioFacebookCommand loginFacebookCommand, HttpSession session) throws Exception{
-		serviceFacebook.autenticarUsuarioFacebook(loginFacebookCommand, session);
-	}*/
+	
 }
