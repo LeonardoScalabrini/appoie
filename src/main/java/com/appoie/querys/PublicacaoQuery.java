@@ -16,6 +16,7 @@ import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
+import com.appoie.exceptions.FiltroStatusException;
 import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
@@ -86,10 +87,18 @@ public class PublicacaoQuery extends BasicQuery {
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id));
 	}
 
+	public boolean verificaListaSituacoes(List<String> lista) {
+		for(int i = 0; i < lista.size(); i++) {
+			if(lista.get(i).equalsIgnoreCase("aberto") || lista.get(i).equalsIgnoreCase("fechado"))
+				return true;
+		}
+		return false;
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(CidadeId cidadeId, UsuarioId usuarioId,
-			FiltroCommand command) throws FiltroCategoriaPublicacaoException, FiltroTipoPublicacaoException {
+			FiltroCommand command) throws FiltroCategoriaPublicacaoException, FiltroTipoPublicacaoException, FiltroStatusException {
 
 		Query query = null;
 		boolean filtroPorData = true;
@@ -99,6 +108,9 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		if (!command.filtrarMinhasPublicacoes) {
 			minhasPublicacoes = false;
+		}
+		if(verificaListaSituacoes(command.situacoes)) {
+			throw new FiltroStatusException();
 		}
 
 		if (command.categorias.size() == 0) {
@@ -141,14 +153,11 @@ public class PublicacaoQuery extends BasicQuery {
 			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
 					+ "p.qtd_apoiadores from publicacao p where " + "("
 							+ "(p.cidade_Id = :cidadeId)"
-					+ " and (p.data_publicacao between :dataInicio and :dataFim)  "
 					+ "and (p.status in (:status)) "
 					+ "and (p.categoria in (:valoresCategorias))"
 					+ ")");
 
 			query.setParameter("cidadeId", cidadeId.getValue());
-			query.setParameter("dataInicio", command.dataInicio);
-			query.setParameter("dataFim", command.dataFim);
 			query.setParameter("status", command.situacoes);
 			query.setParameter("valoresCategorias", command.categorias);
 		}
