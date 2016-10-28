@@ -109,7 +109,7 @@ public class PublicacaoQuery extends BasicQuery {
 		if (!command.filtrarMinhasPublicacoes) {
 			minhasPublicacoes = false;
 		}
-		if(verificaListaSituacoes(command.situacoes)) {
+		if(!verificaListaSituacoes(command.situacoes)) {
 			throw new FiltroStatusException();
 		}
 

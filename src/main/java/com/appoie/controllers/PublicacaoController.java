@@ -74,7 +74,6 @@ public class PublicacaoController {
 	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/filtrar")
 	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresFiltrados(HttpSession session,
 			@RequestBody FiltroCommand command) {
-		System.out.println(command.filtrarMinhasPublicacoes);
 		Sessao sessao = new Sessao(session);
 		return service.getMarcadoresFiltrados(sessao.getCidadeId(), sessao.getUsuarioId(), command);
 	}

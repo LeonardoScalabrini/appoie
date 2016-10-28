@@ -17,6 +17,7 @@ import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
+import com.appoie.exceptions.FiltroStatusException;
 import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.ApoiadorId;
@@ -100,7 +101,7 @@ public class PublicacaoService {
 		}
 		try {
 			return publicacaoQuery.getMarcadoresFiltrados(cidadeId, usuarioId, command);
-		} catch (FiltroCategoriaPublicacaoException | FiltroTipoPublicacaoException e) {
+		} catch (FiltroCategoriaPublicacaoException | FiltroTipoPublicacaoException | FiltroStatusException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
