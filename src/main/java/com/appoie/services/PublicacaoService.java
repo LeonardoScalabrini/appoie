@@ -16,6 +16,8 @@ import com.appoie.dto.IconesDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
+import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
+import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.CidadeId;
@@ -90,21 +92,19 @@ public class PublicacaoService {
 			dto.add(new IconesDTO(categoria));
 		}
 		return dto;
-	}
+	}	
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, FiltroCommand command) {
-		return publicacaoQuery.getMarcadoresPorCategoria(cidadeId, command.categorias);
-	}
-
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Calendar dataInicio, Calendar dataFim) {
-		return publicacaoQuery.getMarcadoresPorData(cidadeId, dataInicio, dataFim);
-	}
-
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId usuarioId, FiltroCommand command) {
+	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(CidadeId cidadeId, UsuarioId usuarioId, FiltroCommand command) {
 		if(!command.filtrarMinhasPublicacoes) {
 			usuarioId = null;
 		}
-		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, usuarioId, command);
+		try {
+			return publicacaoQuery.getMarcadoresFiltrados(cidadeId, usuarioId, command);
+		} catch (FiltroCategoriaPublicacaoException | FiltroTipoPublicacaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {

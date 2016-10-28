@@ -71,27 +71,13 @@ public class PublicacaoController {
 		service.excluir(id);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/categoria")
+	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/filtrar")
 	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorCategoria(HttpSession session,
 			@RequestBody FiltroCommand command) {
 		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorCategoria(sessao.getCidadeId(), command);
+		return service.getMarcadoresFiltrados(sessao.getCidadeId(), sessao.getUsuarioId(), command);
 	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/data")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorData(HttpSession session,
-			@RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorData(sessao.getCidadeId(), command.dataInicio, command.dataFim);
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/tipo")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorTipo(HttpSession session, @RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);		
-		return service.getMarcadoresPorTipo(sessao.getCidadeId(), sessao.getUsuarioId(), command);
-
-	}
-
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/apoiar/{id}")
 	@ResponseBody
 	public ApoiadorId apoiar(@PathVariable PublicacaoId id, HttpSession session) {

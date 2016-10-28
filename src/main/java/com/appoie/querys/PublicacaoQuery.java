@@ -1,5 +1,6 @@
 package com.appoie.querys;
 
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +15,8 @@ import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
+import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
+import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
@@ -64,7 +67,8 @@ public class PublicacaoQuery extends BasicQuery {
 		BigInteger qtdApoiadores = (BigInteger) publicacao[2];
 
 		return new PublicacaoPreviaDTO(publicacao[0].toString(), publicacao[1].toString(), qtdApoiadores.longValue(),
-				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()), publicacao[5].toString(), publicacao[6]);
+				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()),
+				publicacao[5].toString(), publicacao[6]);
 
 	}
 
@@ -81,89 +85,73 @@ public class PublicacaoQuery extends BasicQuery {
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id));
 	}
-	
+
+
 	@SuppressWarnings("unchecked")
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, List<String> categorias) {
-		Query query = em.createNativeQuery(
-				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-						+ "p.cidade_Id = :cidadeId" + " and " + "p.categoria in (:valoresCategorias)");
+	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(CidadeId cidadeId, UsuarioId usuarioId,
+			FiltroCommand command) throws FiltroCategoriaPublicacaoException, FiltroTipoPublicacaoException {
 
-		query.setParameter("cidadeId", cidadeId.getValue());
-		query.setParameter("valoresCategorias", categorias);
-		
-		List<Object[]> publicacoes = query.getResultList();
-
-		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
-		for (Object[] publicacao : publicacoes) {
-
-			Categoria categoria = Categoria.valueOf(publicacao[3].toString().toUpperCase());
-			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
-
-			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
-					(Double) publicacao[2], categoria, qtdCurtidas.longValue()));
+		Query query = null;
+		boolean filtroPorData = true;
+		boolean minhasPublicacoes = true;
+		if (command.dataInicio == null || command.dataFim == null) {
+			filtroPorData = false;
 		}
-		return commands;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Calendar dataInicio, Calendar dataFim) {
-		Query query = em.createNativeQuery(
-				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-						+ "p.cidade_Id = :cidadeId" + " and p.data_publicacao between :dataInicio and :dataFim");
-
-		query.setParameter("cidadeId", cidadeId.getValue());
-		query.setParameter("dataInicio", dataInicio);
-		query.setParameter("dataFim", dataFim);
-
-		List<Object[]> publicacoes = query.getResultList();
-
-		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
-		for (Object[] publicacao : publicacoes) {
-
-			Categoria categoria = Categoria.valueOf(publicacao[3].toString().toUpperCase());
-			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
-
-			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
-					(Double) publicacao[2], categoria, qtdCurtidas.longValue()));
+		if (!command.filtrarMinhasPublicacoes) {
+			minhasPublicacoes = false;
 		}
-		return commands;
-	}
 
-	
-	@SuppressWarnings("unchecked")
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId idUsuario, FiltroCommand command) {
-		Query query;
-		
-		if(idUsuario != null && command.categorias != null) {
-			
-			query = em.createNativeQuery(
-				"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-						+ "(p.cidade_Id = :cidadeId)" + " and (p.status in (:status) and p.usuario_id = :idUsuario)");
-			
+		if (command.categorias.size() == 0) {
+			throw new FiltroCategoriaPublicacaoException();
+		} else if (command.situacoes.size() == 0) {
+			throw new FiltroTipoPublicacaoException();
+		}
+		if (minhasPublicacoes && filtroPorData) {
+			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+					+ "p.qtd_apoiadores from publicacao p where " + "("
+							+ "(p.cidade_Id = :cidadeId)"
+					+ " and (p.data_publicacao between :dataInicio and :dataFim)"
+					+ " and (p.status in (:status))"
+					+ " and (p.usuario_id = :idUsuario)"
+					+ " and (p.categoria in (:valoresCategorias))"
+					+ ")");
+
+			query.setParameter("cidadeId", cidadeId.getValue());
+			query.setParameter("dataInicio", command.dataInicio);
+			query.setParameter("dataFim", command.dataFim);
+			query.setParameter("status", command.situacoes);
+			query.setParameter("idUsuario", usuarioId.getValue());
+			query.setParameter("valoresCategorias", command.categorias);
+		} else if (minhasPublicacoes && !filtroPorData) {
+			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+					+ "p.qtd_apoiadores from publicacao p where " + "("
+							+ "(p.cidade_Id = :cidadeId)"
+					+ " and (p.status in (:status)) "
+					+ "and (p.usuario_id = :idUsuario) "
+					+ "and (p.categoria in (:valoresCategorias))"
+					+ ")");
+
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("status", command.situacoes);
-			query.setParameter("idUsuario", idUsuario.getValue());
+			query.setParameter("idUsuario", usuarioId.getValue());
+			query.setParameter("valoresCategorias", command.categorias);
 		}
-		else if(idUsuario != null && command.categorias == null) {
-			
-			query = em.createNativeQuery(
-					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-							+ "(p.cidade_Id = :cidadeId)" + " and (p.usuario_id = :idUsuario)");
 
-			query.setParameter("cidadeId", cidadeId.getValue());
-			query.setParameter("idUsuario", idUsuario.getValue());
-		}
 		else {
-			
-			query = em.createNativeQuery(
-					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
-							+ "p.cidade_Id = :cidadeId" + " and p.status in (:status) ");
+			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+					+ "p.qtd_apoiadores from publicacao p where " + "("
+							+ "(p.cidade_Id = :cidadeId)"
+					+ " and (p.data_publicacao between :dataInicio and :dataFim)  "
+					+ "and (p.status in (:status)) "
+					+ "and (p.categoria in (:valoresCategorias))"
+					+ ")");
 
 			query.setParameter("cidadeId", cidadeId.getValue());
+			query.setParameter("dataInicio", command.dataInicio);
+			query.setParameter("dataFim", command.dataFim);
 			query.setParameter("status", command.situacoes);
-
+			query.setParameter("valoresCategorias", command.categorias);
 		}
-
 		List<Object[]> publicacoes = query.getResultList();
 
 		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
