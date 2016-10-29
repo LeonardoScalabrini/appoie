@@ -62,7 +62,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 
 	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException{
 		this();
-		setUsuarioId(usuarioId);
+		setUsuarioId(new UsuarioId("d3b6633e-7e87-43f1-8903-6c79acb762ad"));
 		setCidadeId(cidadeId);
 		setTitulo(command.titulo);
 		setDescricao(command.descricao);
@@ -153,61 +153,6 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return cidadeId;
 	}
 
-
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
-		result = prime * result + ((cidadeId == null) ? 0 : cidadeId.hashCode());
-		result = prime * result + ((dataPublicacao == null) ? 0 : dataPublicacao.hashCode());
-		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
-		result = prime * result + ((usuarioId == null) ? 0 : usuarioId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Publicacao other = (Publicacao) obj;
-		if (categoria != other.categoria)
-			return false;
-		if (cidadeId == null) {
-			if (other.cidadeId != null)
-				return false;
-		} else if (!cidadeId.equals(other.cidadeId))
-			return false;
-		if (dataPublicacao == null) {
-			if (other.dataPublicacao != null)
-				return false;
-		} else if (!dataPublicacao.equals(other.dataPublicacao))
-			return false;
-		if (descricao == null) {
-			if (other.descricao != null)
-				return false;
-		} else if (!descricao.equals(other.descricao))
-			return false;
-		if (titulo == null) {
-			if (other.titulo != null)
-				return false;
-		} else if (!titulo.equals(other.titulo))
-			return false;
-		if (usuarioId == null) {
-			if (other.usuarioId != null)
-				return false;
-		} else if (!usuarioId.equals(other.usuarioId))
-			return false;
-		return true;
-	}
-	
-	
 	public List<FotoPublicacaoId> getFotosId() {
 		return fotosId;
 	}
