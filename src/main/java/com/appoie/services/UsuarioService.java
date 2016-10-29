@@ -38,7 +38,7 @@ import com.appoie.repositorys.FotoPerfilRepository;
 import com.appoie.repositorys.UsuarioRepository;
 import com.appoie.utils.RandomAlphaNumeric;
 import com.appoie.utils.Sessao;
-import com.fasterxml.classmate.members.RawMethod;
+
 
 @Service
 public class UsuarioService {
@@ -86,9 +86,11 @@ public class UsuarioService {
 			throw new EmailNaoCadastradoExcpetion();
 		}
 		else {
+			String senhaTemporaria = RandomAlphaNumeric.randomString(8);
+			usuarioQuery.setPassword(command.email, senhaTemporaria);
 			List<Email> destinarios = new ArrayList<>();
 			destinarios.add(new Email(command.email));
-			String senhaTemporaria = RandomAlphaNumeric.randomString(8);
+			
 			String mailBody = "<h2>Recuperação de senha</h2>"
 					+ "<br><br><h4>Sua senha temporária é: " + senhaTemporaria
 					+ "<br><br>Você deve entrar em sua conta o mais cedo possível para alterar sua senha! Obrigado!";
