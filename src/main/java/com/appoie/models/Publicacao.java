@@ -56,6 +56,9 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	private Double latitude;
 	private Double longitude;
 	
+	@Enumerated(EnumType.STRING)
+	private CriticidadeProblema criticidade;
+	
 	private Publicacao() {
 		super(new PublicacaoId());
 	}
@@ -71,6 +74,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		setLatitude(command.lat);
 		setLongitude(command.lng);
 		status = Status.ABERTO;
+		this.criticidade = command.criticidade;
 	}
 
 	public void editar(EditarPublicacaoCommand command) {

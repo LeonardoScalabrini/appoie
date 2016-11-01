@@ -22,6 +22,7 @@ import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
+import com.appoie.models.CriticidadeProblema;
 import com.appoie.models.Status;
 import com.appoie.models.TipoImagem;
 import com.appoie.utils.FotoRepository;
@@ -57,7 +58,7 @@ public class PublicacaoQuery extends BasicQuery {
 
 	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, UsuarioId usuarioId) {
 		Query query = em.createNativeQuery(
-				"select  p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, a.id as idApoiador "
+				"select  p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, a.id as idApoiador, p.criticidade "
 						+ "from publicacao p left join apoiador a on p.id = a.publicacao_id inner join foto_publicacao f on (p.id = f.publicacao_id)"
 						+ " where p.id = :id and p.id = f.publicacao_id limit 1");
 		query.setParameter("id", id.getValue());
@@ -69,13 +70,13 @@ public class PublicacaoQuery extends BasicQuery {
 
 		return new PublicacaoPreviaDTO(publicacao[0].toString(), publicacao[1].toString(), qtdApoiadores.longValue(),
 				Status.valueOf(publicacao[3].toString()), fotoRepository.getBase64(publicacao[4].toString()),
-				publicacao[5].toString(), publicacao[6]);
+				publicacao[5].toString(), publicacao[6], CriticidadeProblema.valueOf(publicacao[7].toString()));
 
 	}
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
-		Query query = em
-				.createNativeQuery("select id, titulo, descricao, categoria, data_Publicacao, qtd_apoiadores, status"
+		Query query = em.createNativeQuery(
+				"select id, titulo, descricao, categoria, data_Publicacao, qtd_apoiadores, status, criticidade"
 						+ " from publicacao where id = :id");
 
 		query.setParameter("id", id.getValue());
@@ -84,21 +85,23 @@ public class PublicacaoQuery extends BasicQuery {
 
 		return new PublicacaoDetalhadaDTO(publicacao[0].toString(), publicacao[1].toString(), publicacao[2].toString(),
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
-				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id));
+				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id),
+				CriticidadeProblema.valueOf(publicacao[7].toString()));
 	}
 
 	public boolean verificaListaSituacoes(List<String> lista) {
-		for(int i = 0; i < lista.size(); i++) {
-			if(lista.get(i).equalsIgnoreCase("aberto") || lista.get(i).equalsIgnoreCase("fechado"))
+		for (int i = 0; i < lista.size(); i++) {
+			if (lista.get(i).equalsIgnoreCase("aberto") || lista.get(i).equalsIgnoreCase("fechado"))
 				return true;
 		}
 		return false;
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(CidadeId cidadeId, UsuarioId usuarioId,
-			FiltroCommand command) throws FiltroCategoriaPublicacaoException, FiltroTipoPublicacaoException, FiltroStatusException {
+			FiltroCommand command)
+					throws FiltroCategoriaPublicacaoException, FiltroTipoPublicacaoException, FiltroStatusException {
 
 		Query query = null;
 		boolean filtroPorData = true;
@@ -109,7 +112,7 @@ public class PublicacaoQuery extends BasicQuery {
 		if (!command.filtrarMinhasPublicacoes) {
 			minhasPublicacoes = false;
 		}
-		if(!verificaListaSituacoes(command.situacoes)) {
+		if (!verificaListaSituacoes(command.situacoes)) {
 			throw new FiltroStatusException();
 		}
 
@@ -120,13 +123,9 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		if (minhasPublicacoes && filtroPorData) {
 			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-					+ "p.qtd_apoiadores from publicacao p where " + "("
-							+ "(p.cidade_Id = :cidadeId)"
-					+ " and (p.data_publicacao between :dataInicio and :dataFim)"
-					+ " and (p.status in (:status))"
-					+ " and (p.usuario_id = :idUsuario)"
-					+ " and (p.categoria in (:valoresCategorias))"
-					+ ")");
+					+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
+					+ " and (p.data_publicacao between :dataInicio and :dataFim)" + " and (p.status in (:status))"
+					+ " and (p.usuario_id = :idUsuario)" + " and (p.categoria in (:valoresCategorias))" + ")");
 
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("dataInicio", command.dataInicio);
@@ -135,13 +134,10 @@ public class PublicacaoQuery extends BasicQuery {
 			query.setParameter("idUsuario", usuarioId.getValue());
 			query.setParameter("valoresCategorias", command.categorias);
 		} else if (minhasPublicacoes && !filtroPorData) {
-			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-					+ "p.qtd_apoiadores from publicacao p where " + "("
-							+ "(p.cidade_Id = :cidadeId)"
-					+ " and (p.status in (:status)) "
-					+ "and (p.usuario_id = :idUsuario) "
-					+ "and (p.categoria in (:valoresCategorias))"
-					+ ")");
+			query = em.createNativeQuery(
+					"select p.id, p.latitude, p.longitude, p.categoria, " + "p.qtd_apoiadores from publicacao p where "
+							+ "(" + "(p.cidade_Id = :cidadeId)" + " and (p.status in (:status)) "
+							+ "and (p.usuario_id = :idUsuario) " + "and (p.categoria in (:valoresCategorias))" + ")");
 
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("status", command.situacoes);
@@ -151,11 +147,8 @@ public class PublicacaoQuery extends BasicQuery {
 
 		else {
 			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-					+ "p.qtd_apoiadores from publicacao p where " + "("
-							+ "(p.cidade_Id = :cidadeId)"
-					+ "and (p.status in (:status)) "
-					+ "and (p.categoria in (:valoresCategorias))"
-					+ ")");
+					+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
+					+ "and (p.status in (:status)) " + "and (p.categoria in (:valoresCategorias))" + ")");
 
 			query.setParameter("cidadeId", cidadeId.getValue());
 			query.setParameter("status", command.situacoes);
