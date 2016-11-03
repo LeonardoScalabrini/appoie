@@ -1,10 +1,7 @@
 package com.appoie.services;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,10 +52,11 @@ public class PublicacaoService {
 	@Autowired
 	private PublicacaoQuery publicacaoQuery;
 
-	public void salvar(SalvarPublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
+	public void salvar(SalvarPublicacaoCommand command) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
 		List<FotoPublicacao> fotosPublicacao = fotoPublicacaoService.salvar(command.fotos);
-		Publicacao publicacao = new Publicacao(command, sessao.getUsuarioId(), cidadeId, fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
+		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId, 
+				fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
 		publicacaoRepository.save(publicacao);
 		fotosPublicacaoRepository.save(fotosPublicacao);
 	}
@@ -77,9 +75,8 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadores(cidadeId);
 	}
 
-	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, HttpSession session) {
-		Sessao sessao = new Sessao(session);
-		return publicacaoQuery.getPreviaPublicacao(id, sessao.getUsuarioId());
+	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) {
+		return publicacaoQuery.getPreviaPublicacao(id, Sessao.getUsuarioId());
 	}
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
@@ -95,14 +92,14 @@ public class PublicacaoService {
 		return dto;
 	}	
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(CidadeId cidadeId, UsuarioId usuarioId, FiltroCommand command) {
+	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(FiltroCommand command) {
+		UsuarioId usuarioId = Sessao.getUsuarioId();
 		if(!command.filtrarMinhasPublicacoes) {
 			usuarioId = null;
 		}
 		try {
-			return publicacaoQuery.getMarcadoresFiltrados(cidadeId, usuarioId, command);
+			return publicacaoQuery.getMarcadoresFiltrados(Sessao.getCidadeId(), usuarioId, command);
 		} catch (FiltroCategoriaPublicacaoException | FiltroTipoPublicacaoException | FiltroStatusException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

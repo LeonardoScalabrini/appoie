@@ -6,12 +6,11 @@ import static com.appoie.utils.ValidationString.isNullOrEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
+import com.appoie.LoginUsuario;
 import com.appoie.commands.AlterarEmailCommand;
 import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.AlterarSenhaCommand;
@@ -100,7 +99,7 @@ public class UsuarioService {
 		}
 	}
 	
-	public void autenticar(AutenticarCommand command, HttpSession session) throws EmailSenhaInvalidoException{
+	public void autenticar(AutenticarCommand command) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
 		UsuarioId id;
@@ -111,17 +110,18 @@ public class UsuarioService {
 			id = usuarioQuery.buscar(email, senha);
 			isNull(id);
 			cidadeId = cidadeService.getCidadeIdUsuario(id);
+			LoginUsuario.cidadeId = cidadeId;
+			LoginUsuario.usuarioId = id;
 		} catch (Exception e) {
 			throw new EmailSenhaInvalidoException();
 		}
-		Sessao sessao = new Sessao(session);
-		sessao.setUsuarioId(id);
-		sessao.setCidadeId(cidadeId);
+		Sessao.setUsuarioId(id);
+		Sessao.setCidadeId(cidadeId);
 	}
 
-	public void alterarPerfil(PerfilDTO perfilCommand, UsuarioId id) throws CamposCadastrarException {
-		Usuario usuario = usuarioRepository.findOne(id);
-		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(id);
+	public void alterarPerfil(PerfilDTO perfilCommand) throws CamposCadastrarException {
+		Usuario usuario = usuarioRepository.findOne(Sessao.getUsuarioId());
+		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(Sessao.getUsuarioId());
 		try {
 			usuario.alterarPerfil(perfilCommand);
 		} catch (Exception e) {
@@ -171,8 +171,8 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public PerfilDTO getPerfil(UsuarioId id) {
-		return usuarioQuery.getPerfil(id);
+	public PerfilDTO getPerfil() {
+		return usuarioQuery.getPerfil(Sessao.getUsuarioId());
 	}
 	
 }
