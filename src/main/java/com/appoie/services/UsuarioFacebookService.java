@@ -19,7 +19,6 @@ import com.appoie.models.Usuario;
 import com.appoie.models.UsuarioFacebook;
 import com.appoie.querys.UsuarioFacebookQuery;
 import com.appoie.querys.UsuarioQuery;
-import com.appoie.repositorys.CidadeRepository;
 import com.appoie.repositorys.FotoPerfilRepository;
 import com.appoie.repositorys.UsuarioFacebookRepository;
 import com.appoie.repositorys.UsuarioRepository;
@@ -71,9 +70,8 @@ public class UsuarioFacebookService {
 			} catch (Exception e) {
 				throw new EmailSenhaInvalidoException();
 			}
-			Sessao sessao = new Sessao(session);
-			sessao.setUsuarioId(id);
-			sessao.setCidadeId(cidadeId);
+			Sessao.setUsuarioId(id);
+			Sessao.setCidadeId(cidadeId);
 		}
 			
 		
@@ -94,9 +92,8 @@ public class UsuarioFacebookService {
 		fotoRepository.save(foto);
 		usuarioRepository.save(usuario);		
 		cidadeId = cidadeService.getCidadeIdUsuario(usuarioId);
-		Sessao sessao = new Sessao(session);
-		sessao.setUsuarioId(usuarioId);
-		sessao.setCidadeId(cidadeId);
+		Sessao.setUsuarioId(usuarioId);
+		Sessao.setCidadeId(cidadeId);
 	}
 
 	

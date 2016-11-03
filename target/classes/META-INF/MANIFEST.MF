@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: Appoie
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: nocra
+Built-By: victor
 Implementation-Vendor-Id: com.appoie
-Build-Jdk: 1.8.0_112
+Build-Jdk: 1.8.0_101
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.
 
