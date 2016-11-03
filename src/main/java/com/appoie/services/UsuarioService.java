@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.LoginUsuario;
 import com.appoie.commands.AlterarEmailCommand;
 import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.AlterarSenhaCommand;
@@ -110,8 +109,6 @@ public class UsuarioService {
 			id = usuarioQuery.buscar(email, senha);
 			isNull(id);
 			cidadeId = cidadeService.getCidadeIdUsuario(id);
-			LoginUsuario.cidadeId = cidadeId;
-			LoginUsuario.usuarioId = id;
 		} catch (Exception e) {
 			throw new EmailSenhaInvalidoException();
 		}
