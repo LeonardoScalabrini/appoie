@@ -2,8 +2,6 @@ package com.appoie.controllers;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +43,8 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/marcadores")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadores(HttpSession session) {
-		Sessao sessao = new Sessao(session);
-		return service.getMarcadores(sessao.getCidadeId());
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadores() {
+		return service.getMarcadores(Sessao.getCidadeId());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "detalhada/{id}")
@@ -56,14 +53,14 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "previa/{id}")
-	public PublicacaoPreviaDTO recuperarPrevia(@PathVariable PublicacaoId id, HttpSession session) {
-		return service.getPreviaPublicacao(id, session);
+	public PublicacaoPreviaDTO recuperarPrevia(@PathVariable PublicacaoId id) {
+		return service.getPreviaPublicacao(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/salvar")
-	public void salvar(@RequestBody SalvarPublicacaoCommand command, HttpSession session)
+	public void salvar(@RequestBody SalvarPublicacaoCommand command)
 			throws QuantidadeFotosPublicacaoException {
-		service.salvar(command, new Sessao(session));
+		service.salvar(command);
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/excluir/{id}")
@@ -71,33 +68,15 @@ public class PublicacaoController {
 		service.excluir(id);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/categoria")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorCategoria(HttpSession session,
-			@RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorCategoria(sessao.getCidadeId(), command);
+	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/filtrar")
+	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresFiltrados(@RequestBody FiltroCommand command) {
+		return service.getMarcadoresFiltrados(command);
 	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/data")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorData(HttpSession session,
-			@RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);
-		return service.getMarcadoresPorData(sessao.getCidadeId(), command.dataInicio, command.dataFim);
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/marcadores/tipo")
-	public List<PublicacaoMarcacaoDTO> recuperarMarcadoresPorTipo(HttpSession session, @RequestBody FiltroCommand command) {
-		Sessao sessao = new Sessao(session);		
-		return service.getMarcadoresPorTipo(sessao.getCidadeId(), sessao.getUsuarioId(), command);
-
-	}
-
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/apoiar/{id}")
 	@ResponseBody
-	public ApoiadorId apoiar(@PathVariable PublicacaoId id, HttpSession session) {
-		
-		Sessao sessao = new Sessao(session);
-		return service.apoiar(id, sessao.getUsuarioId());
+	public ApoiadorId apoiar(@PathVariable PublicacaoId id) {
+		return service.apoiar(id, Sessao.getUsuarioId());
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/desapoiar/{id}")

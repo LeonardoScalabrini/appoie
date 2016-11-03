@@ -3,7 +3,8 @@ package com.appoie.services;
 import static com.appoie.utils.ValidationObject.isNull;
 import static com.appoie.utils.ValidationString.isNullOrEmpty;
 
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,15 @@ import com.appoie.ids.UsuarioId;
 import com.appoie.models.Cidade;
 import com.appoie.models.Email;
 import com.appoie.models.FotoPerfil;
+import com.appoie.models.SenderMail;
 import com.appoie.models.Senha;
 import com.appoie.models.Usuario;
 import com.appoie.querys.UsuarioQuery;
 import com.appoie.repositorys.FotoPerfilRepository;
 import com.appoie.repositorys.UsuarioRepository;
+import com.appoie.utils.RandomAlphaNumeric;
 import com.appoie.utils.Sessao;
+
 
 @Service
 public class UsuarioService {
@@ -76,11 +80,25 @@ public class UsuarioService {
 	public void recuperarSenha(RecuperarSenhaCommand command)
 			throws EmailFormatoException, EmailNaoCadastradoExcpetion {
 
-		if (!usuarioQuery.existeEmail(new Email(command.email)))
+		if (!usuarioQuery.existeEmail(new Email(command.email))) {
 			throw new EmailNaoCadastradoExcpetion();
+		}
+		else {
+			String senhaTemporaria = RandomAlphaNumeric.randomString(8);
+			usuarioQuery.setPassword(command.email, senhaTemporaria);
+			List<Email> destinarios = new ArrayList<>();
+			destinarios.add(new Email(command.email));
+			
+			String mailBody = "<h2>Recuperação de senha</h2>"
+					+ "<br><br><h4>Sua senha temporária é: " + senhaTemporaria
+					+ "<br><br>Você deve entrar em sua conta o mais cedo possível para alterar sua senha! Obrigado!";
+			SenderMail email = new SenderMail();
+			email.sendMail(mailBody, "Recuperação de senha", destinarios);
+			
+		}
 	}
 	
-	public void autenticar(AutenticarCommand command, HttpSession session) throws EmailSenhaInvalidoException{
+	public void autenticar(AutenticarCommand command) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
 		UsuarioId id;
@@ -94,14 +112,13 @@ public class UsuarioService {
 		} catch (Exception e) {
 			throw new EmailSenhaInvalidoException();
 		}
-		Sessao sessao = new Sessao(session);
-		sessao.setUsuarioId(id);
-		sessao.setCidadeId(cidadeId);
+		Sessao.setUsuarioId(id);
+		Sessao.setCidadeId(cidadeId);
 	}
 
-	public void alterarPerfil(PerfilDTO perfilCommand, UsuarioId id) throws CamposCadastrarException {
-		Usuario usuario = usuarioRepository.findOne(id);
-		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(id);
+	public void alterarPerfil(PerfilDTO perfilCommand) throws CamposCadastrarException {
+		Usuario usuario = usuarioRepository.findOne(Sessao.getUsuarioId());
+		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(Sessao.getUsuarioId());
 		try {
 			usuario.alterarPerfil(perfilCommand);
 		} catch (Exception e) {
@@ -151,8 +168,8 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public PerfilDTO getPerfil(UsuarioId id) {
-		return usuarioQuery.getPerfil(id);
+	public PerfilDTO getPerfil() {
+		return usuarioQuery.getPerfil(Sessao.getUsuarioId());
 	}
 	
 }

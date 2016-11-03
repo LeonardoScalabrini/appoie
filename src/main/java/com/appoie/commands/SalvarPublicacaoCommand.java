@@ -3,6 +3,7 @@ package com.appoie.commands;
 import java.util.List;
 
 import com.appoie.models.Categoria;
+import com.appoie.models.CriticidadeProblema;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,6 +17,7 @@ public class SalvarPublicacaoCommand {
 	public final String cidade;
 	public final Double lat;
 	public final Double lng;
+	public final CriticidadeProblema criticidade;
 
 	@JsonCreator
 	public SalvarPublicacaoCommand(@JsonProperty(value = "titulo") String titulo,
@@ -25,7 +27,8 @@ public class SalvarPublicacaoCommand {
 							 @JsonProperty(value = "estado") String estado, 
 							 @JsonProperty(value = "lat") Double lat, 
 							 @JsonProperty(value = "lng") Double lng, 
-							 @JsonProperty(value = "fotos") List<String> fotos) {
+							 @JsonProperty(value = "fotos") List<String> fotos,
+							 @JsonProperty(value = "criticidade") String criticidade) {
 
 		this.titulo = titulo;
 		this.descricao = descricao;
@@ -35,6 +38,7 @@ public class SalvarPublicacaoCommand {
 		this.lng = lng;
 		this.categoria = Categoria.valueOf(categoria.toUpperCase());
 		this.fotos = fotos;
+		this.criticidade = CriticidadeProblema.valueOf(criticidade);
 	}
 
 }

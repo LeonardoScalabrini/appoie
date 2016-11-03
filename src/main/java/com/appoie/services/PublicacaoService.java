@@ -1,10 +1,7 @@
 package com.appoie.services;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +13,9 @@ import com.appoie.dto.IconesDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
+import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
+import com.appoie.exceptions.FiltroStatusException;
+import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.CidadeId;
@@ -52,10 +52,11 @@ public class PublicacaoService {
 	@Autowired
 	private PublicacaoQuery publicacaoQuery;
 
-	public void salvar(SalvarPublicacaoCommand command, Sessao sessao) throws QuantidadeFotosPublicacaoException {
+	public void salvar(SalvarPublicacaoCommand command) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
 		List<FotoPublicacao> fotosPublicacao = fotoPublicacaoService.salvar(command.fotos);
-		Publicacao publicacao = new Publicacao(command, sessao.getUsuarioId(), cidadeId, fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
+		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId, 
+				fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
 		publicacaoRepository.save(publicacao);
 		fotosPublicacaoRepository.save(fotosPublicacao);
 	}
@@ -74,9 +75,8 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadores(cidadeId);
 	}
 
-	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, HttpSession session) {
-		Sessao sessao = new Sessao(session);
-		return publicacaoQuery.getPreviaPublicacao(id, sessao.getUsuarioId());
+	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) {
+		return publicacaoQuery.getPreviaPublicacao(id, Sessao.getUsuarioId());
 	}
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
@@ -90,21 +90,19 @@ public class PublicacaoService {
 			dto.add(new IconesDTO(categoria));
 		}
 		return dto;
-	}
+	}	
 
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorCategoria(CidadeId cidadeId, FiltroCommand command) {
-		return publicacaoQuery.getMarcadoresPorCategoria(cidadeId, command.categorias);
-	}
-
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorData(CidadeId cidadeId, Calendar dataInicio, Calendar dataFim) {
-		return publicacaoQuery.getMarcadoresPorData(cidadeId, dataInicio, dataFim);
-	}
-
-	public List<PublicacaoMarcacaoDTO> getMarcadoresPorTipo(CidadeId cidadeId, UsuarioId usuarioId, FiltroCommand command) {
+	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(FiltroCommand command) {
+		UsuarioId usuarioId = Sessao.getUsuarioId();
 		if(!command.filtrarMinhasPublicacoes) {
 			usuarioId = null;
 		}
-		return publicacaoQuery.getMarcadoresPorTipo(cidadeId, usuarioId, command);
+		try {
+			return publicacaoQuery.getMarcadoresFiltrados(Sessao.getCidadeId(), usuarioId, command);
+		} catch (FiltroCategoriaPublicacaoException | FiltroTipoPublicacaoException | FiltroStatusException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {

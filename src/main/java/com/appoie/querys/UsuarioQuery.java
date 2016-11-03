@@ -76,4 +76,12 @@ public class UsuarioQuery extends BasicQuery {
 								 SimpleCalendarFormat.parse(perfil[7].toString()),
 								 fotoRepository.getBase64(perfil[8].toString()));
 	}
+
+	public void setPassword(String email, String password) {
+		Query query = em.createNativeQuery("update usuario u set u.senha = :password where u.email = :email");
+		query.setParameter("password", password);
+		query.setParameter("email", email);
+		query.executeUpdate();
+				
+	}
 }
