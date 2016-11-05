@@ -18,7 +18,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 		auth.setAuthenticated(false);
 		try {
 			usuarioService.autenticar(auth);
-			auth.setAuthenticated(true);
+			//auth.setAuthenticated(true);
 		} catch (EmailSenhaInvalidoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
