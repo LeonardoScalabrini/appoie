@@ -2,14 +2,18 @@ package com.appoie.querys;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Query;
 
+import org.neo4j.cypher.internal.compiler.v2_1.perty.docbuilders.toStringDocBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.appoie.commands.FiltroCommand;
+import com.appoie.commands.VerificaFechamentoPublicacaoCommand;
+import com.appoie.dto.NotificacaoPublicacaoDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
@@ -17,19 +21,26 @@ import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
 import com.appoie.exceptions.FiltroStatusException;
 import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.ids.CidadeId;
+import com.appoie.ids.NotificacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
 import com.appoie.models.CriticidadeProblema;
+import com.appoie.models.Notificacao;
 import com.appoie.models.Status;
 import com.appoie.models.TipoImagem;
+import com.appoie.repositorys.NotificacaoRepository;
 import com.appoie.utils.FotoRepository;
+import com.appoie.utils.SimpleCalendarFormat;
 
 @Component
 public class PublicacaoQuery extends BasicQuery {
 
 	@Autowired
 	private FotoPublicacaoQuery fotoPublicacaoQuery;
+
+	@Autowired
+	private NotificacaoRepository notificacaoRepo;
 
 	private FotoRepository fotoRepository = new FotoRepository(TipoImagem.JPG);
 
@@ -164,6 +175,57 @@ public class PublicacaoQuery extends BasicQuery {
 					(Double) publicacao[2], categoria, qtdCurtidas.longValue()));
 		}
 		return commands;
+	}
+	
+	
+	private void atualizaDataNotificacao(UsuarioId idUsuario, List<PublicacaoId> idsPublicacoes) {
+
+		for (PublicacaoId idPublicacao : idsPublicacoes) {
+			Query query = em.createNativeQuery(
+					"select  n.id, n.data_proxima_notificacao, n.publicacao_id, n.usuario_id from notificacao n inner join publicacao p on (n.usuario_id = p.usuario_id and n.publicacao_id = p.id) "
+							+ "where n.usuario_id = :idUsuario and n.publicacao_id = :idPublicacao LIMIT 1");
+			query.setParameter("idUsuario", idUsuario.getValue());
+			query.setParameter("idPublicacao", idPublicacao.getValue());
+
+			Object[] notificacao = (Object[]) query.getSingleResult();
+
+			Notificacao objNotificacao = new Notificacao(new NotificacaoId(notificacao[0].toString()),
+					SimpleCalendarFormat.parse(notificacao[1].toString()), new PublicacaoId(notificacao[2].toString()),
+					new UsuarioId(notificacao[3].toString()));
+						
+			objNotificacao.getDataProximaNotificacao().add(Calendar.DAY_OF_MONTH, +7);
+			notificacaoRepo.save(objNotificacao);
+		}
+
+	}
+
+	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacao(VerificaFechamentoPublicacaoCommand command) {
+		Query query = em.createNativeQuery(
+				"select  p.id, p.titulo from publicacao p inner join notificacao n on (p.usuario_id = n.usuario_id and p.id = n.publicacao_id) "
+						+ "where p.usuario_id = :idUsuario and n.data_proxima_notificacao <= now()");
+		query.setParameter("idUsuario", command.idUsuario.getValue());
+
+		List<Object[]> publicacoes = query.getResultList();
+
+		List<NotificacaoPublicacaoDTO> commands = new ArrayList<>();
+
+		for (Object[] publicacao : publicacoes) {
+			commands.add(new NotificacaoPublicacaoDTO(publicacao[0].toString(), publicacao[1].toString()));
+
+		}
+		
+		
+		List<PublicacaoId> idsPublicacoesNotificadas = new ArrayList<>();
+		for (Object[] obj : publicacoes) {
+			idsPublicacoesNotificadas.add(new PublicacaoId(obj[0].toString()));
+			
+		}
+		
+		//ao refatorar, colocar este método dentro do callback.success do serviço de verificação do status de fechamento da publicação
+		atualizaDataNotificacao(command.idUsuario, idsPublicacoesNotificadas);
+
+		return commands;
+
 	}
 
 }

@@ -1,15 +1,19 @@
 package com.appoie.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.VerificaFechamentoPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
+import com.appoie.dto.NotificacaoPublicacaoDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
@@ -24,41 +28,65 @@ import com.appoie.ids.UsuarioId;
 import com.appoie.models.Apoiador;
 import com.appoie.models.Categoria;
 import com.appoie.models.FotoPublicacao;
+import com.appoie.models.Notificacao;
 import com.appoie.models.Publicacao;
 import com.appoie.querys.PublicacaoQuery;
 import com.appoie.repositorys.ApoiadorRepository;
 import com.appoie.repositorys.FotoPublicacaoRepository;
+import com.appoie.repositorys.NotificacaoRepository;
 import com.appoie.repositorys.PublicacaoRepository;
 import com.appoie.utils.Sessao;
 
 @Service
 public class PublicacaoService {
-	
+
 	@Autowired
 	private PublicacaoRepository publicacaoRepository;
-	
+
 	@Autowired
 	private FotoPublicacaoRepository fotosPublicacaoRepository;
-	
+
 	@Autowired
 	private ApoiadorRepository apoiadorRepository;
-	
+
 	@Autowired
 	private FotoPublicacaoService fotoPublicacaoService;
-	
+
 	@Autowired
 	private CidadeService cidadeService;
-	
+
 	@Autowired
 	private PublicacaoQuery publicacaoQuery;
+
+	@Autowired
+	private NotificacaoRepository notificacaoRepo;
 
 	public void salvar(SalvarPublicacaoCommand command) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
 		List<FotoPublicacao> fotosPublicacao = fotoPublicacaoService.salvar(command.fotos);
-		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId, 
+		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId,
 				fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
+
 		publicacaoRepository.save(publicacao);
 		fotosPublicacaoRepository.save(fotosPublicacao);
+
+		switch (publicacao.getCriticidade().toString()) {
+		case "BAIXA":
+			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +30);			
+			break;
+		case "MÉDIA":
+			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +20);
+			break;
+		case "ALTA":
+			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +10);
+			break;
+
+		}		
+
+		Notificacao notificacao = new Notificacao(publicacao.getDataPublicacao(), publicacao.getId(),
+				Sessao.getUsuarioId());
+		notificacaoRepo.save(notificacao);
+
 	}
 
 	public void excluir(PublicacaoId id) {
@@ -90,11 +118,11 @@ public class PublicacaoService {
 			dto.add(new IconesDTO(categoria));
 		}
 		return dto;
-	}	
+	}
 
 	public List<PublicacaoMarcacaoDTO> getMarcadoresFiltrados(FiltroCommand command) {
 		UsuarioId usuarioId = Sessao.getUsuarioId();
-		if(!command.filtrarMinhasPublicacoes) {
+		if (!command.filtrarMinhasPublicacoes) {
 			usuarioId = null;
 		}
 		try {
@@ -117,6 +145,11 @@ public class PublicacaoService {
 	public void desapoiar(ApoiadorId id) {
 		Apoiador a = apoiadorRepository.findOne(id);
 		apoiadorRepository.delete(a);
+	}
+
+	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacao(VerificaFechamentoPublicacaoCommand command) {
+		return publicacaoQuery.verificarFechamentoPublicacao(command);
+
 	}
 
 }

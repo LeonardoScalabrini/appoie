@@ -6,11 +6,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class SimpleCalendarFormat {
-	
-	private static final String SIMPLE_FORMAT = "yyyy-mm-dd";  
-	
-	public static Calendar parse(String stringData){
-		
+
+	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
+
+	public static Calendar parse(String stringData) {
+
 		SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_FORMAT);
 		Calendar calendar = Calendar.getInstance();
 		Date data;
@@ -20,7 +20,24 @@ public class SimpleCalendarFormat {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		return calendar;
 	}
+
+	// public static Calendar parse(String stringData) {
+	// Calendar c = null;
+	// try {
+	//
+	// SimpleDateFormat formatoData = new SimpleDateFormat(SIMPLE_FORMAT);
+	//
+	// c = Calendar.getInstance();
+	//
+	// c.setTime(formatoData.parse(stringData));
+	//
+	// } catch (ParseException e) {
+	// e.printStackTrace();
+	// }
+	// return c;
+	// }
+
 }

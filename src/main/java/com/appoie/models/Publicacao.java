@@ -168,6 +168,20 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	public Long getQtdApoiadores() {
 		return qtdApoiadores;
 	}
+	
+	
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public List<FotoPublicacaoId> getFotosId() {
+		return fotosId;
+	}
+
+	public CriticidadeProblema getCriticidade() {
+		return criticidade;
+	}
 
 	@Override
 	public int hashCode() {
@@ -270,6 +284,8 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		}
 		return true;
 	}
+	
+	
 	
 	
 }

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
+import com.appoie.commands.VerificaFechamentoPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
 import com.appoie.commands.FiltroCommand;
 import com.appoie.dto.IconesDTO;
+import com.appoie.dto.NotificacaoPublicacaoDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
@@ -82,6 +84,12 @@ public class PublicacaoController {
 	@RequestMapping(method = RequestMethod.POST, value = "/desapoiar/{id}")
 	public void desapoiar(@PathVariable ApoiadorId id) {
 		service.desapoiar(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/status/fechamento")
+	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacoes(@RequestBody VerificaFechamentoPublicacaoCommand command) {
+		return service.verificarFechamentoPublicacao(command);
+		
 	}
 
 }
