@@ -1,4 +1,4 @@
-package com.appoie.controllers;
+/*package com.appoie.controllers;
 
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -193,8 +193,8 @@ public class UsuarioControllerTest {
 	public void deveRealizarLogin() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
 		String email = "teste@teste.com.br";
 		String senha = "123456";
-		Usuario usuario = new UsuarioBuilder().email(email).senha(senha).criar();
-		repository.save(usuario);
+		//Usuario usuario = new UsuarioBuilder().email(email).senha(senha).criar();
+		//repository.save(usuario);
 		
 		home.email(email);
 		home.senha(senha);
@@ -226,4 +226,4 @@ public class UsuarioControllerTest {
 		assertTrue(home.contem(LOGIN_SENHA_INVALIDOS));
 	}
 
-}
+}*/

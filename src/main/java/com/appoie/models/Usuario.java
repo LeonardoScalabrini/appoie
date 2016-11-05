@@ -44,10 +44,27 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		super(new UsuarioId());
 	}
 	
-	private void setCidadeId(CidadeId cidadeId) {
+	public Usuario(UsuarioId usuario){		
+		super(usuario);
+	}
+	
+
+	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha, CidadeId cidadeId) throws Exception{
+		this();
+		setNome(nome);
+		setSobrenome(sobrenome);
+		setDataDeNascimento(dataDeNascimento);
+		setSexo(sexo);
+		setEmail(email);
+		setSenha(senha);
+		setCidadeId(cidadeId);
+	}
+
+	public void setCidadeId(CidadeId cidadeId) {
 		isNull(cidadeId);
 		this.cidadeId = cidadeId;
 	}
+
 
 	public Usuario(CadastrarCommand command, CidadeId id) throws Exception{
 		this();

@@ -1,7 +1,5 @@
 package com.appoie.controllers;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.AlterarEmailCommand;
-import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.AlterarSenhaCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
 import com.appoie.dto.PerfilDTO;
@@ -30,11 +27,6 @@ public class UsuarioController {
 	@RequestMapping(method = RequestMethod.POST)
 	public void cadastrar(@RequestBody CadastrarCommand command) throws Exception {
 		usuarioService.cadastrar(command);
-	}
-	
-	@RequestMapping(value="/auth", method=RequestMethod.POST)
-	public void realizarLogin(@RequestBody AutenticarCommand loginCommand, HttpSession session) throws Exception{
-		usuarioService.autenticar(loginCommand);
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
