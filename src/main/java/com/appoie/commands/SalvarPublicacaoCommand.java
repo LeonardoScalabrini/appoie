@@ -27,8 +27,7 @@ public class SalvarPublicacaoCommand {
 							 @JsonProperty(value = "estado") String estado, 
 							 @JsonProperty(value = "lat") Double lat, 
 							 @JsonProperty(value = "lng") Double lng, 
-							 @JsonProperty(value = "fotos") List<String> fotos,
-							 @JsonProperty(value = "criticidade") String criticidade) {
+							 @JsonProperty(value = "fotos") List<String> fotos) {
 
 		this.titulo = titulo;
 		this.descricao = descricao;
@@ -38,7 +37,7 @@ public class SalvarPublicacaoCommand {
 		this.lng = lng;
 		this.categoria = Categoria.valueOf(categoria.toUpperCase());
 		this.fotos = fotos;
-		this.criticidade = CriticidadeProblema.valueOf(criticidade);
+		this.criticidade = CriticidadeProblema.ALTA;
 	}
 
 }

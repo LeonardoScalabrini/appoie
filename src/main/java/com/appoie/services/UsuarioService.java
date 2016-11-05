@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.AlterarEmailCommand;
-import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.AlterarSenhaCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
 import com.appoie.dto.PerfilDTO;
@@ -98,14 +98,14 @@ public class UsuarioService {
 		}
 	}
 	
-	public void autenticar(AutenticarCommand command) throws EmailSenhaInvalidoException{
+	public void autenticar(Authentication auth) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
 		UsuarioId id;
 		CidadeId cidadeId;
 		try {
-			email = new Email(command.email);
-			senha = new Senha(command.senha);
+			email = new Email(auth.getName());
+			senha = new Senha(auth.getCredentials().toString());
 			id = usuarioQuery.buscar(email, senha);
 			isNull(id);
 			cidadeId = cidadeService.getCidadeIdUsuario(id);

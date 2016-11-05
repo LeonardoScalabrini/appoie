@@ -2,11 +2,9 @@ package com.appoie.manipuladorDeFotos;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,8 +66,6 @@ public class ConverteFoto {
 		} catch (IOException ex) {
 
 		}
-
-		InputStream is = new ByteArrayInputStream(baos.toByteArray());
 
 		return baos.toByteArray();
 	}
