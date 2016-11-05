@@ -9,12 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VerificaFechamentoPublicacaoCommand {
-	public final UsuarioId idUsuario;
 	public final List<PublicacaoId> idsPublicacoes ;
 	
 	@JsonCreator
-	public VerificaFechamentoPublicacaoCommand(@JsonProperty("idUsuario")String idUsuario,@JsonProperty("idPublicacao") List<PublicacaoId> idsPublicacoes) {
-		this.idUsuario = new UsuarioId(idUsuario);
+	public VerificaFechamentoPublicacaoCommand(@JsonProperty("idPublicacao") List<PublicacaoId> idsPublicacoes) {
+		
 		this.idsPublicacoes = idsPublicacoes;
 				
 	}

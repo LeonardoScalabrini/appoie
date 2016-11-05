@@ -31,6 +31,7 @@ import com.appoie.models.Status;
 import com.appoie.models.TipoImagem;
 import com.appoie.repositorys.NotificacaoRepository;
 import com.appoie.utils.FotoRepository;
+import com.appoie.utils.Sessao;
 import com.appoie.utils.SimpleCalendarFormat;
 
 @Component
@@ -203,7 +204,7 @@ public class PublicacaoQuery extends BasicQuery {
 		Query query = em.createNativeQuery(
 				"select  p.id, p.titulo from publicacao p inner join notificacao n on (p.usuario_id = n.usuario_id and p.id = n.publicacao_id) "
 						+ "where p.usuario_id = :idUsuario and n.data_proxima_notificacao <= now()");
-		query.setParameter("idUsuario", command.idUsuario.getValue());
+		query.setParameter("idUsuario", Sessao.getUsuarioId().getValue());
 
 		List<Object[]> publicacoes = query.getResultList();
 
@@ -222,7 +223,7 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 		
 		//ao refatorar, colocar este método dentro do callback.success do serviço de verificação do status de fechamento da publicação
-		atualizaDataNotificacao(command.idUsuario, idsPublicacoesNotificadas);
+		atualizaDataNotificacao(Sessao.getUsuarioId(), idsPublicacoesNotificadas);
 
 		return commands;
 
