@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.neo4j.cypher.internal.compiler.v2_1.perty.docbuilders.toStringDocBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
