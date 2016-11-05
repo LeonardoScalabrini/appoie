@@ -65,7 +65,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 
 	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException{
 		this();
-		setUsuarioId(new UsuarioId());
+		setUsuarioId(usuarioId);
 		setCidadeId(cidadeId);
 		setTitulo(command.titulo);
 		setDescricao(command.descricao);
