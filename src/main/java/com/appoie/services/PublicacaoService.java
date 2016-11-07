@@ -20,6 +20,7 @@ import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.FiltroCategoriaPublicacaoException;
 import com.appoie.exceptions.FiltroStatusException;
 import com.appoie.exceptions.FiltroTipoPublicacaoException;
+import com.appoie.exceptions.PublicacaoFechadaException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.CidadeId;
@@ -30,6 +31,7 @@ import com.appoie.models.Categoria;
 import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Notificacao;
 import com.appoie.models.Publicacao;
+import com.appoie.models.Status;
 import com.appoie.querys.PublicacaoQuery;
 import com.appoie.repositorys.ApoiadorRepository;
 import com.appoie.repositorys.FotoPublicacaoRepository;
@@ -72,7 +74,7 @@ public class PublicacaoService {
 
 		switch (publicacao.getCriticidade().toString()) {
 		case "BAIXA":
-			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +30);			
+			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +30);
 			break;
 		case "MÉDIA":
 			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +20);
@@ -81,7 +83,7 @@ public class PublicacaoService {
 			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +10);
 			break;
 
-		}		
+		}
 
 		Notificacao notificacao = new Notificacao(publicacao.getDataPublicacao(), publicacao.getId(),
 				Sessao.getUsuarioId());
@@ -150,6 +152,18 @@ public class PublicacaoService {
 	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacao(VerificaFechamentoPublicacaoCommand command) {
 		return publicacaoQuery.verificarFechamentoPublicacao(command);
 
+	}
+
+	public void fecharPublicacao(PublicacaoId id) throws PublicacaoFechadaException {
+
+		Publicacao p = publicacaoRepository.findOne(id);
+		if (p.getStatus().equals(Status.FECHADO)) {
+			throw new PublicacaoFechadaException();
+		} else {
+			p.fechar();
+			publicacaoRepository.save(p);
+			publicacaoQuery.destruirNotificacao(id);
+		}
 	}
 
 }

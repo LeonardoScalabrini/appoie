@@ -23,6 +23,7 @@ import com.appoie.dto.NotificacaoPublicacaoDTO;
 import com.appoie.dto.PublicacaoDetalhadaDTO;
 import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
+import com.appoie.exceptions.PublicacaoFechadaException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.PublicacaoId;
@@ -97,6 +98,15 @@ public class PublicacaoController {
 	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacoes(@RequestBody VerificaFechamentoPublicacaoCommand command) {
 		return service.verificarFechamentoPublicacao(command);
 		
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/fechar/{id}")
+	public void fecharPublicacao(@PathVariable PublicacaoId id) {
+		try {
+			service.fecharPublicacao(id);
+		} catch (PublicacaoFechadaException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

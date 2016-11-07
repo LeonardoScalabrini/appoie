@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -227,5 +229,14 @@ public class PublicacaoQuery extends BasicQuery {
 		return commands;
 
 	}
+	@Transactional
+	public void destruirNotificacao(PublicacaoId id) {
+		
+		Query query = em.createNativeQuery("delete from notificacao where publicacao_id = :id_publicacao");
+		query.setParameter("id_publicacao", id.getValue());		
+		query.executeUpdate();	
+		
+	}
+	
 
 }

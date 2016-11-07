@@ -56,6 +56,9 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	private Double latitude;
 	private Double longitude;
 	
+	@Temporal(TemporalType.DATE)
+	private Calendar dataFechamento;
+	
 	@Enumerated(EnumType.STRING)
 	private CriticidadeProblema criticidade;
 	
@@ -87,9 +90,6 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.qtdApoiadores++;
 	}
 
-	public void fechar(){
-		status = Status.FECHADO;
-	}
 	
 	private void setFotos(List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException {
 		if (fotosId.size() < 1 || fotosId.size() > 3)
@@ -285,6 +285,20 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Publicacao [usuarioId=" + usuarioId + ", cidadeId=" + cidadeId + ", titulo=" + titulo + ", descricao="
+				+ descricao + ", categoria=" + categoria + ", status=" + status + ", dataPublicacao=" + dataPublicacao
+				+ ", fotosId=" + fotosId + ", qtdApoiadores=" + qtdApoiadores + ", latitude=" + latitude
+				+ ", longitude=" + longitude + ", criticidade=" + criticidade + "]";
+	}
+	
+	public void fechar() {
+		this.status = Status.FECHADO;
+		this.dataFechamento = Calendar.getInstance();
+	}
+	
 	
 	
 	
