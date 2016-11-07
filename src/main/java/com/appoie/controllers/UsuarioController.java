@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.AlterarEmailCommand;
 import com.appoie.commands.AlterarSenhaCommand;
+import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
 import com.appoie.dto.PerfilDTO;
 import com.appoie.services.UsuarioService;
@@ -48,7 +49,12 @@ public class UsuarioController {
 	public void alterarSenha(@RequestBody AlterarSenhaCommand senhaCommand) throws Exception{
 		usuarioService.alterarSenha(senhaCommand, Sessao.getUsuarioId());	
 	}
-
+	
+	@RequestMapping(value="/auth", method=RequestMethod.POST)
+	public void logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
+		usuarioService.logar(autenticarCommand);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
 	public void recuperarSenha(@RequestBody RecuperarSenhaCommand command) throws Exception {
 		usuarioService.recuperarSenha(command);

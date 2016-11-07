@@ -30,8 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/webapp").permitAll()
         .anyRequest().permitAll()
         .and()
-        .authorizeRequests().antMatchers(HttpMethod.GET,"/publicacao/marcadores").not().permitAll()
-        .and()
          //We filter the api/login requests
         .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
          //And filter other requests to check the presence of JWT in header
