@@ -1,5 +1,6 @@
 package com.appoie.querys;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,16 @@ public class ApoiadorQuery extends BasicQuery {
 		Query query =  em.createNativeQuery("select * from apoiador where usuario_id = :usuarioId and publicacao_id = :publicacaoId", Apoiador.class);
 		query.setParameter("usuarioId", Sessao.getUsuarioId().getValue());
 		query.setParameter("publicacaoId", publicacaoId.getValue());
-		return (Apoiador) query.getSingleResult();
+		
+		try {
+			Apoiador a = (Apoiador) query.getSingleResult();
+			return (Apoiador) query.getSingleResult();
+		}
+		catch(NoResultException e) {
+			return null;
+		}
+		
+		
 	}
 
 }
