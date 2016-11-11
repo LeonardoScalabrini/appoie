@@ -298,6 +298,11 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.status = Status.FECHADO;
 		this.dataFechamento = Calendar.getInstance();
 	}
+
+	public void desapoiar() {
+		this.qtdApoiadores--;
+		
+	}
 	
 	
 	
