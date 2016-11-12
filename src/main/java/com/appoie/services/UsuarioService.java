@@ -107,7 +107,7 @@ public class UsuarioService {
 		try {
 			email = new Email(auth.getName());
 			senha = new Senha(auth.getCredentials().toString());
-			id = usuarioQuery.buscar(email, senha);
+			id = new UsuarioId();
 			isNull(id);
 			cidadeId = cidadeService.getCidadeIdUsuario(id);
 		} catch (Exception e) {
@@ -117,22 +117,26 @@ public class UsuarioService {
 		Sessao.setCidadeId(cidadeId);
 	}
 	
-	public void logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
+	public PerfilDTO logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
-		UsuarioId id;
+		UsuarioId usuarioId;
 		CidadeId cidadeId;
+		PerfilDTO perfilDTO;
+		
 		try {
 			email = new Email(auth.email);
 			senha = new Senha(auth.senha);
-			id = usuarioQuery.buscar(email, senha);
-			isNull(id);
-			cidadeId = cidadeService.getCidadeIdUsuario(id);
+			perfilDTO = usuarioQuery.buscar(email, senha);
+			usuarioId = new UsuarioId(perfilDTO.idUsuario);
+			isNull(usuarioId);
+			cidadeId = cidadeService.getCidadeIdUsuario(usuarioId);
 		} catch (Exception e) {
 			throw new EmailSenhaInvalidoException();
 		}
-		Sessao.setUsuarioId(id);
+		Sessao.setUsuarioId(usuarioId);
 		Sessao.setCidadeId(cidadeId);
+		return perfilDTO;
 	}
 	
 	public void alterarPerfil(PerfilDTO perfilCommand) throws CamposCadastrarException {

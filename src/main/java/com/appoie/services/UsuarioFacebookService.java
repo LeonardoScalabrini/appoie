@@ -64,7 +64,7 @@ public class UsuarioFacebookService {
 			try {
 				email = new Email(command.email);
 				senha = new Senha(command.idFacebook);
-				id = usuarioQuery.buscar(email, senha);
+				id = new UsuarioId();
 				isNull(id);
 				cidadeId = cidadeService.getCidadeIdUsuario(id);
 			} catch (Exception e) {

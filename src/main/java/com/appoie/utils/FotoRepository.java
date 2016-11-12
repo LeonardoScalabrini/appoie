@@ -102,7 +102,9 @@ public class FotoRepository {
 	}
 	
 	public String getBase64(String endereco){
-		
+		if(endereco == null||endereco.isEmpty()){
+			return "";
+		}
 		return Encoder(endereco);
 	}
 }

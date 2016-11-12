@@ -22,14 +22,20 @@ public class UsuarioQuery extends BasicQuery {
 	@Autowired
 	private FotoRepository fotoRepository;
 	
-	public UsuarioId buscar(Email email, Senha senha){
-		Query query = em.createNativeQuery("select id "
+	public PerfilDTO buscar(Email email, Senha senha){
+		Query query = em.createNativeQuery("select id, "
+										  + " nome, sobrenome, sexo, data_de_nascimento"
 				                          + " from usuario where "
 				                                       + "email = :email and "
 				                                       + "senha = :senha");
 		query.setParameter("email", email.getValue());
 		query.setParameter("senha", senha.getValue());
-		return new UsuarioId(query.getSingleResult().toString()); 
+		Object[] perfil = (Object[]) query.getSingleResult();
+		return new PerfilDTO(perfil[0].toString(),
+				 perfil[1].toString(),
+				 perfil[2].toString(), 
+				 perfil[3].toString(), 
+				 perfil[4].toString());
 	}
 	
 	public Usuario buscar(Email email){
@@ -61,20 +67,19 @@ public class UsuarioQuery extends BasicQuery {
 	}
 
 	public PerfilDTO getPerfil(UsuarioId id) {
-		Query query = em.createNativeQuery("select u.id, u.nome, u.sobrenome, u.sexo, u.cep, "
-				+ "u.cidade, u.estado, u.dataNascimento, f.endereco from usuario u fotoPerfil f where u.id = f.id and u.id = :id");
-		query.setParameter("id", id);
-		Object[] perfil = (Object[]) query.getSingleResult(); 
-		
+		Query query = em.createNativeQuery("select u.id, u.nome, u.sobrenome, u.sexo, u.data_de_Nascimento, "
+				+ "f.endereco from usuario u LEFT JOIN foto_perfil f ON f.id = u.id WHERE u.id = :id");
+		query.setParameter("id", id.getValue());
+		Object[] perfil = (Object[]) query.getSingleResult();
+		String enderecoFoto = "";
+		if(perfil[5] != null){
+			enderecoFoto = perfil[5].toString();
+		}
 		return new PerfilDTO(perfil[0].toString(),
 								 perfil[1].toString(),
 								 perfil[2].toString(), 
 								 perfil[3].toString(), 
-								 perfil[4].toString(), 
-								 perfil[5].toString(), 
-								 perfil[6].toString(), 
-								 SimpleCalendarFormat.parse(perfil[7].toString()),
-								 fotoRepository.getBase64(perfil[8].toString()));
+								 perfil[4].toString());
 	}
 
 	public void setPassword(String email, String password) {

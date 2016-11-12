@@ -14,6 +14,7 @@ import com.appoie.commands.CadastrarCommand;
 import com.appoie.dto.PerfilDTO;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
+import com.appoie.utils.SimpleCalendarFormat;
 
 import static com.appoie.utils.ValidationObject.*;
 
@@ -83,7 +84,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setNome(perfilCommand.nome);
 		setSobrenome(perfilCommand.sobrenome);
 		setSexo(perfilCommand.sexo);
-		setDataDeNascimento(perfilCommand.dataDeNascimento);
+		setDataDeNascimento(SimpleCalendarFormat.parse(perfilCommand.dataDeNascimento));
 	}
 	
 	public void setNome(String nome) throws Exception{

@@ -31,7 +31,6 @@ import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Notificacao;
 import com.appoie.models.Publicacao;
 import com.appoie.models.Status;
-import com.appoie.querys.ApoiadorQuery;
 import com.appoie.querys.PublicacaoQuery;
 import com.appoie.repositorys.ApoiadorRepository;
 import com.appoie.repositorys.FotoPublicacaoRepository;
@@ -62,9 +61,6 @@ public class PublicacaoService {
 
 	@Autowired
 	private NotificacaoRepository notificacaoRepo;
-	
-	@Autowired
-	private ApoiadorQuery apoiadorQuery;
 
 	public void salvar(SalvarPublicacaoCommand command) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
@@ -139,21 +135,10 @@ public class PublicacaoService {
 	}
 
 	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {
-		if(apoiadorQuery.getApoiador(publicacaoId) != null) return null;
-		Apoiador apoiador = new Apoiador(publicacaoId, usuarioId);
-		Publicacao p = publicacaoRepository.findOne(publicacaoId);
-		p.apoiar();
-		apoiadorRepository.save(apoiador);
-		publicacaoRepository.save(p);
-		return apoiador.getId();
+		return null;
 	}
 
 	public void desapoiar(PublicacaoId id) {
-		Apoiador a = apoiadorQuery.getApoiador(id);
-		apoiadorRepository.delete(a);
-		Publicacao p = publicacaoRepository.findOne(id);
-		p.desapoiar();
-		publicacaoRepository.save(p);
 	}
 
 	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacao(VerificaFechamentoPublicacaoCommand command) {

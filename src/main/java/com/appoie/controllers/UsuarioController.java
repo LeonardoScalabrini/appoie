@@ -51,8 +51,9 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value="/auth", method=RequestMethod.POST)
-	public void logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
-		usuarioService.logar(autenticarCommand);
+	@ResponseBody
+	public PerfilDTO logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
+		return usuarioService.logar(autenticarCommand);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
