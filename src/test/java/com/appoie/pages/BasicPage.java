@@ -4,12 +4,12 @@ import org.openqa.selenium.WebDriver;
 
 public abstract class BasicPage {
 	private final int UMSEGUNDO = 1000;
-	private final String LOCAL_HOST = "http://localhost:9092/";
+	protected String getLocalHost(){ return "http://localhost:9092/";};
 	protected final WebDriver driver; 
 	
 	protected final void visita(String page){
 		esperar();
-		driver.get(LOCAL_HOST + page); 
+		driver.get(getLocalHost() + page); 
 	}
 	
 	public BasicPage(WebDriver driver) {

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 
 import com.appoie.ids.FotoPerfilId;
 import com.appoie.ids.UsuarioId;
+import com.appoie.utils.ValidationObject;
+import com.appoie.utils.ValidationString;
 
 @Entity
 public class FotoPerfil extends BasicEntity<FotoPerfilId> {
@@ -15,17 +17,23 @@ public class FotoPerfil extends BasicEntity<FotoPerfilId> {
 
 	public FotoPerfil(UsuarioId id, String endereco) {
 		this();
+		ValidationObject.isNull(id);
+		ValidationString.isNullOrEmpty(endereco);
 		this.id = id;
 		this.endereco = endereco;
 
 	}
 
-	public FotoPerfil() {
+	private FotoPerfil() {
 		super(new FotoPerfilId());
 		
 	}
 
 	public String getEndereco() {
 		return endereco;
+	}
+	
+	public UsuarioId getUsuarioId(){
+		return id;
 	}
 }

@@ -90,12 +90,21 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		this.qtdApoiadores++;
 	}
 
-	
 	private void setFotos(List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException {
-		if (fotosId.size() < 1 || fotosId.size() > 3)
+		try {
+			isNull(fotosId);
+
+			if (fotosId.size() < 1 || fotosId.size() > 3)
+				throw new QuantidadeFotosPublicacaoException();
+			
+			for (FotoPublicacaoId fotoPublicacaoId : fotosId) {
+				isNull(fotoPublicacaoId);
+			}
+
+		} catch (Exception e) {
 			throw new QuantidadeFotosPublicacaoException();
-		
-			this.fotosId = fotosId;
+		}
+					this.fotosId = fotosId;
 	}
 	
 	private void setCidadeId(CidadeId cidadeId) {
@@ -161,7 +170,6 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return latitude;
 	}
 
-
 	public Double getLongitude() {
 		return longitude;
 	}
@@ -170,8 +178,6 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return qtdApoiadores;
 	}
 	
-	
-
 	public Status getStatus() {
 		return status;
 	}
@@ -183,124 +189,13 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	public CriticidadeProblema getCriticidade() {
 		return criticidade;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
-		result = prime * result + ((cidadeId == null) ? 0 : cidadeId.hashCode());
-		result = prime * result + ((dataPublicacao == null) ? 0 : dataPublicacao.hashCode());
-		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + ((fotosId == null) ? 0 : fotosId.hashCode());
-		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
-		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
-		result = prime * result + ((qtdApoiadores == null) ? 0 : qtdApoiadores.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
-		result = prime * result + ((usuarioId == null) ? 0 : usuarioId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Publicacao)) {
-			return false;
-		}
-		Publicacao other = (Publicacao) obj;
-		if (categoria != other.categoria) {
-			return false;
-		}
-		if (cidadeId == null) {
-			if (other.cidadeId != null) {
-				return false;
-			}
-		} else if (!cidadeId.equals(other.cidadeId)) {
-			return false;
-		}
-		if (dataPublicacao == null) {
-			if (other.dataPublicacao != null) {
-				return false;
-			}
-		} else if (!dataPublicacao.equals(other.dataPublicacao)) {
-			return false;
-		}
-		if (descricao == null) {
-			if (other.descricao != null) {
-				return false;
-			}
-		} else if (!descricao.equals(other.descricao)) {
-			return false;
-		}
-		if (fotosId == null) {
-			if (other.fotosId != null) {
-				return false;
-			}
-		} else if (!fotosId.equals(other.fotosId)) {
-			return false;
-		}
-		if (latitude == null) {
-			if (other.latitude != null) {
-				return false;
-			}
-		} else if (!latitude.equals(other.latitude)) {
-			return false;
-		}
-		if (longitude == null) {
-			if (other.longitude != null) {
-				return false;
-			}
-		} else if (!longitude.equals(other.longitude)) {
-			return false;
-		}
-		if (qtdApoiadores == null) {
-			if (other.qtdApoiadores != null) {
-				return false;
-			}
-		} else if (!qtdApoiadores.equals(other.qtdApoiadores)) {
-			return false;
-		}
-		if (status != other.status) {
-			return false;
-		}
-		if (titulo == null) {
-			if (other.titulo != null) {
-				return false;
-			}
-		} else if (!titulo.equals(other.titulo)) {
-			return false;
-		}
-		if (usuarioId == null) {
-			if (other.usuarioId != null) {
-				return false;
-			}
-		} else if (!usuarioId.equals(other.usuarioId)) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Publicacao [usuarioId=" + usuarioId + ", cidadeId=" + cidadeId + ", titulo=" + titulo + ", descricao="
-				+ descricao + ", categoria=" + categoria + ", status=" + status + ", dataPublicacao=" + dataPublicacao
-				+ ", fotosId=" + fotosId + ", qtdApoiadores=" + qtdApoiadores + ", latitude=" + latitude
-				+ ", longitude=" + longitude + ", criticidade=" + criticidade + "]";
+	
+	public Calendar getDataFechamento(){
+		return dataFechamento;
 	}
 	
 	public void fechar() {
 		this.status = Status.FECHADO;
 		this.dataFechamento = Calendar.getInstance();
 	}
-	
-	
-	
-	
-	
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -207,6 +206,7 @@ public class PublicacaoQuery extends BasicQuery {
 						+ "where p.usuario_id = :idUsuario and n.data_proxima_notificacao <= now()");
 		query.setParameter("idUsuario", Sessao.getUsuarioId().getValue());
 
+		@SuppressWarnings("unchecked")
 		List<Object[]> publicacoes = query.getResultList();
 
 		List<NotificacaoPublicacaoDTO> commands = new ArrayList<>();

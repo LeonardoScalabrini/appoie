@@ -4,12 +4,6 @@ import com.appoie.utils.FotoRepository;
 
 public enum Categoria {
 
-	
-	
-
-	
-
-	
 	ARBORIZACAO, DEFESACIVIL, FUNDODEVALE, ILUMINACAO,
 	PAVIMENTACAO, SANEAMENTOBASICO, SEGURANCA, TERRENOBALDIO, 
 	TRANSPORTEPUBLICO;

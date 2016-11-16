@@ -35,7 +35,7 @@ public class HomePage extends BasicPage{
 	
 	public void logar(){
 		esperar();
-		driver.findElement(By.name("botaoEntrar")).click();
+		driver.findElement(By.name("appoieButton")).click();
 	}
 	
 	public HomePage email(String email){

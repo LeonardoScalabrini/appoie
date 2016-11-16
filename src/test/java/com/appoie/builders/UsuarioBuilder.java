@@ -31,7 +31,7 @@ public class UsuarioBuilder {
 		sexo = Sexo.MASCULINO.toString();
 		email = "teste@teste.com.br";
 		senha = "123456";
-		cidadeId = new CidadeId();
+		cidadeId = new CidadeId("CIDADE_ID");
 		
 	}
 	
@@ -67,6 +67,11 @@ public class UsuarioBuilder {
 	
 	public UsuarioBuilder senha(String senha){
 		this.senha = senha;
+		return this;
+	}
+	
+	public UsuarioBuilder cidadeId(CidadeId cidadeId){
+		this.cidadeId = cidadeId;
 		return this;
 	}
 }

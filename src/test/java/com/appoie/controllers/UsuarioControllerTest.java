@@ -1,4 +1,4 @@
-/*package com.appoie.controllers;
+package com.appoie.controllers;
 
 import org.junit.After;
 import static org.junit.Assert.*;
@@ -15,20 +15,26 @@ import com.appoie.AppoieApplication;
 import com.appoie.builders.UsuarioBuilder;
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
+import com.appoie.ids.EstadoId;
+import com.appoie.models.Cidade;
 import com.appoie.models.Usuario;
 import com.appoie.pages.CadastrarPage;
 import com.appoie.pages.HomePage;
+import com.appoie.repositorys.CidadeRepository;
 import com.appoie.repositorys.UsuarioRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppoieApplication.class)
 public class UsuarioControllerTest {
 	
-	private final String LOGIN_SENHA_INVALIDOS = "Login ou senha inválidos";
+	private final String LOGIN_SENHA_INVALIDOS = "Email e/ou senha inválidos";
 	private final String CAMPOS_ERRADOS = "Informe os campos corretamente";
 	
 	@Autowired
 	private UsuarioRepository repository; 
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
 	
 	private WebDriver driver;
 	
@@ -55,7 +61,8 @@ public class UsuarioControllerTest {
 		cadastrarPage = home.cadastrar();
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem("Concluído!"));
+		cadastrarPage.esperar();
+		assertTrue(cadastrarPage.contem("Cadastrado com sucesso"));
 	}
 	
 	@Test
@@ -186,6 +193,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarEmail(email);
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
+		cadastrarPage.esperar();
 		assertTrue(cadastrarPage.contem("O email já existe no sistema!"));
 	}
 	
@@ -193,8 +201,12 @@ public class UsuarioControllerTest {
 	public void deveRealizarLogin() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
 		String email = "teste@teste.com.br";
 		String senha = "123456";
-		//Usuario usuario = new UsuarioBuilder().email(email).senha(senha).criar();
-		//repository.save(usuario);
+		
+		Cidade cidade = new Cidade(new EstadoId(), "Maringá");
+		cidadeRepository.save(cidade);
+		
+		Usuario usuario = new UsuarioBuilder().cidadeId(cidade.getId()).criar();
+		repository.save(usuario);
 		
 		home.email(email);
 		home.senha(senha);
@@ -202,6 +214,7 @@ public class UsuarioControllerTest {
 		home.logar();
 		home.esperar();
 		assertTrue(driver.getCurrentUrl().contains("home"));
+		cidadeRepository.delete(cidade);
 	}
 	
 	@Test
@@ -212,7 +225,7 @@ public class UsuarioControllerTest {
 	
 	@Test
 	public void naoDeveRealizarLoginSemEmail(){
-		home.email("teste@teste.com.br");
+		home.email("");
 		home.preencher();
 		home.logar();
 		assertTrue(home.contem(LOGIN_SENHA_INVALIDOS));
@@ -226,4 +239,4 @@ public class UsuarioControllerTest {
 		assertTrue(home.contem(LOGIN_SENHA_INVALIDOS));
 	}
 
-}*/
+}

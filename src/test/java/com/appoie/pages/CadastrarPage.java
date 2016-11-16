@@ -35,6 +35,7 @@ public class CadastrarPage extends BasicPage{
 		driver.findElement(By.name("senha")).sendKeys(senha);
 		driver.findElement(By.name("confirmaSenha")).sendKeys(confirmarSenha);
 		driver.findElement(By.name("cep")).sendKeys("87111220");
+		driver.findElement(By.name("cidade")).sendKeys("Sarandi");
 	}
 	
 	public CadastrarPage nome(String nome){

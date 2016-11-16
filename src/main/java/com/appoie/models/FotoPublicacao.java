@@ -15,7 +15,7 @@ public class FotoPublicacao extends BasicEntity<FotoPublicacaoId> {
 	}
 
 	public FotoPublicacao(FotoPublicacaoId id, String endereco) {
-		this();
+		super(id);
 		isNullOrEmpty(endereco);
 		this.endereco = endereco;
 		super.setId(id);

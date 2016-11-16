@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
+import com.appoie.utils.ValidationObject;
 
 @Entity
 public class Apoiador extends BasicEntity<ApoiadorId> {
@@ -20,25 +21,19 @@ public class Apoiador extends BasicEntity<ApoiadorId> {
 		super(new ApoiadorId());
 	}
 
-	public Apoiador(PublicacaoId idPublicacao, UsuarioId idApoiador) {
-		super(new ApoiadorId());
-		this.setApoiador(idApoiador);
-		this.setIdPublicacao(idPublicacao);
-	}
-
-	private void setApoiador(UsuarioId idApoiador) {
-		this.apoiador = idApoiador;
-	}
-
-	private void setIdPublicacao(PublicacaoId idPublicacao) {
+	public Apoiador(PublicacaoId idPublicacao, UsuarioId usuarioId) {
+		this();
+		ValidationObject.isNull(usuarioId);
+		ValidationObject.isNull(idPublicacao);
 		this.idPublicacao = idPublicacao;
+		this.apoiador = usuarioId;
 	}
 
 	public PublicacaoId getIdPublicacao() {
 		return idPublicacao;
 	}
 
-	public UsuarioId getApoiadores() {
+	public UsuarioId getApoiador() {
 		return apoiador;
 	}
 

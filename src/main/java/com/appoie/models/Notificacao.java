@@ -1,7 +1,6 @@
 package com.appoie.models;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
@@ -12,6 +11,7 @@ import javax.persistence.TemporalType;
 import com.appoie.ids.NotificacaoId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
+import com.appoie.utils.ValidationObject;
 
 @Entity
 public class Notificacao extends BasicEntity<NotificacaoId> {
@@ -22,24 +22,39 @@ public class Notificacao extends BasicEntity<NotificacaoId> {
 	@AttributeOverride(name = "id", column = @Column(name = "usuario_id") )
 	private UsuarioId idUsuario;
 
-	public Notificacao() {
+	private Notificacao() {
 		super(new NotificacaoId());
 	}
 
 	public Notificacao(Calendar data, PublicacaoId idPublicacao, UsuarioId idUsuario) {
-		super(new NotificacaoId());
-		this.dataProximaNotificacao = data;
-		this.idPublicacao = idPublicacao;
-		this.idUsuario = idUsuario;
+		this();
+		setDataProximaNotificacao(data);
+		setPublicacaoId(idPublicacao);
+		setUsuarioId(idUsuario);
 	}
 
 	public Notificacao(NotificacaoId idNotificacao, Calendar data, PublicacaoId publicacaoId, UsuarioId usuarioId) {
 		super(idNotificacao);
-		this.dataProximaNotificacao = data;
+		setDataProximaNotificacao(data);
+		setPublicacaoId(publicacaoId);
+		setUsuarioId(usuarioId);
+	}
+	
+	private void setDataProximaNotificacao(Calendar dataProximaNotificacao){
+		ValidationObject.isNull(dataProximaNotificacao);
+		this.dataProximaNotificacao = dataProximaNotificacao;
+	}
+	
+	private void setPublicacaoId(PublicacaoId publicacaoId){
+		ValidationObject.isNull(publicacaoId);
 		this.idPublicacao = publicacaoId;
+	}
+	
+	private void setUsuarioId(UsuarioId usuarioId){
+		ValidationObject.isNull(usuarioId);
 		this.idUsuario = usuarioId;
 	}
-
+	
 	public Calendar getDataProximaNotificacao() {
 		return dataProximaNotificacao;
 	}

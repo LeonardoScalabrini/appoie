@@ -3,9 +3,6 @@ package com.appoie.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,10 +47,6 @@ public class PublicacaoController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/marcadores")
 	public List<PublicacaoMarcacaoDTO> recuperarMarcadores() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null||!authentication.isAuthenticated()){
-			throw new AccessDeniedException("403 returned");
-		}
 		return service.getMarcadores(Sessao.getCidadeId());
 	}
 
