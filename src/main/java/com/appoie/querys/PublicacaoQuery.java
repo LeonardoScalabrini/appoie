@@ -86,17 +86,20 @@ public class PublicacaoQuery extends BasicQuery {
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
 		Query query = em.createNativeQuery(
-				"select id, titulo, descricao, categoria, data_Publicacao, qtd_apoiadores, status, criticidade"
-						+ " from publicacao where id = :id");
+				"select p.id, p.titulo, p.descricao, p.categoria, p.data_Publicacao, p.qtd_apoiadores, p.status, p.criticidade, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, a.id as idApoiador"
+						+ " from publicacao p left join apoiador a on p.id = a.publicacao_id where p.id = :id");
 
 		query.setParameter("id", id.getValue());
+		query.setParameter("idUsuario", Sessao.getUsuarioId().getValue());
 
 		Object[] publicacao = (Object[]) query.getSingleResult();
+		
+		System.out.println(publicacao);
 
 		return new PublicacaoDetalhadaDTO(publicacao[0].toString(), publicacao[1].toString(), publicacao[2].toString(),
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id),
-				CriticidadeProblema.valueOf(publicacao[7].toString()));
+				CriticidadeProblema.valueOf(publicacao[7].toString()), publicacao[8].toString(), publicacao[9]);
 	}
 
 	public boolean verificaListaSituacoes(List<String> lista) {

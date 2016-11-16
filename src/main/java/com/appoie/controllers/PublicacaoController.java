@@ -83,7 +83,7 @@ public class PublicacaoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/desapoiar/{id}")
-	public void desapoiar(@PathVariable ApoiadorId id) {
+	public void desapoiar(@PathVariable PublicacaoId id) {
 		service.desapoiar(id);
 	}
 	
