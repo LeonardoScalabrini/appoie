@@ -18,6 +18,7 @@ public class PublicacaoDetalhadaDTO {
 	public final CriticidadeProblema criticidade;
 	public final boolean apoiado;
 	public final String idApoiador;
+	public final String categoria;
 	
 	public PublicacaoDetalhadaDTO(String idPublicacao, String titulo, String descricao, String categoria,
 			String dataPublicacao, int qtdApoiadores, Status status, List<SalvarFotoPublicacaoCommand> fotos, CriticidadeProblema criticidade, String publicacaoApoiada,
@@ -30,6 +31,7 @@ public class PublicacaoDetalhadaDTO {
 		this.status = status;
 		this.fotos = fotos;
 		this.criticidade = criticidade;
+		this.categoria = categoria;
 		this.apoiado = publicacaoApoiada.equalsIgnoreCase("s");
 		if (idApoiador == null)
 			this.idApoiador = "";
