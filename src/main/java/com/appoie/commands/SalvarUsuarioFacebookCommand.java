@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 		public final String email;		
 		public final String nomeCidade;
 		public final String foto;
+		public final String nomeEstado;
 
 		@JsonCreator
 		public SalvarUsuarioFacebookCommand(@JsonProperty(value ="idFacebook")String idFacebook,
@@ -23,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 				@JsonProperty(value = "sexo") String sexo,	
 				@JsonProperty(value ="email") String email,
 				@JsonProperty(value = "nomeCidade") String nomeCidade,
-				@JsonProperty("foto")String foto) {
+				@JsonProperty("foto")String foto, 
+				@JsonProperty("nomeEstado") String estado) {
             this.idFacebook =idFacebook;
 			this.nome = nome;
 			this.sobrenome = sobrenome;	
@@ -32,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 			this.email = email;	
 			this.nomeCidade =nomeCidade;
 			this.foto =foto;
+			this.nomeEstado = estado;
 			
 		}
 

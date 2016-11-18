@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.SalvarUsuarioFacebookCommand;
 import com.appoie.dto.InformacoesUsuarioDTO;
+import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.services.UsuarioFacebookService;
 
 @RestController
@@ -17,11 +18,16 @@ import com.appoie.services.UsuarioFacebookService;
 public class UsuarioFacebookController {
 	@Autowired
 	private UsuarioFacebookService serviceFacebook;
-	
-	@RequestMapping(method = RequestMethod.POST,value = "/salvar")
-	public InformacoesUsuarioDTO salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command,HttpSession session) throws Exception {
-		return serviceFacebook.salvar(command,session);
+
+	@RequestMapping(method = RequestMethod.POST, value = "/salvar")
+	public InformacoesUsuarioDTO salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command,
+			HttpSession session) throws Exception {
+		return serviceFacebook.salvar(command, session);
 	}
 	
-	
+	@RequestMapping(method = RequestMethod.POST, value = "/acesso")
+	public boolean getSituacaoAcesso(@RequestBody String email) throws EmailFormatoException {
+		return serviceFacebook.getSituacaoAcesso(email);
+	}
+
 }

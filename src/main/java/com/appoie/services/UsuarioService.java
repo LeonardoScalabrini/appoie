@@ -134,7 +134,7 @@ public class UsuarioService {
 		}
 		Sessao.setUsuarioId(id);
 		Sessao.setCidadeId(cidadeId);
-		return usuarioQuery.buscarInformacoesDetalhadas(auth.email, false);
+		return usuarioQuery.buscarInformacoesDetalhadas(auth.email);
 	}
 	
 	public void alterarPerfil(PerfilDTO perfilCommand) throws CamposCadastrarException {

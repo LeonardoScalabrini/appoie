@@ -78,7 +78,7 @@ public class UsuarioQuery extends BasicQuery {
 
 	}
 
-	public InformacoesUsuarioDTO buscarInformacoesDetalhadas(String email, boolean acesso) {
+	public InformacoesUsuarioDTO buscarInformacoesDetalhadas(String email) {
 		Query query = em.createNativeQuery("select u.nome, u.sobrenome, u.email, c.nome as cidade, e.nome as estado from usuario u "
 				+ "inner join cidade c on (u.cidade_id = c.id) inner join estado e on (c.estado_id = e.id ) "
 				+ "where u.email = :email");
@@ -86,8 +86,7 @@ public class UsuarioQuery extends BasicQuery {
 		Object[] informacoesUsuario = (Object[]) query.getSingleResult();
 		
 		return new InformacoesUsuarioDTO(informacoesUsuario[0].toString(), informacoesUsuario[1].toString(),
-				informacoesUsuario[2].toString(), informacoesUsuario[3].toString(), informacoesUsuario[4].toString(),
-				acesso);
+				informacoesUsuario[2].toString(), informacoesUsuario[3].toString(), informacoesUsuario[4].toString());
 
 	}
 }
