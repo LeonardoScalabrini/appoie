@@ -13,6 +13,7 @@ import com.appoie.commands.AlterarEmailCommand;
 import com.appoie.commands.AlterarSenhaCommand;
 import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
+import com.appoie.dto.InformacoesUsuarioDTO;
 import com.appoie.dto.PerfilDTO;
 import com.appoie.services.UsuarioService;
 import com.appoie.utils.Sessao;
@@ -51,8 +52,8 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value="/auth", method=RequestMethod.POST)
-	public void logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
-		usuarioService.logar(autenticarCommand);
+	public InformacoesUsuarioDTO logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
+		return usuarioService.logar(autenticarCommand);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
