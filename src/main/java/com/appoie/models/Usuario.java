@@ -4,11 +4,9 @@ import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -52,7 +50,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		this.nome = facebookCommand.nome;
 		this.sobrenome = facebookCommand.sobrenome;	
 		this.dataDeNascimento = facebookCommand.dataDeNascimento;
-		this.sexo = Sexo.valueOf(facebookCommand.sexo);
+		this.sexo = Sexo.valueOf(facebookCommand.sexo.toUpperCase());
 		this.email = new Email(facebookCommand.email);		
 	}
 	
@@ -82,32 +80,32 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setDataDeNascimento(perfilCommand.dataDeNascimento);
 	}
 	
-	public void setNome(String nome) throws Exception{
+	private void setNome(String nome) throws Exception{
 		isNullOrEmpty(nome);
 		this.nome = nome;
 	}
 	
-	public void setSobrenome(String sobrenome) throws Exception{
+	private void setSobrenome(String sobrenome) throws Exception{
 		isNullOrEmpty(sobrenome);
 		this.sobrenome = sobrenome;
 	}
 	
-	public void setDataDeNascimento(Calendar dataDeNascimento) throws Exception{
+	private void setDataDeNascimento(Calendar dataDeNascimento) throws Exception{
 		isNull(dataDeNascimento);
 		this.dataDeNascimento = dataDeNascimento;
 	}
 	
-	public void setEmail (Email email) throws Exception{
+	private void setEmail (Email email) throws Exception{
 		isNull(email);
 		this.email = email;
 	}
 	
-	public void setSexo (String sexo) throws Exception{
+	private void setSexo (String sexo) throws Exception{
 		isNullOrEmpty(sexo);
 		this.sexo = Sexo.valueOf(sexo.toUpperCase());
 	}
 	
-	public void setSenha(Senha senha) throws Exception{
+	private void setSenha(Senha senha) throws Exception{
 		isNull(senha);
 		this.senha = senha;
 	}

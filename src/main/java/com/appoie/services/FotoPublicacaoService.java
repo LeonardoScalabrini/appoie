@@ -15,26 +15,10 @@ public class FotoPublicacaoService {
 
 	private FotoRepository repository = new FotoRepository(TipoImagem.PNG);
 	
-	public List<FotoPublicacao> salvar(List<String> fotos) {
+	public FotoPublicacao salvar(String foto) {
+		FotoPublicacaoId id = new FotoPublicacaoId();
+		FotoPublicacao fotoPublicacao = new FotoPublicacao(id, repository.save(foto, id.getValue()));
 		
-		List<FotoPublicacao> fotosPublicacao = new ArrayList<>();
-		for (String foto : fotos) {
-			FotoPublicacaoId id = new FotoPublicacaoId();
-			FotoPublicacao fotoPublicacao = new FotoPublicacao(id, repository.save(foto, id.getValue()));
-			fotosPublicacao.add(fotoPublicacao);
-		}
-		
-		return fotosPublicacao;
+		return fotoPublicacao;
 	}
-
-	public List<FotoPublicacaoId> getFotosPublicacaoId(List<FotoPublicacao> fotosPublicacao) {
-		
-		List<FotoPublicacaoId> fotosPublicacaoId = new ArrayList<>();
-		
-		for (FotoPublicacao fotoPublicacao : fotosPublicacao) {
-			fotosPublicacaoId.add(fotoPublicacao.getId());
-		}
-		return fotosPublicacaoId;
-	}
-
 }

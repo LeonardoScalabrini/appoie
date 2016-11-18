@@ -68,9 +68,8 @@ public class PublicacaoService {
 
 	public void salvar(SalvarPublicacaoCommand command) throws QuantidadeFotosPublicacaoException {
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
-		List<FotoPublicacao> fotosPublicacao = fotoPublicacaoService.salvar(command.fotos);
-		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId,
-				fotoPublicacaoService.getFotosPublicacaoId(fotosPublicacao));
+		FotoPublicacao fotosPublicacao = fotoPublicacaoService.salvar(command.foto);
+		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId, fotosPublicacao.getId());
 
 		publicacaoRepository.save(publicacao);
 		fotosPublicacaoRepository.save(fotosPublicacao);

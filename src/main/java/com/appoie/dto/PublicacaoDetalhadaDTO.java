@@ -3,6 +3,7 @@ package com.appoie.dto;
 import java.util.List;
 
 import com.appoie.commands.SalvarFotoPublicacaoCommand;
+import com.appoie.models.Categoria;
 import com.appoie.models.CriticidadeProblema;
 import com.appoie.models.Status;
 
@@ -31,7 +32,7 @@ public class PublicacaoDetalhadaDTO {
 		this.status = status;
 		this.fotos = fotos;
 		this.criticidade = criticidade;
-		this.categoria = categoria;
+		this.categoria = Categoria.valueOf(categoria).getDescricao();
 		this.apoiado = publicacaoApoiada.equalsIgnoreCase("s");
 		if (idApoiador == null)
 			this.idApoiador = "";

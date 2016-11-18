@@ -3,9 +3,7 @@ package com.appoie.models;
 import static com.appoie.utils.ValidationObject.isNull;
 import static com.appoie.utils.ValidationString.isNullOrEmpty;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CollectionTable;
@@ -20,7 +18,6 @@ import javax.persistence.TemporalType;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
-import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;
@@ -47,9 +44,8 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	@Temporal(TemporalType.DATE)
 	private Calendar dataPublicacao = Calendar.getInstance();
 
-	@ElementCollection
-	@CollectionTable(name = "FotoPublicacao", joinColumns = @JoinColumn(name = "publicacaoId") )
-	private List<FotoPublicacaoId> fotosId = new ArrayList<>();
+	@AttributeOverride(name = "id", column = @Column(name = "foto_publicacao_id") )
+	private FotoPublicacaoId fotoPublicacaoId;
 	
 	private Long qtdApoiadores = 0L;
 	
@@ -66,14 +62,14 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		super(new PublicacaoId());
 	}
 
-	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException{
+	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, FotoPublicacaoId fotoPublicacaoId){
 		this();
 		setUsuarioId(usuarioId);
 		setCidadeId(cidadeId);
 		setTitulo(command.titulo);
 		setDescricao(command.descricao);
 		setCategoria(command.categoria);
-		setFotos(fotosId);
+		setFoto(fotoPublicacaoId);
 		setLatitude(command.lat);
 		setLongitude(command.lng);
 		status = Status.ABERTO;
@@ -91,21 +87,9 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	}
 
 	
-	private void setFotos(List<FotoPublicacaoId> fotosId) throws QuantidadeFotosPublicacaoException {
-		try{
-			isNull(fotosId);
-			
-			if (fotosId.size() < 1 || fotosId.size() > 3)
-				throw new QuantidadeFotosPublicacaoException();
-			
-			for (FotoPublicacaoId fotoPublicacaoId : fotosId) {
-				isNull(fotoPublicacaoId);
-			}
-		}catch (Exception e) {
-			throw new QuantidadeFotosPublicacaoException();
-		}
-		
-		this.fotosId = fotosId;
+	private void setFoto(FotoPublicacaoId fotoPublicacaoId){
+		isNull(fotoPublicacaoId);	
+		this.fotoPublicacaoId = fotoPublicacaoId;
 	}
 	
 	private void setCidadeId(CidadeId cidadeId) {
@@ -184,8 +168,8 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 		return status;
 	}
 
-	public List<FotoPublicacaoId> getFotosId() {
-		return fotosId;
+	public FotoPublicacaoId getFotoPublicacaoId() {
+		return fotoPublicacaoId;
 	}
 
 	public CriticidadeProblema getCriticidade() {

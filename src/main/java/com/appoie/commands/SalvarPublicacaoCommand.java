@@ -11,7 +11,7 @@ public class SalvarPublicacaoCommand {
 	public final String titulo;
 	public final String descricao;
 	public final String categoria;
-	public final List<String> fotos;
+	public final String foto;
 	public final String estado;
 	public final String cidade;
 	public final Double lat;
@@ -26,7 +26,7 @@ public class SalvarPublicacaoCommand {
 							 @JsonProperty(value = "estado") String estado, 
 							 @JsonProperty(value = "lat") Double lat, 
 							 @JsonProperty(value = "lng") Double lng, 
-							 @JsonProperty(value = "fotos") List<String> fotos,
+							 @JsonProperty(value = "fotos") List<String> foto,
 							 @JsonProperty(value = "criticidade") CriticidadeProblema criticitade) {
 
 		this.titulo = titulo;
@@ -36,7 +36,7 @@ public class SalvarPublicacaoCommand {
 		this.lat = lat;
 		this.lng = lng;
 		this.categoria = categoria;
-		this.fotos = fotos;
+		this.foto = foto.get(0);
 		this.criticidade = CriticidadeProblema.ALTA;
 	}
 
