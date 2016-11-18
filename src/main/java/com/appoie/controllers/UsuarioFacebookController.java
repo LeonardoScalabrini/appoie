@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.SalvarUsuarioFacebookCommand;
+import com.appoie.dto.InformacoesUsuarioDTO;
 import com.appoie.services.UsuarioFacebookService;
 
 @RestController
@@ -18,8 +19,8 @@ public class UsuarioFacebookController {
 	private UsuarioFacebookService serviceFacebook;
 	
 	@RequestMapping(method = RequestMethod.POST,value = "/salvar")
-	public void salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command, HttpSession httpSession) throws Exception {
-		serviceFacebook.salvar(command);
+	public InformacoesUsuarioDTO salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command,HttpSession session) throws Exception {
+		return serviceFacebook.salvar(command,session);
 	}
 	
 	
