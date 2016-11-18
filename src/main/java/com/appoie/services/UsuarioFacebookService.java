@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.SalvarUsuarioFacebookCommand;
+import com.appoie.dto.InformacoesUsuarioDTO;
 import com.appoie.models.Email;
 import com.appoie.models.Usuario;
 import com.appoie.models.UsuarioFacebook;
@@ -23,12 +24,13 @@ public class UsuarioFacebookService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public void salvar(SalvarUsuarioFacebookCommand command) throws Exception {
+	public InformacoesUsuarioDTO salvar(SalvarUsuarioFacebookCommand command) throws Exception {
+		
 		if (usuarioQuery.existeEmail(new Email(command.email))){
 			Usuario usuario = usuarioQuery.buscar(new Email(command.email));
 			Sessao.setUsuarioId(usuario.getId());
 			Sessao.setCidadeId(usuario.getCidadeId());
-			return;
+			return usuarioQuery.buscarInformacoesDetalhadas(command.email, false);
 		}
 		
 		Usuario usuario = new Usuario(command);
@@ -38,5 +40,6 @@ public class UsuarioFacebookService {
 		usuarioRepository.save(usuario);
 		Sessao.setUsuarioId(usuario.getId());
 		Sessao.setCidadeId(usuario.getCidadeId());
+		return usuarioQuery.buscarInformacoesDetalhadas(command.email, true);
 	}
 }

@@ -16,6 +16,7 @@ import com.appoie.commands.AlterarPerfilCommand;
 import com.appoie.commands.AlterarSenhaCommand;
 import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
+import com.appoie.dto.InformacoesUsuarioDTO;
 import com.appoie.exceptions.CamposCadastrarException;
 import com.appoie.exceptions.EmailCadastradoException;
 import com.appoie.exceptions.EmailFormatoException;
@@ -99,7 +100,7 @@ public class UsuarioService {
 		}
 	}
 	
-	public Usuario logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
+	public InformacoesUsuarioDTO logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
 		UsuarioId id;
@@ -115,7 +116,7 @@ public class UsuarioService {
 		}
 		Sessao.setUsuarioId(id);
 		Sessao.setCidadeId(cidadeId);
-		return usuarioRepository.findOne(id);
+		return usuarioQuery.buscarInformacoesDetalhadas(auth.email, false);
 	}
 	
 	public void alterarPerfil(AlterarPerfilCommand perfilCommand) throws CamposCadastrarException {

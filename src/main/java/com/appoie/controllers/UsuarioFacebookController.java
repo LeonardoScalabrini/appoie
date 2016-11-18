@@ -1,7 +1,5 @@
 package com.appoie.controllers;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +17,8 @@ public class UsuarioFacebookController {
 	private UsuarioFacebookService serviceFacebook;
 	
 	@RequestMapping(method = RequestMethod.POST,value = "/salvar")
-	public InformacoesUsuarioDTO salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command,HttpSession session) throws Exception {
-		return serviceFacebook.salvar(command,session);
+	public InformacoesUsuarioDTO salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command) throws Exception {
+		return serviceFacebook.salvar(command);
 	}
 	
 	
