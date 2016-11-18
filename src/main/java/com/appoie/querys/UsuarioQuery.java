@@ -16,6 +16,7 @@ import com.appoie.models.Senha;
 import com.appoie.models.Usuario;
 import com.appoie.utils.FotoRepository;
 import com.appoie.utils.SimpleCalendarFormat;
+import com.appoie.utils.Value;
 
 @Component
 public class UsuarioQuery extends BasicQuery {
@@ -80,13 +81,13 @@ public class UsuarioQuery extends BasicQuery {
 
 	public InformacoesUsuarioDTO buscarInformacoesDetalhadas(String email, boolean acesso) {
 		Query query = em.createNativeQuery("select u.nome, u.sobrenome, u.email, c.nome as cidade, e.nome as estado from usuario u "
-				+ "inner join cidade c on (u.cidade_id = c.id) inner join estado e on (c.estado_id = e.id ) "
+				+ "left join cidade c on (u.cidade_id = c.id) left join estado e on (c.estado_id = e.id ) "
 				+ "where u.email = :email");
 		query.setParameter("email", email);
 		Object[] informacoesUsuario = (Object[]) query.getSingleResult();
 		
-		return new InformacoesUsuarioDTO(informacoesUsuario[0].toString(), informacoesUsuario[1].toString(),
-				informacoesUsuario[2].toString(), informacoesUsuario[3].toString(), informacoesUsuario[4].toString(),
+		return new InformacoesUsuarioDTO(Value.StringOf(informacoesUsuario[0]), Value.StringOf(informacoesUsuario[1]),
+				Value.StringOf(informacoesUsuario[2]), Value.StringOf(informacoesUsuario[3]), Value.StringOf(informacoesUsuario[4]),
 				acesso);
 
 	}
