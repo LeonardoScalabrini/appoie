@@ -4,14 +4,18 @@ import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.appoie.commands.AlterarPerfilCommand;
 import com.appoie.commands.CadastrarCommand;
-import com.appoie.dto.PerfilDTO;
+import com.appoie.commands.SalvarUsuarioFacebookCommand;
+import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.UsuarioId;
 
@@ -21,7 +25,6 @@ import static com.appoie.utils.ValidationString.*;
 
 @Entity
 public class Usuario extends BasicEntity<UsuarioId>{
-	
 	private String nome;
 	private String sobrenome;
 	
@@ -44,22 +47,15 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		super(new UsuarioId());
 	}
 	
-	public Usuario(UsuarioId usuario){		
-		super(usuario);
+	public Usuario(SalvarUsuarioFacebookCommand facebookCommand) throws EmailFormatoException{
+		this();
+		this.nome = facebookCommand.nome;
+		this.sobrenome = facebookCommand.sobrenome;	
+		this.dataDeNascimento = facebookCommand.dataDeNascimento;
+		this.sexo = Sexo.valueOf(facebookCommand.sexo);
+		this.email = new Email(facebookCommand.email);		
 	}
 	
-
-	public Usuario(String nome, String sobrenome, Calendar dataDeNascimento, Sexo sexo, Email email, Senha senha, CidadeId cidadeId) throws Exception{
-		this();
-		setNome(nome);
-		setSobrenome(sobrenome);
-		setDataDeNascimento(dataDeNascimento);
-		setSexo(sexo);
-		setEmail(email);
-		setSenha(senha);
-		setCidadeId(cidadeId);
-	}
-
 	public void setCidadeId(CidadeId cidadeId) {
 		isNull(cidadeId);
 		this.cidadeId = cidadeId;
@@ -78,7 +74,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		setCidadeId(id);
 	}
 	
-	public void alterarPerfil(PerfilDTO perfilCommand) throws Exception {
+	public void alterarPerfil(AlterarPerfilCommand perfilCommand) throws Exception {
 		isNull(perfilCommand);
 		setNome(perfilCommand.nome);
 		setSobrenome(perfilCommand.sobrenome);
@@ -106,9 +102,9 @@ public class Usuario extends BasicEntity<UsuarioId>{
 		this.email = email;
 	}
 	
-	public void setSexo (Sexo sexo) throws Exception{
-		isNull(sexo);
-		this.sexo = sexo;
+	public void setSexo (String sexo) throws Exception{
+		isNullOrEmpty(sexo);
+		this.sexo = Sexo.valueOf(sexo.toUpperCase());
 	}
 	
 	public void setSenha(Senha senha) throws Exception{

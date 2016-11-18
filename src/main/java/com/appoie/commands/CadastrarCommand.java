@@ -2,7 +2,6 @@ package com.appoie.commands;
 
 import java.util.Calendar;
 
-import com.appoie.models.Sexo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,7 +10,7 @@ public class CadastrarCommand {
 	public final String nome;
 	public final String sobrenome;
 	public final Calendar dataDeNascimento;
-	public final Sexo sexo;
+	public final String sexo;
 	public final String email;
 	public final String confirmarEmail;
 	public final String senha;
@@ -36,7 +35,7 @@ public class CadastrarCommand {
 		this.sobrenome = sobrenome;
 		this.cidade = cidade;
 		this.estado = estado;
-		this.sexo = Sexo.valueOf(sexo.toUpperCase());
+		this.sexo = sexo;
 		this.dataDeNascimento = dataDeNascimento;
 		this.email = email;
 		this.confirmarEmail = confirmarEmail;

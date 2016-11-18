@@ -35,7 +35,7 @@ public class UsuarioQueryTest {
 	
 	@Test
 	public void deveBuscarUsuarioId() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		repository.save(usuario);
 		UsuarioId recuperado = query.buscar(usuario.getEmail(), usuario.getSenha());
 		assertTrue(recuperado.getValue().equals(usuario.getId().getValue()));
@@ -43,14 +43,14 @@ public class UsuarioQueryTest {
 	
 	@Test(expected=NoResultException.class)
 	public void nãodeveBuscarUsuarioId() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		
 		query.buscar(usuario.getEmail(), usuario.getSenha());
 	}
 	
 	@Test
 	public void deveBuscarUsuario() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		repository.save(usuario);
 		Usuario recuperado = query.buscar(usuario.getEmail());
 		assertTrue(recuperado.getId().getValue().equals(usuario.getId().getValue()));
@@ -58,14 +58,14 @@ public class UsuarioQueryTest {
 	
 	@Test(expected=NoResultException.class)
 	public void nãoDeveBuscarUsuario() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		
 		query.buscar(usuario.getEmail());
 	}
 	
 	@Test
 	public void deveEncontrarEmail() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		repository.save(usuario);
 		Boolean achou = query.existeEmail(usuario.getEmail());
 		assertTrue(achou);
@@ -73,7 +73,7 @@ public class UsuarioQueryTest {
 	
 	@Test
 	public void nãoDeveEncontrarEmail() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		
 		Boolean achou = query.existeEmail(usuario.getEmail());
 		assertFalse(achou);
@@ -81,14 +81,14 @@ public class UsuarioQueryTest {
 	
 	@Test
 	public void deveExistirUsuario() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		repository.save(usuario);
 		Boolean achou = query.existe(usuario.getEmail(), usuario.getSenha());
 		assertTrue(achou);
 	}
 	
 	public void nãoDeveExistirUsuario() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		
 		Boolean achou = query.existe(usuario.getEmail(), usuario.getSenha());
 		assertFalse(achou);
@@ -96,7 +96,7 @@ public class UsuarioQueryTest {
 	
 	@Test
 	public void deveEncontrarSenha() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		repository.save(usuario);
 		Senha recuperada = query.buscarSenha(usuario.getEmail());
 		assertTrue(recuperada.getValue().equals(usuario.getSenha().getValue()));
@@ -104,7 +104,7 @@ public class UsuarioQueryTest {
 	
 	@Test(expected=NoResultException.class)
 	public void nãoDeveEncontrarSenha() throws Exception{
-		Usuario usuario = new UsuarioBuilder().criar();
+		Usuario usuario = new UsuarioBuilder().cadastrar();
 		query.buscarSenha(usuario.getEmail());
 	}
 }

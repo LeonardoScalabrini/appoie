@@ -1,17 +1,16 @@
-package com.appoie.dto;
+package com.appoie.commands;
 
 import java.util.Calendar;
 
-import com.appoie.models.Sexo;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PerfilDTO {
+public class AlterarPerfilCommand {
 
 	public final String idUsuario;
 	public final String nome;
 	public final String sobrenome;
-	public final Sexo sexo;
+	public final String sexo;
 	public final Calendar dataDeNascimento;
 	public final String foto;
 	public final String cep;
@@ -19,7 +18,7 @@ public class PerfilDTO {
 	public final String estado;
 	
 	@JsonCreator
-	public PerfilDTO(@JsonProperty("idUsuario") String idUsuario,
+	public AlterarPerfilCommand(@JsonProperty("idUsuario") String idUsuario,
 						 @JsonProperty("nome") String nome,
 					 	 @JsonProperty("sobrenome") String sobrenome,
 					 	 @JsonProperty("sexo") String sexo,
@@ -31,13 +30,12 @@ public class PerfilDTO {
 		this.idUsuario = idUsuario;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.sexo = Sexo.valueOf(sexo.toUpperCase());
+		this.sexo = sexo;
 		this.cep = cep;
 		this.cidade = cidade;
 		this.estado = estado;
 		this.dataDeNascimento = dataDeNascimento;
 		this.foto = foto;
-		
 	}
 
 }

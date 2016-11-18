@@ -1,6 +1,7 @@
 package com.appoie.models;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
 
@@ -9,6 +10,7 @@ import static com.appoie.utils.ValidationString.*;
 @Embeddable
 public class Senha {
 	
+	@Transient
 	private final int TAMANHO_MINIMO = 6;
 	
 	private String value;

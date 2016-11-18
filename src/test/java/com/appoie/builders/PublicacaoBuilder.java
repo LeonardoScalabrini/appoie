@@ -88,7 +88,7 @@ public class PublicacaoBuilder {
 	
 	public Publicacao criar() throws QuantidadeFotosPublicacaoException{
 		SalvarPublicacaoCommand command = new SalvarPublicacaoCommand(titulo, descricao, categoria.name(), cidade, estado, 
-				lat, lng, Arrays.asList(foto));
+				lat, lng, Arrays.asList(foto), criticidade);
 				
 		return new Publicacao(command, usuarioId, cidadeId, Arrays.asList(fotoPublicacaoId));
 	}

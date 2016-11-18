@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.AlterarEmailCommand;
+import com.appoie.commands.AlterarPerfilCommand;
 import com.appoie.commands.AlterarSenhaCommand;
 import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
-import com.appoie.dto.PerfilDTO;
 import com.appoie.exceptions.CamposCadastrarException;
 import com.appoie.exceptions.EmailCadastradoException;
 import com.appoie.exceptions.EmailFormatoException;
@@ -99,25 +99,7 @@ public class UsuarioService {
 		}
 	}
 	
-	public void autenticar(Authentication auth) throws EmailSenhaInvalidoException{
-		Email email;
-		Senha senha;
-		UsuarioId id;
-		CidadeId cidadeId;
-		try {
-			email = new Email(auth.getName());
-			senha = new Senha(auth.getCredentials().toString());
-			id = usuarioQuery.buscar(email, senha);
-			isNull(id);
-			cidadeId = cidadeService.getCidadeIdUsuario(id);
-		} catch (Exception e) {
-			throw new EmailSenhaInvalidoException();
-		}
-		Sessao.setUsuarioId(id);
-		Sessao.setCidadeId(cidadeId);
-	}
-	
-	public void logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
+	public Usuario logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
 		Email email;
 		Senha senha;
 		UsuarioId id;
@@ -133,9 +115,10 @@ public class UsuarioService {
 		}
 		Sessao.setUsuarioId(id);
 		Sessao.setCidadeId(cidadeId);
+		return usuarioRepository.findOne(id);
 	}
 	
-	public void alterarPerfil(PerfilDTO perfilCommand) throws CamposCadastrarException {
+	public void alterarPerfil(AlterarPerfilCommand perfilCommand) throws CamposCadastrarException {
 		Usuario usuario = usuarioRepository.findOne(Sessao.getUsuarioId());
 		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(Sessao.getUsuarioId());
 		try {
@@ -187,7 +170,7 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 
-	public PerfilDTO getPerfil() {
+	public AlterarPerfilCommand getPerfil() {
 		return usuarioQuery.getPerfil(Sessao.getUsuarioId());
 	}
 	

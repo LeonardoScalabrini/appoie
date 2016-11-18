@@ -7,7 +7,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.appoie.dto.PerfilDTO;
+import com.appoie.commands.AlterarPerfilCommand;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Email;
@@ -60,13 +60,13 @@ public class UsuarioQuery extends BasicQuery {
 		return new Senha(senha); 
 	}
 
-	public PerfilDTO getPerfil(UsuarioId id) {
+	public AlterarPerfilCommand getPerfil(UsuarioId id) {
 		Query query = em.createNativeQuery("select u.id, u.nome, u.sobrenome, u.sexo, u.cep, "
 				+ "u.cidade, u.estado, u.dataNascimento, f.endereco from usuario u fotoPerfil f where u.id = f.id and u.id = :id");
 		query.setParameter("id", id);
 		Object[] perfil = (Object[]) query.getSingleResult(); 
 		
-		return new PerfilDTO(perfil[0].toString(),
+		return new AlterarPerfilCommand(perfil[0].toString(),
 								 perfil[1].toString(),
 								 perfil[2].toString(), 
 								 perfil[3].toString(), 

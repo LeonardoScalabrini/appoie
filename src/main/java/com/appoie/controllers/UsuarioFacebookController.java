@@ -18,8 +18,8 @@ public class UsuarioFacebookController {
 	private UsuarioFacebookService serviceFacebook;
 	
 	@RequestMapping(method = RequestMethod.POST,value = "/salvar")
-	public void salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command,HttpSession session) throws Exception {
-		serviceFacebook.salvar(command,session);
+	public void salvarUsuarioFacebook(@RequestBody SalvarUsuarioFacebookCommand command, HttpSession httpSession) throws Exception {
+		serviceFacebook.salvar(command);
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.appoie.builders;
 
 import java.util.Calendar;
 
+import com.appoie.commands.AlterarPerfilCommand;
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
@@ -23,19 +24,20 @@ public class UsuarioBuilder {
 	private String confirmarEmail;
 	private String estado;
 	private String confirmarSenha;
+	private String foto;
 	
 	public UsuarioBuilder() throws EmailFormatoException, SenhaTamanhoMinimoException {
 		nome = "teste"; 
 		sobrenome = "teste";
 		dataDeNascimento = Calendar.getInstance();
-		sexo = Sexo.MASCULINO.toString();
+		sexo = Sexo.MASCULINO.name();
 		email = "teste@teste.com.br";
 		senha = "123456";
 		cidadeId = new CidadeId("CIDADE_ID");
 		
 	}
 	
-	public Usuario criar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
+	public Usuario cadastrar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
 		CadastrarCommand cadastrarCommand = new CadastrarCommand(nome, sobrenome, sexo, cep, cidade, estado, dataDeNascimento, email, confirmarEmail, senha, confirmarSenha);
 		return new Usuario(cadastrarCommand, cidadeId);
 	}
@@ -73,5 +75,20 @@ public class UsuarioBuilder {
 	public UsuarioBuilder cidadeId(CidadeId cidadeId){
 		this.cidadeId = cidadeId;
 		return this;
+	}
+	
+	public UsuarioBuilder alterarPerfil(){
+		this.nome = "nomeAlterado";
+		this.sobrenome = "sobrenomeAlterado";
+		this.sexo = "Masculino";
+		this.cidade = "cidadeAlterada";
+		this.estado = "estadoAlterado";
+		this.foto = "foto";
+		this.dataDeNascimento = Calendar.getInstance();
+		return this;
+	}
+	
+	public AlterarPerfilCommand getAlterarPerfilCommand(){
+		return new AlterarPerfilCommand("USUARIO_ID", nome, sobrenome, sexo, cep, cidade, estado, dataDeNascimento, foto);
 	}
 }

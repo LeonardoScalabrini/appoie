@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appoie.commands.CadastrarCommand;
 import com.appoie.commands.AlterarEmailCommand;
+import com.appoie.commands.AlterarPerfilCommand;
 import com.appoie.commands.AlterarSenhaCommand;
 import com.appoie.commands.AutenticarCommand;
 import com.appoie.commands.RecuperarSenhaCommand;
-import com.appoie.dto.PerfilDTO;
+import com.appoie.models.Usuario;
 import com.appoie.services.UsuarioService;
 import com.appoie.utils.Sessao;
 
@@ -31,12 +32,12 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.GET)
-	public @ResponseBody PerfilDTO buscarPerfil() throws Exception{
+	public @ResponseBody AlterarPerfilCommand buscarPerfil() throws Exception{
 		return usuarioService.getPerfil();
 	}
 	
 	@RequestMapping(value="/perfil", method=RequestMethod.PUT)
-	public void alterarPerfil(@RequestBody PerfilDTO perfilCommand) throws Exception{
+	public void alterarPerfil(@RequestBody AlterarPerfilCommand perfilCommand) throws Exception{
 		usuarioService.alterarPerfil(perfilCommand);
 	}
 
@@ -50,9 +51,10 @@ public class UsuarioController {
 		usuarioService.alterarSenha(senhaCommand, Sessao.getUsuarioId());	
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/auth", method=RequestMethod.POST)
-	public void logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
-		usuarioService.logar(autenticarCommand);
+	public Usuario logar(@RequestBody AutenticarCommand autenticarCommand) throws Exception{
+		return usuarioService.logar(autenticarCommand);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/recuperarSenha")
