@@ -79,7 +79,7 @@ public class UsuarioQuery extends BasicQuery {
 	}
 
 	public InformacoesUsuarioDTO buscarInformacoesDetalhadas(String email, boolean acesso) {
-		Query query = em.createNativeQuery("select u.nome, u.sobrenome, u.email, c.nome, e.nome from usuario u "
+		Query query = em.createNativeQuery("select u.nome, u.sobrenome, u.email, c.nome as cidade, e.nome as estado from usuario u "
 				+ "inner join cidade c on (u.cidade_id = c.id) inner join estado e on (c.estado_id = e.id ) "
 				+ "where u.email = :email");
 		query.setParameter("email", email);
