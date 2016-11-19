@@ -69,8 +69,8 @@ public class PublicacaoQuery extends BasicQuery {
 	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id, UsuarioId usuarioId) {
 		Query query = em.createNativeQuery(
 				"select  p.id, p.titulo, p.qtd_apoiadores, p.status, f.endereco, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, a.id as idApoiador, p.criticidade "
-						+ "from publicacao p left join apoiador a on p.id = a.publicacao_id inner join foto_publicacao f on (p.id = f.publicacao_id)"
-						+ " where p.id = :id and p.id = f.publicacao_id limit 1");
+						+ "from publicacao p left join apoiador a on p.id = a.publicacao_id inner join foto_publicacao f on (p.foto_publicacao_id = f.id)"
+						+ " where p.id = :id and p.foto_publicacao_id = f.id limit 1");
 		query.setParameter("id", id.getValue());
 		query.setParameter("idUsuario", usuarioId.getValue());
 
