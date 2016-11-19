@@ -98,7 +98,8 @@ public class PublicacaoQuery extends BasicQuery {
 				+ "     a.id as idApoiador,"
 			    + "     c.nome as nomeCidade, "
                 + "     e.nome as nomeEstado, "
-            	+ "     u.nome as nomeUsuario "
+            	+ "     u.nome as nomeUsuario, "
+            	+ "     u.sobrenome as sobrenomeUsuario "
 				+ " from publicacao p "
 				+ " left join apoiador a on p.id = a.publicacao_id "
 				+"  inner join usuario u on u.id = p.usuario_id "
@@ -117,7 +118,7 @@ public class PublicacaoQuery extends BasicQuery {
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id),
 				CriticidadeProblema.valueOf(publicacao[7].toString()), publicacao[8].toString(), publicacao[9],publicacao[10].toString(), 
-				publicacao[11].toString(), publicacao[12].toString());
+				publicacao[11].toString(), publicacao[12].toString(), publicacao[13].toString());
 	}
 
 	public boolean verificaListaSituacoes(List<String> lista) {

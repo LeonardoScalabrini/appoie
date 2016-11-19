@@ -24,11 +24,12 @@ public class PublicacaoDetalhadaDTO {
 	public final String cidade;
 	public final String estado;
 	public final String usuario;
-	private final Categoria nomeCategoria;
+	public final Categoria nomeCategoria;
+	public final String sobrenomeUsuario;
 	
 	public PublicacaoDetalhadaDTO(String idPublicacao, String titulo, String descricao, String categoria,
 			String dataPublicacao, int qtdApoiadores, Status status, List<SalvarFotoPublicacaoCommand> fotos, CriticidadeProblema criticidade, String publicacaoApoiada,
-			Object idApoiador, String cidade, String estado, String usuario) {
+			Object idApoiador, String cidade, String estado, String usuario, String sobrenome) {
 		this.idPublicacao = idPublicacao;
 		this.titulo = titulo;
 		this.descricao = descricao;
@@ -44,6 +45,7 @@ public class PublicacaoDetalhadaDTO {
 		this.estado = estado;
 		this.usuario = usuario;
 		this.nomeCategoria = Categoria.valueOf(categoria);
+		this.sobrenomeUsuario = sobrenome;
 	}
 
 }
