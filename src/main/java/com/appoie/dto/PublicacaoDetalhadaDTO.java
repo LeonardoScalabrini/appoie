@@ -26,6 +26,7 @@ public class PublicacaoDetalhadaDTO {
 	public final String usuario;
 	public final Categoria nomeCategoria;
 	public final String sobrenomeUsuario;
+	public final String foto;
 	
 	public PublicacaoDetalhadaDTO(String idPublicacao, String titulo, String descricao, String categoria,
 			String dataPublicacao, int qtdApoiadores, Status status, List<SalvarFotoPublicacaoCommand> fotos, CriticidadeProblema criticidade, String publicacaoApoiada,
@@ -46,6 +47,7 @@ public class PublicacaoDetalhadaDTO {
 		this.usuario = usuario;
 		this.nomeCategoria = Categoria.valueOf(categoria);
 		this.sobrenomeUsuario = sobrenome;
+		this.foto = fotos.get(0).foto;
 	}
 
 }
