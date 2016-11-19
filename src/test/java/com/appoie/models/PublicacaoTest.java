@@ -40,7 +40,7 @@ public class PublicacaoTest {
 		Assert.assertTrue(publicacao.getCidadeId().equals(cidadeId));
 		Assert.assertTrue(publicacao.getLatitude().equals(latitude));
 		Assert.assertTrue(publicacao.getLongitude().equals(longitude));
-		Assert.assertTrue(publicacao.getFotosId().get(0).equals(fotoId));
+		Assert.assertTrue(publicacao.getFotoPublicacaoId().equals(fotoId));
 		Assert.assertTrue(publicacao.getCriticidade().equals(criticidadeProblema));
 		Assert.assertTrue(publicacao.getDataPublicacao().equals(hoje));
 		Assert.assertTrue(publicacao.getStatus().equals(Status.ABERTO));
@@ -78,8 +78,8 @@ public class PublicacaoTest {
 		new PublicacaoBuilder().cidadeId(null).criar();
 	}
 	
-	@Test(expected=QuantidadeFotosPublicacaoException.class)
-	public void naodeveCriarComFotoIdNull() throws QuantidadeFotosPublicacaoException{
+	@Test(expected=IllegalArgumentException.class)
+	public void naodeveCriarComFotoIdNull(){
 		new PublicacaoBuilder().fotoPublicacaoId(null).criar();
 	}
 	

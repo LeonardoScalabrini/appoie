@@ -60,4 +60,9 @@ public class UsuarioController {
 	public void recuperarSenha(@RequestBody RecuperarSenhaCommand command) throws Exception {
 		usuarioService.recuperarSenha(command);
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/estado/{estado}")
+	public void pegarEstado(@RequestBody String estado) throws Exception {
+		usuarioService.atribuirEstadoUsuarioLogado(estado);
+	}
 }

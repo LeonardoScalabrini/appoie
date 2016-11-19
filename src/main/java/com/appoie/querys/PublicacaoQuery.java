@@ -86,8 +86,25 @@ public class PublicacaoQuery extends BasicQuery {
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
 		Query query = em.createNativeQuery(
-				"select p.id, p.titulo, p.descricao, p.categoria, p.data_Publicacao, p.qtd_apoiadores, p.status, p.criticidade, CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, a.id as idApoiador"
-						+ " from publicacao p left join apoiador a on p.id = a.publicacao_id where p.id = :id");
+				"select p.id, "
+				+ "     p.titulo, "
+				+ "     p.descricao, "
+				+ "     p.categoria, "
+				+ "     p.data_Publicacao, "
+				+ "     p.qtd_apoiadores, "
+				+ "     p.status, "
+				+ "     p.criticidade, "
+				+ "     CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, "
+				+ "     a.id as idApoiador,"
+				+ "     u.nome as nomeUsuario, "
+                + "     c.nome as nomeCidade, "
+                + "     e.nome as nomeEstado "
+				+ " from publicacao p "
+				+ " left join apoiador a on p.id = a.publicacao_id "
+				+"  inner join usuario u on u.id = p.usuario_id "
+				+"  inner join cidade c on c.id = p.cidade_id "
+				+"  inner join estado e on e.id = c.estado_id "
+				+ "where p.id = :id");
 
 		query.setParameter("id", id.getValue());
 		query.setParameter("idUsuario", Sessao.getUsuarioId().getValue());
@@ -99,7 +116,8 @@ public class PublicacaoQuery extends BasicQuery {
 		return new PublicacaoDetalhadaDTO(publicacao[0].toString(), publicacao[1].toString(), publicacao[2].toString(),
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id),
-				CriticidadeProblema.valueOf(publicacao[7].toString()), publicacao[8].toString(), publicacao[9]);
+				CriticidadeProblema.valueOf(publicacao[7].toString()), publicacao[8].toString(), publicacao[9],publicacao[10].toString(), 
+				publicacao[11].toString(), publicacao[12].toString());
 	}
 
 	public boolean verificaListaSituacoes(List<String> lista) {
@@ -234,7 +252,6 @@ public class PublicacaoQuery extends BasicQuery {
 	}
 	@Transactional
 	public void destruirNotificacao(PublicacaoId id) {
-		
 		Query query = em.createNativeQuery("delete from notificacao where publicacao_id = :id_publicacao");
 		query.setParameter("id_publicacao", id.getValue());		
 		query.executeUpdate();	

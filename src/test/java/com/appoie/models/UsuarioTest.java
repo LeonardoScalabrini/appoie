@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.appoie.builders.UsuarioBuilder;
 import com.appoie.commands.AlterarPerfilCommand;
+import com.appoie.commands.SalvarUsuarioFacebookCommand;
 import com.appoie.exceptions.EmailFormatoException;
 import com.appoie.exceptions.SenhaTamanhoMinimoException;
 import com.appoie.ids.CidadeId;
@@ -81,54 +82,6 @@ public class UsuarioTest {
 		usuario = builder.senha(null).cadastrar();
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarNomeNulo() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setNome(null);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarNomeVazio() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setNome("");
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarSobrenomeNulo() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setSobrenome(null);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarSobrenomeVazio() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setSobrenome("");
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarDataDeNascimentoNula() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setDataDeNascimento(null);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarSexoNulo() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setSexo(null);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarEmailNulo() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setEmail(null);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void nãoDeveSetarSenhaNula() throws Exception {
-		usuario = builder.cadastrar();
-		usuario.setSenha(null);
-	}
-	
 	@Test
 	public void deveAlterarPerfil() throws Exception {
 		usuario = builder.cadastrar();
@@ -188,6 +141,18 @@ public class UsuarioTest {
 		usuario = builder.cadastrar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().dataDeNascimento(null).getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
+	}
+	
+	@Test
+	public void deveCriarUsuarioFacebook() throws EmailFormatoException{
+		Calendar nascimento = Calendar.getInstance();
+		SalvarUsuarioFacebookCommand facebookCommand = new SalvarUsuarioFacebookCommand("ID_FACEBOOK", "Leonardo", "Scalabrini", nascimento, "Masculino", "leoanrdo_scalabrini@hotmail.com", "Maringá", "foto");
+		Usuario usuario = new Usuario(facebookCommand);
+		Assert.assertTrue(usuario.getNome().equals(facebookCommand.nome));
+		Assert.assertTrue(usuario.getSobrenome().equals(facebookCommand.sobrenome));
+		Assert.assertTrue(usuario.getDataDeNascimento().equals(facebookCommand.dataDeNascimento));
+		Assert.assertTrue(usuario.getEmail().getValue().equals(facebookCommand.email));
+		Assert.assertTrue(usuario.getSexo().equals(Sexo.MASCULINO));
 	}
 
 }

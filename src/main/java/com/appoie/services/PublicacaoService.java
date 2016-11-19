@@ -138,7 +138,10 @@ public class PublicacaoService {
 	}
 
 	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {
-		if(apoiadorQuery.getApoiador(publicacaoId) != null) return null;
+		if(apoiadorQuery.getApoiador(publicacaoId) != null){
+			desapoiar(publicacaoId);
+			return null;
+		}
 		Apoiador apoiador = new Apoiador(publicacaoId, usuarioId);
 		Publicacao p = publicacaoRepository.findOne(publicacaoId);
 		p.apoiar();

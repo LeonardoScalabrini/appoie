@@ -35,6 +35,7 @@ import com.appoie.models.Senha;
 import com.appoie.models.Usuario;
 import com.appoie.querys.UsuarioQuery;
 import com.appoie.repositorys.FotoPerfilRepository;
+import com.appoie.repositorys.UsuarioFacebookRepository;
 import com.appoie.repositorys.UsuarioRepository;
 import com.appoie.utils.RandomAlphaNumeric;
 import com.appoie.utils.Sessao;
@@ -54,6 +55,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private CidadeService cidadeService;
+	
+	@Autowired
+	private UsuarioFacebookRepository facebookRepository;
 
 	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
 		
@@ -173,6 +177,10 @@ public class UsuarioService {
 
 	public AlterarPerfilCommand getPerfil() {
 		return usuarioQuery.getPerfil(Sessao.getUsuarioId());
+	}
+
+	public void atribuirEstadoUsuarioLogado(String estado) {
+		
 	}
 	
 }
