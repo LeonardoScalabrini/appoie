@@ -57,6 +57,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	
 	private Publicacao() {
 		super(new PublicacaoId());
+		dataPublicacao.add(Calendar.DAY_OF_MONTH, 10);
 	}
 
 	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, FotoPublicacaoId fotoPublicacaoId){

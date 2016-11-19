@@ -37,7 +37,7 @@ public class SalvarPublicacaoCommand {
 		this.lng = lng;
 		this.categoria = categoria;
 		this.foto = foto.get(0);
-		this.criticidade = CriticidadeProblema.ALTA;
+		this.criticidade = criticitade;
 	}
 
 }
