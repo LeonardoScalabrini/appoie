@@ -164,7 +164,6 @@ public class PublicacaoService {
 	}
 
 	public void fecharPublicacao(PublicacaoId id) throws PublicacaoFechadaException {
-
 		Publicacao p = publicacaoRepository.findOne(id);
 		if (p.getStatus().equals(Status.FECHADO)) {
 			throw new PublicacaoFechadaException();

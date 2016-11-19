@@ -8,6 +8,7 @@ import java.util.Date;
 public class SimpleCalendarFormat {
 
 	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
+	private static String format = SIMPLE_FORMAT;
 
 	public static Calendar parse(String stringData) {
 
@@ -20,24 +21,16 @@ public class SimpleCalendarFormat {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
+		format = SIMPLE_FORMAT;
 		return calendar;
 	}
 
-	// public static Calendar parse(String stringData) {
-	// Calendar c = null;
-	// try {
-	//
-	// SimpleDateFormat formatoData = new SimpleDateFormat(SIMPLE_FORMAT);
-	//
-	// c = Calendar.getInstance();
-	//
-	// c.setTime(formatoData.parse(stringData));
-	//
-	// } catch (ParseException e) {
-	// e.printStackTrace();
-	// }
-	// return c;
-	// }
-
+	public static void format(String format) {
+		SimpleCalendarFormat.format = format;
+	}
+	
+	public static String getFormat(){
+		return format;
+	}
 }

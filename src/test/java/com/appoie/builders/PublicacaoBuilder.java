@@ -3,7 +3,6 @@ package com.appoie.builders;
 import java.util.Arrays;
 
 import com.appoie.commands.SalvarPublicacaoCommand;
-import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.UsuarioId;

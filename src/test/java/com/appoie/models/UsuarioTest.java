@@ -146,7 +146,7 @@ public class UsuarioTest {
 	@Test
 	public void deveCriarUsuarioFacebook() throws EmailFormatoException{
 		Calendar nascimento = Calendar.getInstance();
-		SalvarUsuarioFacebookCommand facebookCommand = new SalvarUsuarioFacebookCommand("ID_FACEBOOK", "Leonardo", "Scalabrini", nascimento, "Masculino", "leoanrdo_scalabrini@hotmail.com", "Maringá", "foto");
+		SalvarUsuarioFacebookCommand facebookCommand = new SalvarUsuarioFacebookCommand("ID_FACEBOOK", "Leonardo", "Scalabrini", nascimento.toString(), "Masculino", "leoanrdo_scalabrini@hotmail.com", "Maringá", "foto");
 		Usuario usuario = new Usuario(facebookCommand);
 		Assert.assertTrue(usuario.getNome().equals(facebookCommand.nome));
 		Assert.assertTrue(usuario.getSobrenome().equals(facebookCommand.sobrenome));

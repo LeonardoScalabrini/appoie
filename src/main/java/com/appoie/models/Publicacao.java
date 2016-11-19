@@ -6,18 +6,15 @@ import static com.appoie.utils.ValidationString.isNullOrEmpty;
 import java.util.Calendar;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.commands.EditarPublicacaoCommand;
+import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.ids.PublicacaoId;

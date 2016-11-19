@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.appoie.ids.PublicacaoId;
-import com.appoie.ids.UsuarioId;
 import com.appoie.models.Apoiador;
-import com.appoie.models.Usuario;
 import com.appoie.repositorys.ApoiadorRepository;
 import com.appoie.utils.Sessao;
 
@@ -24,7 +22,6 @@ public class ApoiadorQuery extends BasicQuery {
 		query.setParameter("publicacaoId", publicacaoId.getValue());
 		
 		try {
-			Apoiador a = (Apoiador) query.getSingleResult();
 			return (Apoiador) query.getSingleResult();
 		}
 		catch(NoResultException e) {

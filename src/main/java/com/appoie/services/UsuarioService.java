@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.appoie.commands.CadastrarCommand;
@@ -180,7 +179,11 @@ public class UsuarioService {
 	}
 
 	public void atribuirEstadoUsuarioLogado(String estado) {
-		
+		String nomeCidade = facebookRepository.getOne(Sessao.getUsuarioId()).getNomeCidade();
+		Cidade cidade = cidadeService.getCidade(nomeCidade, estado);
+		Usuario usuario = usuarioRepository.getOne(Sessao.getUsuarioId());
+		usuario.setCidadeId(cidade.getId());
+		usuarioRepository.save(usuario);
 	}
 	
 }

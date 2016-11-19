@@ -2,6 +2,7 @@ package com.appoie.commands;
 
 import java.util.Calendar;
 
+import com.appoie.utils.SimpleCalendarFormat;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,15 +20,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 		public SalvarUsuarioFacebookCommand(@JsonProperty(value ="idFacebook")String idFacebook,
 				@JsonProperty(value = "nome") String nome,				
 				@JsonProperty(value = "sobrenome") String sobrenome,
-				@JsonProperty(value = "dataDeNascimento") Calendar dataDeNascimento,
+				@JsonProperty(value = "dataDeNascimento") String dataDeNascimento,
 				@JsonProperty(value = "sexo") String sexo,	
 				@JsonProperty(value ="email") String email,
 				@JsonProperty(value = "nomeCidade") String nomeCidade,
 				@JsonProperty("foto")String foto) {
             this.idFacebook =idFacebook;
 			this.nome = nome;
-			this.sobrenome = sobrenome;	
-			this.dataDeNascimento =dataDeNascimento;
+			this.sobrenome = sobrenome;
+			SimpleCalendarFormat.format("MM/dd/yyyy");
+			this.dataDeNascimento = SimpleCalendarFormat.parse(dataDeNascimento);
 			this.sexo = sexo;			
 			this.email = email;	
 			this.nomeCidade =nomeCidade;
