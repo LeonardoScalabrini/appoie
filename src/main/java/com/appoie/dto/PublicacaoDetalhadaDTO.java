@@ -24,6 +24,7 @@ public class PublicacaoDetalhadaDTO {
 	public final String cidade;
 	public final String estado;
 	public final String usuario;
+	private final Categoria nomeCategoria;
 	
 	public PublicacaoDetalhadaDTO(String idPublicacao, String titulo, String descricao, String categoria,
 			String dataPublicacao, int qtdApoiadores, Status status, List<SalvarFotoPublicacaoCommand> fotos, CriticidadeProblema criticidade, String publicacaoApoiada,
@@ -42,6 +43,7 @@ public class PublicacaoDetalhadaDTO {
 		this.cidade = cidade;
 		this.estado = estado;
 		this.usuario = usuario;
+		this.nomeCategoria = Categoria.valueOf(categoria);
 	}
 
 }
