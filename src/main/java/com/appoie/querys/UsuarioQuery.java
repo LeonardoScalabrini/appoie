@@ -80,7 +80,7 @@ public class UsuarioQuery extends BasicQuery {
 	}
 
 	public InformacoesUsuarioDTO buscarInformacoesDetalhadas(String email, boolean acesso) {
-		Query query = em.createNativeQuery("select u.nome, u.sobrenome, u.email, c.nome as cidade, e.nome as estado from usuario u "
+		Query query = em.createNativeQuery("select u.nome, u.sobrenome, u.email, c.nome as cidade, e.nome as estado, u.data_de_nascimento, u.sexo from usuario u "
 				+ "left join cidade c on (u.cidade_id = c.id) left join estado e on (c.estado_id = e.id ) "
 				+ "where u.email = :email");
 		query.setParameter("email", email);
@@ -88,7 +88,7 @@ public class UsuarioQuery extends BasicQuery {
 		
 		return new InformacoesUsuarioDTO(Value.StringOf(informacoesUsuario[0]), Value.StringOf(informacoesUsuario[1]),
 				Value.StringOf(informacoesUsuario[2]), Value.StringOf(informacoesUsuario[3]), Value.StringOf(informacoesUsuario[4]),
-				acesso);
+				acesso, Value.StringOf(informacoesUsuario[5]), Value.StringOf(informacoesUsuario[6]));
 
 	}
 }
