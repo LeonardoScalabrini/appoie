@@ -21,8 +21,8 @@ public class FotoPublicacaoQuery extends BasicQuery{
 	@SuppressWarnings("unchecked")
 	public List<SalvarFotoPublicacaoCommand> getFotosPublicacaoCommand(PublicacaoId id) {
 		
-		Query query = em.createNativeQuery("select id, endereco from foto_Publicacao f "
-										 + "where f.Publicacao_Id = :id");
+		Query query = em.createNativeQuery("select f.id, f.endereco from foto_Publicacao f inner join publicacao p on p.foto_publicacao_id = f.id"
+										 + " where p.id = :id");
 		
 		query.setParameter("id", id.getValue());
 		
