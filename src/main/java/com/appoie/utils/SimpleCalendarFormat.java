@@ -7,12 +7,12 @@ import java.util.Date;
 
 public class SimpleCalendarFormat {
 
-	private static final String SIMPLE_FORMAT = "yyyy-MM-dd";
-	private static String format = SIMPLE_FORMAT;
+	private final String SIMPLE_FORMAT = "yyyy-MM-dd";
+	private String format = SIMPLE_FORMAT;
 
-	public static Calendar parse(String stringData) {
+	public Calendar parse(String stringData) {
 
-		SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_FORMAT);
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		Calendar calendar = Calendar.getInstance();
 		Date data;
 		try {
@@ -21,16 +21,15 @@ public class SimpleCalendarFormat {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		format = SIMPLE_FORMAT;
 		return calendar;
 	}
 
-	public static void format(String format) {
-		SimpleCalendarFormat.format = format;
+	public SimpleCalendarFormat format(String format) {
+		this.format = format;
+		return this;
 	}
 	
-	public static String getFormat(){
+	public String getFormat(){
 		return format;
 	}
 }

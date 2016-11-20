@@ -57,7 +57,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	
 	private Publicacao() {
 		super(new PublicacaoId());
-		dataPublicacao.add(Calendar.DAY_OF_MONTH, 10);
+		dataPublicacao.setTime(Calendar.getInstance().getTime());
 	}
 
 	public Publicacao(SalvarPublicacaoCommand command, UsuarioId usuarioId, CidadeId cidadeId, FotoPublicacaoId fotoPublicacaoId){
@@ -177,6 +177,7 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	public void fechar() {
 		this.status = Status.FECHADO;
 		this.dataFechamento = Calendar.getInstance();
+		this.dataFechamento.setTime(Calendar.getInstance().getTime());
 	}
 
 	public void desapoiar() {
@@ -190,9 +191,4 @@ public class Publicacao extends BasicEntity<PublicacaoId> {
 	public Calendar getDataFechamento() {
 		return dataFechamento;
 	}
-	
-	
-	
-	
-	
 }

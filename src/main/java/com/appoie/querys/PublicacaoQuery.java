@@ -213,7 +213,7 @@ public class PublicacaoQuery extends BasicQuery {
 			Object[] notificacao = (Object[]) query.getSingleResult();
 
 			Notificacao objNotificacao = new Notificacao(new NotificacaoId(notificacao[0].toString()),
-					SimpleCalendarFormat.parse(notificacao[1].toString()), new PublicacaoId(notificacao[2].toString()),
+					new SimpleCalendarFormat().parse(notificacao[1].toString()), new PublicacaoId(notificacao[2].toString()),
 					new UsuarioId(notificacao[3].toString()));
 						
 			objNotificacao.getDataProximaNotificacao().add(Calendar.DAY_OF_MONTH, +7);

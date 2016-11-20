@@ -68,7 +68,7 @@ public class UsuarioQuery extends BasicQuery {
 
 		return new AlterarPerfilCommand(perfil[0].toString(), perfil[1].toString(), perfil[2].toString(), perfil[3].toString(),
 				perfil[4].toString(), perfil[5].toString(), perfil[6].toString(),
-				SimpleCalendarFormat.parse(perfil[7].toString()), fotoRepository.getBase64(perfil[8].toString()));
+				new SimpleCalendarFormat().parse(perfil[7].toString()), fotoRepository.getBase64(perfil[8].toString()));
 	}
 
 	public void setPassword(String email, String password) {
