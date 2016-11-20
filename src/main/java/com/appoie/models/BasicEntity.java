@@ -16,6 +16,10 @@ public abstract class BasicEntity<EntidadeId extends BasicId>{
 		setId(id);
 	}
 	
+	protected BasicEntity() {
+	
+	}
+	
 	protected final void setId(EntidadeId id){
 		ValidationObject.isNull(id);
 		this.id = id;

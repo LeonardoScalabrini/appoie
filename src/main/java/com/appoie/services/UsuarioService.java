@@ -178,12 +178,13 @@ public class UsuarioService {
 		return usuarioQuery.getPerfil(Sessao.getUsuarioId());
 	}
 
-	public void atribuirEstadoUsuarioLogado(String estado) {
+	public InformacoesUsuarioDTO atribuirEstadoUsuarioLogado(String estado) {
 		String nomeCidade = facebookRepository.getOne(Sessao.getUsuarioId()).getNomeCidade();
 		Cidade cidade = cidadeService.getCidade(nomeCidade, estado);
 		Usuario usuario = usuarioRepository.getOne(Sessao.getUsuarioId());
 		usuario.setCidadeId(cidade.getId());
 		usuarioRepository.save(usuario);
+		return usuarioQuery.buscarInformacoesDetalhadas(usuario.getEmail().getValue(), false);
 	}
 	
 }

@@ -41,12 +41,12 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	@AttributeOverride(name="id",column=@Column(name="cidade_id"))
 	private CidadeId cidadeId;
 	
-	private Usuario() {
-		super(new UsuarioId());
+	public Usuario() {
+
 	}
 	
 	public Usuario(SalvarUsuarioFacebookCommand facebookCommand) throws EmailFormatoException{
-		this();
+		setId(new UsuarioId());
 		this.nome = facebookCommand.nome;
 		this.sobrenome = facebookCommand.sobrenome;	
 		this.dataDeNascimento = facebookCommand.dataDeNascimento;
@@ -61,7 +61,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 
 
 	public Usuario(CadastrarCommand command, CidadeId id) throws Exception{
-		this();
+		setId(new UsuarioId());
 		isNull(command);
 		setNome(command.nome);
 		setSobrenome(command.sobrenome); 

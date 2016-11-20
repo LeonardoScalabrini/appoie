@@ -2,6 +2,7 @@ package com.appoie.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,8 +62,9 @@ public class UsuarioController {
 		usuarioService.recuperarSenha(command);
 	}
 	
+	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/estado/{estado}")
-	public void pegarEstado(@RequestBody String estado) throws Exception {
-		usuarioService.atribuirEstadoUsuarioLogado(estado);
+	public InformacoesUsuarioDTO pegarEstado(@PathVariable String estado) throws Exception {
+		return usuarioService.atribuirEstadoUsuarioLogado(estado);
 	}
 }

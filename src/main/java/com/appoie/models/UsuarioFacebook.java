@@ -9,11 +9,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.appoie.commands.SalvarUsuarioFacebookCommand;
-import com.appoie.ids.UsuarioFacebookId;
 import com.appoie.ids.UsuarioId;
 
 @Entity
-public class UsuarioFacebook extends BasicEntity<UsuarioFacebookId> {	   
+public class UsuarioFacebook extends BasicEntity<UsuarioId> {	   
 	
     private String idFacebook;
     
@@ -23,16 +22,13 @@ public class UsuarioFacebook extends BasicEntity<UsuarioFacebookId> {
     
 	private String nomeCidade;
 	
-	@AttributeOverride(name="id",column=@Column(name="usuario_id"))
-	private UsuarioId usuarioId;
+	public UsuarioFacebook() {
 	
-	private UsuarioFacebook() {
-		super(new UsuarioFacebookId());
 	}
 	
 	public UsuarioFacebook(SalvarUsuarioFacebookCommand command, UsuarioId usuarioId) throws Exception {
 		this();
-		this.usuarioId = usuarioId;
+		setId(usuarioId);
 		setIdFacebook(command.idFacebook);
 		setNomeCidade(command.nomeCidade);
 	}
