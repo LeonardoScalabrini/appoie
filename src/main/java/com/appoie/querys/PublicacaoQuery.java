@@ -178,13 +178,30 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 
 		else {
-			query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-					+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
-					+ "and (p.status in (:status)) " + "and (p.categoria in (:valoresCategorias))" + ")");
+			if(filtroPorData) {
+				query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+						+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
+						+ "and (p.status in (:status)) " + "and (p.categoria in (:valoresCategorias)) and (p.data_publicacao between :dataInicio and :dataFim))");
 
-			query.setParameter("cidadeId", cidadeId.getValue());
-			query.setParameter("status", command.situacoes);
-			query.setParameter("valoresCategorias", command.categorias);
+				query.setParameter("cidadeId", cidadeId.getValue());
+				query.setParameter("status", command.situacoes);
+				query.setParameter("valoresCategorias", command.categorias);
+				query.setParameter("dataInicio", command.dataInicio);
+				query.setParameter("dataFim", command.dataFim);
+				
+			}
+			else {
+				query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+						+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
+						+ "and (p.status in (:status)) " + "and (p.categoria in (:valoresCategorias))" + ")");
+
+				query.setParameter("cidadeId", cidadeId.getValue());
+				query.setParameter("status", command.situacoes);
+				query.setParameter("valoresCategorias", command.categorias);
+				
+			}
+			
+			
 		}
 		List<Object[]> publicacoes = query.getResultList();
 
