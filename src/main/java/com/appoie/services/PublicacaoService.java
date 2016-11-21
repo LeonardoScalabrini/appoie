@@ -62,11 +62,12 @@ public class PublicacaoService {
 
 	@Autowired
 	private NotificacaoRepository notificacaoRepo;
-	
+
 	@Autowired
 	private ApoiadorQuery apoiadorQuery;
 
 	public void salvar(SalvarPublicacaoCommand command) throws QuantidadeFotosPublicacaoException {
+		Calendar dataProximaNotificacao = Calendar.getInstance();
 		CidadeId cidadeId = cidadeService.getCidade(command.cidade, command.estado).getId();
 		FotoPublicacao fotosPublicacao = fotoPublicacaoService.salvar(command.foto);
 		Publicacao publicacao = new Publicacao(command, Sessao.getUsuarioId(), cidadeId, fotosPublicacao.getId());
@@ -74,21 +75,23 @@ public class PublicacaoService {
 		publicacaoRepository.save(publicacao);
 		fotosPublicacaoRepository.save(fotosPublicacao);
 
+		dataProximaNotificacao.setTime(publicacao.getDataPublicacao().getTime());
+
 		switch (publicacao.getCriticidade().toString()) {
 		case "BAIXA":
-			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +30);
+			dataProximaNotificacao.add(Calendar.DAY_OF_MONTH, +30);
 			break;
 		case "MÉDIA":
-			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +20);
+			dataProximaNotificacao.add(Calendar.DAY_OF_MONTH, +20);
 			break;
+
 		case "ALTA":
-			publicacao.getDataPublicacao().add(Calendar.DAY_OF_MONTH, +10);
+			dataProximaNotificacao.add(Calendar.DAY_OF_MONTH, +10);
 			break;
 
 		}
 
-		Notificacao notificacao = new Notificacao(publicacao.getDataPublicacao(), publicacao.getId(),
-				Sessao.getUsuarioId());
+		Notificacao notificacao = new Notificacao(dataProximaNotificacao, publicacao.getId(), Sessao.getUsuarioId());
 		notificacaoRepo.save(notificacao);
 
 	}
@@ -138,7 +141,7 @@ public class PublicacaoService {
 	}
 
 	public ApoiadorId apoiar(PublicacaoId publicacaoId, UsuarioId usuarioId) {
-		if(apoiadorQuery.getApoiador(publicacaoId) != null){
+		if (apoiadorQuery.getApoiador(publicacaoId) != null) {
 			desapoiar(publicacaoId);
 			return null;
 		}
