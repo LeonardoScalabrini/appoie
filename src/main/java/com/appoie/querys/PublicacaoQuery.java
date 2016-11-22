@@ -101,7 +101,7 @@ public class PublicacaoQuery extends BasicQuery {
             	+ "     u.nome as nomeUsuario, "
             	+ "     u.sobrenome as sobrenomeUsuario "
 				+ " from publicacao p "
-				+ " left join apoiador a on p.id = a.publicacao_id "
+				+ " left join apoiador a on p.id = a.publicacao_id and a.usuario_id = :idUsuario"
 				+"  inner join usuario u on u.id = p.usuario_id "
 				+"  inner join cidade c on c.id = p.cidade_id "
 				+"  inner join estado e on e.id = c.estado_id "

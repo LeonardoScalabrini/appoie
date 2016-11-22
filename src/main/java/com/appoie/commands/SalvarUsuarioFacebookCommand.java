@@ -32,6 +32,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 			this.dataDeNascimento = new SimpleCalendarFormat().format("dd/MM/yyyy").parse(dataDeNascimento);
 			this.sexo = sexo;			
 			this.email = email;	
+			if (nomeCidade == null){
+				nomeCidade = "Maringá";
+			}
 			this.nomeCidade =nomeCidade;
 			this.foto =foto;	
 		}
