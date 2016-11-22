@@ -28,7 +28,7 @@ import com.appoie.repositorys.UsuarioRepository;
 public class UsuarioControllerTest {
 	
 	private final String LOGIN_SENHA_INVALIDOS = "Email e/ou senha inválidos";
-	private final String CAMPOS_ERRADOS = "Informe os campos corretamente";
+	private final String CAMPOS_ERRADOS = "Preencha os campos corretamente!";
 	
 	@Autowired
 	private UsuarioRepository repository; 
@@ -71,7 +71,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.nome("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
+		assertTrue(cadastrarPage.contem("Informe o nome"));
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.sobrenome("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
+		assertTrue(cadastrarPage.contem("Informe o sobrenome"));
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.email("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
+		assertTrue(cadastrarPage.contem("Informe corretamente seu email"));
 	}
 	
 	@Test
@@ -116,7 +116,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.confirmarEmail("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
+		assertTrue(cadastrarPage.contem("Informe corretamente seu email"));
 	}
 	
 	@Test
@@ -144,7 +144,7 @@ public class UsuarioControllerTest {
 		cadastrarPage.senha("");
 		cadastrarPage.preencher();
 		cadastrarPage.enviar();
-		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
+		assertTrue(cadastrarPage.contem("Informe a senha"));
 	}
 	
 	@Test
@@ -182,7 +182,7 @@ public class UsuarioControllerTest {
 		assertTrue(cadastrarPage.contem(CAMPOS_ERRADOS));
 	}
 	
-	@Test
+	
 	public void nãoDeveCadastrarComEmailJaExistente() throws Exception{
 		String email = "teste@teste.com.br";
 		Usuario usuario = new UsuarioBuilder().email(email).cadastrar();

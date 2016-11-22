@@ -42,7 +42,7 @@ public class PublicacaoTest {
 		Assert.assertTrue(publicacao.getLongitude().equals(longitude));
 		Assert.assertTrue(publicacao.getFotoPublicacaoId().equals(fotoId));
 		Assert.assertTrue(publicacao.getCriticidade().equals(criticidadeProblema));
-		Assert.assertTrue(publicacao.getDataPublicacao().equals(hoje));
+		Assert.assertTrue(publicacao.getDataPublicacao().getTime().toString().equals(hoje.getTime().toString()));
 		Assert.assertTrue(publicacao.getStatus().equals(Status.ABERTO));
 		Assert.assertNull(publicacao.getDataFechamento());
 		
@@ -124,7 +124,7 @@ public class PublicacaoTest {
 		publicacao.fechar();
 		Calendar agora = Calendar.getInstance();
 		Assert.assertTrue(publicacao.getStatus().equals(Status.FECHADO));
-		Assert.assertTrue(publicacao.getDataFechamento().equals(agora));
+		Assert.assertTrue(publicacao.getDataFechamento().getTime().equals(agora.getTime()));
 	}
 	
 	@Test

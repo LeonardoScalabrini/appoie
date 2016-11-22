@@ -27,6 +27,7 @@ public abstract class BasicPage {
 	
 	public boolean contem(String mensagem){
 		esperar();
-		return driver.getPageSource().contains(mensagem);
+		String pageSource = driver.getPageSource();
+		return pageSource.contains(mensagem);
 	}
 }
