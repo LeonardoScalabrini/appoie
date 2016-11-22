@@ -39,7 +39,6 @@ import com.appoie.repositorys.UsuarioRepository;
 import com.appoie.utils.RandomAlphaNumeric;
 import com.appoie.utils.Sessao;
 
-
 @Service
 public class UsuarioService {
 
@@ -48,18 +47,19 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioQuery usuarioQuery;
-	
+
 	@Autowired
 	private FotoPerfilRepository fotoPerfilRepository;
-	
+
 	@Autowired
 	private CidadeService cidadeService;
-	
+
 	@Autowired
 	private UsuarioFacebookRepository facebookRepository;
 
-	public void cadastrar(CadastrarCommand command) throws CamposCadastrarException, EmailCadastradoException {
-		
+	public void cadastrar(CadastrarCommand command)
+			throws CamposCadastrarException, EmailCadastradoException, EmailFormatoException {
+
 		Usuario usuario;
 		try {
 			isNullOrEmpty(command.cidade);
@@ -72,14 +72,22 @@ public class UsuarioService {
 
 		if (!usuario.getEmail().getValue().equals(command.confirmarEmail))
 			throw new CamposCadastrarException();
-		
+
 		if (!usuario.getSenha().getValue().equals(command.confirmarSenha))
 			throw new CamposCadastrarException();
-		
+
 		if (usuarioQuery.existeEmail(usuario.getEmail()))
 			throw new EmailCadastradoException();
 
 		usuarioRepository.save(usuario);
+		List<Email> destinarios = new ArrayList<>();
+		destinarios.add(new Email(command.email));
+
+		String mailBody = "<h1>BEM-VINDO AO APPOIE</h1>" 
+				+ "<h3><br><br>Sua conta foi cadastrada com sucesso! "
+				+ "Faça sua primeira publicação em: <a href='http://www.appoie.com.br'>Appoie</a></h3>";
+		SenderMail email = new SenderMail();
+		email.sendMail(mailBody, "Recuperação de senha", destinarios);
 	}
 
 	public void recuperarSenha(RecuperarSenhaCommand command)
@@ -87,23 +95,21 @@ public class UsuarioService {
 
 		if (!usuarioQuery.existeEmail(new Email(command.email))) {
 			throw new EmailNaoCadastradoExcpetion();
-		}
-		else {
+		} else {
 			String senhaTemporaria = RandomAlphaNumeric.randomString(8);
 			usuarioQuery.setPassword(command.email, senhaTemporaria);
 			List<Email> destinarios = new ArrayList<>();
 			destinarios.add(new Email(command.email));
-			
-			String mailBody = "<h2>Recuperação de senha</h2>"
-					+ "<br><br><h4>Sua senha temporária é: " + senhaTemporaria
-					+ "<br><br>Você deve entrar em sua conta o mais cedo possível para alterar sua senha! Obrigado!";
+
+			String mailBody = "<h2>Recuperação de senha</h2>" + "<br><br><h4>Sua senha temporária é: " + senhaTemporaria
+					+ "<br><br>Você deve entrar em sua conta o mais breve possível para alterar sua senha. Obrigado!";
 			SenderMail email = new SenderMail();
 			email.sendMail(mailBody, "Recuperação de senha", destinarios);
-			
+
 		}
 	}
-	
-	public InformacoesUsuarioDTO logar(AutenticarCommand auth) throws EmailSenhaInvalidoException{
+
+	public InformacoesUsuarioDTO logar(AutenticarCommand auth) throws EmailSenhaInvalidoException {
 		Email email;
 		Senha senha;
 		UsuarioId id;
@@ -121,7 +127,7 @@ public class UsuarioService {
 		Sessao.setCidadeId(cidadeId);
 		return usuarioQuery.buscarInformacoesDetalhadas(auth.email, false);
 	}
-	
+
 	public void alterarPerfil(AlterarPerfilCommand perfilCommand) throws CamposCadastrarException {
 		Usuario usuario = usuarioRepository.findOne(Sessao.getUsuarioId());
 		FotoPerfil fotoPerfil = fotoPerfilRepository.findOne(Sessao.getUsuarioId());
@@ -134,20 +140,21 @@ public class UsuarioService {
 		fotoPerfilRepository.save(fotoPerfil);
 	}
 
-	public void alterarEmail(AlterarEmailCommand c, UsuarioId id) throws EmailFormatoException, CamposCadastrarException, NovoEmailIgualException {
+	public void alterarEmail(AlterarEmailCommand c, UsuarioId id)
+			throws EmailFormatoException, CamposCadastrarException, NovoEmailIgualException {
 		Usuario usuario = usuarioRepository.findOne(id);
-		try{
+		try {
 			isNullOrEmpty(c.emailAtual);
 			isNullOrEmpty(c.novoEmail);
 			isNullOrEmpty(c.confirmarNovoEmail);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new CamposCadastrarException();
 		}
-		if(!c.novoEmail.equals(c.confirmarNovoEmail)){
+		if (!c.novoEmail.equals(c.confirmarNovoEmail)) {
 			throw new CamposCadastrarException();
 		}
 		Email email = usuario.getEmail();
-		if(email.getValue().equals(c.novoEmail)){
+		if (email.getValue().equals(c.novoEmail)) {
 			throw new NovoEmailIgualException();
 		}
 		email.setValue(c.novoEmail);
@@ -163,11 +170,11 @@ public class UsuarioService {
 		} catch (Exception e) {
 			throw new CamposCadastrarException();
 		}
-		if (!c.novaSenha.equals(c.confirmarNovaSenha)){
+		if (!c.novaSenha.equals(c.confirmarNovaSenha)) {
 			throw new CamposCadastrarException();
 		}
 		Senha senha = usuario.getSenha();
-		if(senha.getValue().equals(c.novaSenha)){
+		if (senha.getValue().equals(c.novaSenha)) {
 			throw new NovaSenhaIgualException();
 		}
 		senha.setSenha(c.novaSenha);
@@ -186,5 +193,5 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 		return usuarioQuery.buscarInformacoesDetalhadas(usuario.getEmail().getValue(), false);
 	}
-	
+
 }
