@@ -80,33 +80,33 @@ public class UsuarioService {
 			throw new EmailCadastradoException();
 
 		usuarioRepository.save(usuario);
-		List<Email> destinarios = new ArrayList<>();
-		destinarios.add(new Email(command.email));
-
-		String mailBody = "<h1>BEM-VINDO AO APPOIE</h1>" 
-				+ "<h3><br><br>Sua conta foi cadastrada com sucesso! "
-				+ "Faça sua primeira publicação em: <a href='http://www.appoie.com.br'>Appoie</a></h3>";
-		SenderMail email = new SenderMail();
-		email.sendMail(mailBody, "Recuperação de senha", destinarios);
+//		List<Email> destinarios = new ArrayList<>();
+//		destinarios.add(new Email(command.email));
+//
+//		String mailBody = "<h1>BEM-VINDO AO APPOIE</h1>" 
+//				+ "<h3><br><br>Sua conta foi cadastrada com sucesso! "
+//				+ "Faça sua primeira publicação em: <a href='http://www.appoie.com.br'>Appoie</a></h3>";
+//		SenderMail email = new SenderMail();
+//		email.sendMail(mailBody, "Recuperação de senha", destinarios);
 	}
 
 	public void recuperarSenha(RecuperarSenhaCommand command)
 			throws EmailFormatoException, EmailNaoCadastradoExcpetion {
 
-		if (!usuarioQuery.existeEmail(new Email(command.email))) {
-			throw new EmailNaoCadastradoExcpetion();
-		} else {
-			String senhaTemporaria = RandomAlphaNumeric.randomString(8);
-			usuarioQuery.setPassword(command.email, senhaTemporaria);
-			List<Email> destinarios = new ArrayList<>();
-			destinarios.add(new Email(command.email));
-
-			String mailBody = "<h2>Recuperação de senha</h2>" + "<br><br><h4>Sua senha temporária é: " + senhaTemporaria
-					+ "<br><br>Você deve entrar em sua conta o mais breve possível para alterar sua senha. Obrigado!";
-			SenderMail email = new SenderMail();
-			email.sendMail(mailBody, "Recuperação de senha", destinarios);
-
-		}
+//		if (!usuarioQuery.existeEmail(new Email(command.email))) {
+//			throw new EmailNaoCadastradoExcpetion();
+//		} else {
+//			String senhaTemporaria = RandomAlphaNumeric.randomString(8);
+//			usuarioQuery.setPassword(command.email, senhaTemporaria);
+//			List<Email> destinarios = new ArrayList<>();
+//			destinarios.add(new Email(command.email));
+//
+//			String mailBody = "<h2>Recuperação de senha</h2>" + "<br><br><h4>Sua senha temporária é: " + senhaTemporaria
+//					+ "<br><br>Você deve entrar em sua conta o mais breve possível para alterar sua senha. Obrigado!";
+//			SenderMail email = new SenderMail();
+//			email.sendMail(mailBody, "Recuperação de senha", destinarios);
+//
+//		}
 	}
 
 	public InformacoesUsuarioDTO logar(AutenticarCommand auth) throws EmailSenhaInvalidoException {
