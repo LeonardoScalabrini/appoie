@@ -61,7 +61,7 @@ public class PublicacaoQuery extends BasicQuery {
 			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
 
 			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
-					(Double) publicacao[2], categoria, qtdCurtidas.longValue()));
+					(Double) publicacao[2], categoria, qtdCurtidas.longValue(), publicacoes.size()));
 		}
 		return commands;
 	}
@@ -85,40 +85,28 @@ public class PublicacaoQuery extends BasicQuery {
 	}
 
 	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
-		Query query = em.createNativeQuery(
-				"select p.id, "
-				+ "     p.titulo, "
-				+ "     p.descricao, "
-				+ "     p.categoria, "
-				+ "     p.data_Publicacao, "
-				+ "     p.qtd_apoiadores, "
-				+ "     p.status, "
-				+ "     p.criticidade, "
-				+ "     CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, "
-				+ "     a.id as idApoiador,"
-			    + "     c.nome as nomeCidade, "
-                + "     e.nome as nomeEstado, "
-            	+ "     u.nome as nomeUsuario, "
-            	+ "     u.sobrenome as sobrenomeUsuario "
-				+ " from publicacao p "
+		Query query = em.createNativeQuery("select p.id, " + "     p.titulo, " + "     p.descricao, "
+				+ "     p.categoria, " + "     p.data_Publicacao, " + "     p.qtd_apoiadores, " + "     p.status, "
+				+ "     p.criticidade, " + "     CASE WHEN a.usuario_id= :idUsuario THEN 'S' ELSE 'N' END, "
+				+ "     a.id as idApoiador," + "     c.nome as nomeCidade, " + "     e.nome as nomeEstado, "
+				+ "     u.nome as nomeUsuario, " + "     u.sobrenome as sobrenomeUsuario " + " from publicacao p "
 				+ " left join apoiador a on p.id = a.publicacao_id and a.usuario_id = :idUsuario"
-				+"  inner join usuario u on u.id = p.usuario_id "
-				+"  inner join cidade c on c.id = p.cidade_id "
-				+"  inner join estado e on e.id = c.estado_id "
-				+ "where p.id = :id");
+				+ "  inner join usuario u on u.id = p.usuario_id " + "  inner join cidade c on c.id = p.cidade_id "
+				+ "  inner join estado e on e.id = c.estado_id " + "where p.id = :id");
 
 		query.setParameter("id", id.getValue());
 		query.setParameter("idUsuario", Sessao.getUsuarioId().getValue());
 
 		Object[] publicacao = (Object[]) query.getSingleResult();
-		
+
 		System.out.println(publicacao);
 
 		return new PublicacaoDetalhadaDTO(publicacao[0].toString(), publicacao[1].toString(), publicacao[2].toString(),
 				publicacao[3].toString(), publicacao[4].toString(), Integer.parseInt(publicacao[5].toString()),
 				Status.valueOf(publicacao[6].toString()), fotoPublicacaoQuery.getFotosPublicacaoCommand(id),
-				CriticidadeProblema.valueOf(publicacao[7].toString()), publicacao[8].toString(), publicacao[9],publicacao[10].toString(), 
-				publicacao[11].toString(), publicacao[12].toString(), publicacao[13].toString());
+				CriticidadeProblema.valueOf(publicacao[7].toString()), publicacao[8].toString(), publicacao[9],
+				publicacao[10].toString(), publicacao[11].toString(), publicacao[12].toString(),
+				publicacao[13].toString());
 	}
 
 	public boolean verificaListaSituacoes(List<String> lista) {
@@ -178,19 +166,19 @@ public class PublicacaoQuery extends BasicQuery {
 		}
 
 		else {
-			if(filtroPorData) {
+			if (filtroPorData) {
 				query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
 						+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
-						+ "and (p.status in (:status)) " + "and (p.categoria in (:valoresCategorias)) and (p.data_publicacao between :dataInicio and :dataFim))");
+						+ "and (p.status in (:status)) "
+						+ "and (p.categoria in (:valoresCategorias)) and (p.data_publicacao between :dataInicio and :dataFim))");
 
 				query.setParameter("cidadeId", cidadeId.getValue());
 				query.setParameter("status", command.situacoes);
 				query.setParameter("valoresCategorias", command.categorias);
 				query.setParameter("dataInicio", command.dataInicio);
 				query.setParameter("dataFim", command.dataFim);
-				
-			}
-			else {
+
+			} else {
 				query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
 						+ "p.qtd_apoiadores from publicacao p where " + "(" + "(p.cidade_Id = :cidadeId)"
 						+ "and (p.status in (:status)) " + "and (p.categoria in (:valoresCategorias))" + ")");
@@ -198,10 +186,9 @@ public class PublicacaoQuery extends BasicQuery {
 				query.setParameter("cidadeId", cidadeId.getValue());
 				query.setParameter("status", command.situacoes);
 				query.setParameter("valoresCategorias", command.categorias);
-				
+
 			}
-			
-			
+
 		}
 		List<Object[]> publicacoes = query.getResultList();
 
@@ -212,12 +199,11 @@ public class PublicacaoQuery extends BasicQuery {
 			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
 
 			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
-					(Double) publicacao[2], categoria, qtdCurtidas.longValue()));
+					(Double) publicacao[2], categoria, qtdCurtidas.longValue(), publicacoes.size()));
 		}
 		return commands;
 	}
-	
-	
+
 	private void atualizaDataNotificacao(UsuarioId idUsuario, List<PublicacaoId> idsPublicacoes) {
 
 		for (PublicacaoId idPublicacao : idsPublicacoes) {
@@ -230,9 +216,9 @@ public class PublicacaoQuery extends BasicQuery {
 			Object[] notificacao = (Object[]) query.getSingleResult();
 
 			Notificacao objNotificacao = new Notificacao(new NotificacaoId(notificacao[0].toString()),
-					new SimpleCalendarFormat().parse(notificacao[1].toString()), new PublicacaoId(notificacao[2].toString()),
-					new UsuarioId(notificacao[3].toString()));
-						
+					new SimpleCalendarFormat().parse(notificacao[1].toString()),
+					new PublicacaoId(notificacao[2].toString()), new UsuarioId(notificacao[3].toString()));
+
 			objNotificacao.getDataProximaNotificacao().add(Calendar.DAY_OF_MONTH, +7);
 			notificacaoRepo.save(objNotificacao);
 		}
@@ -254,27 +240,55 @@ public class PublicacaoQuery extends BasicQuery {
 			commands.add(new NotificacaoPublicacaoDTO(publicacao[0].toString(), publicacao[1].toString()));
 
 		}
-		
-		
+
 		List<PublicacaoId> idsPublicacoesNotificadas = new ArrayList<>();
 		for (Object[] obj : publicacoes) {
 			idsPublicacoesNotificadas.add(new PublicacaoId(obj[0].toString()));
-			
+
 		}
-		
-		//ao refatorar, colocar este método dentro do callback.success do serviço de verificação do status de fechamento da publicação
+
+		// ao refatorar, colocar este método dentro do callback.success do
+		// serviço de verificação do status de fechamento da publicação
 		atualizaDataNotificacao(Sessao.getUsuarioId(), idsPublicacoesNotificadas);
 
 		return commands;
 
 	}
+
 	@Transactional
 	public void destruirNotificacao(PublicacaoId id) {
 		Query query = em.createNativeQuery("delete from notificacao where publicacao_id = :id_publicacao");
-		query.setParameter("id_publicacao", id.getValue());		
-		query.executeUpdate();	
-		
+		query.setParameter("id_publicacao", id.getValue());
+		query.executeUpdate();
+
 	}
-	
+
+	public Integer getNumPublicacoes() {
+		Query query = em.createNativeQuery("select COUNT(1) from publicacao where cidade_id = :idCidade");
+		query.setParameter("idCidade", Sessao.getCidadeId().getValue());
+		BigInteger numeroPublicacoes = (BigInteger) query.getSingleResult();
+		return new Integer(numeroPublicacoes.intValue());
+	}
+
+	public List<PublicacaoMarcacaoDTO> verificarNovasPublicacoes(Integer index) {
+		Query query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
+				+ "p.qtd_apoiadores, count(1) from publicacao p where " + "p.cidade_Id = :cidadeId OFFSET :index");
+
+		query.setParameter("cidadeId", Sessao.getCidadeId().getValue());
+		query.setParameter("index", index);
+		List<Object[]> publicacoes = query.getResultList();
+
+		List<PublicacaoMarcacaoDTO> commands = new ArrayList<>();
+		for (Object[] publicacao : publicacoes) {
+
+			Categoria categoria = Categoria.valueOf(publicacao[3].toString().toUpperCase());
+			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
+
+			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
+					(Double) publicacao[2], categoria, qtdCurtidas.longValue(), publicacoes.size()));
+		}
+		return commands;
+
+	}
 
 }

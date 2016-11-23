@@ -101,5 +101,11 @@ public class PublicacaoController {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/verificar/novasPublicacoes/{index}")
+	public List<PublicacaoMarcacaoDTO> verificarNovasPublicacoes(@PathVariable Integer index) {
+		return service.verificarNovasPublicacoes(index);
+	}
 
 }

@@ -177,4 +177,15 @@ public class PublicacaoService {
 		}
 	}
 
+	public List<PublicacaoMarcacaoDTO> verificarNovasPublicacoes(Integer index) {
+		if(publicacaoQuery.getNumPublicacoes() < index) {
+			return null;
+		} 
+		else {
+			return publicacaoQuery.verificarNovasPublicacoes(index);			
+		}
+		
+		
+	}
+
 }
