@@ -272,7 +272,7 @@ public class PublicacaoQuery extends BasicQuery {
 
 	public List<PublicacaoMarcacaoDTO> verificarNovasPublicacoes(Integer index) {
 		Query query = em.createNativeQuery("select p.id, p.latitude, p.longitude, p.categoria, "
-				+ "p.qtd_apoiadores, count(1) from publicacao p where " + "p.cidade_Id = :cidadeId OFFSET :index");
+				+ "p.qtd_apoiadores from publicacao p where " + "p.cidade_Id = :cidadeId OFFSET :index");
 
 		query.setParameter("cidadeId", Sessao.getCidadeId().getValue());
 		query.setParameter("index", index);
@@ -285,7 +285,7 @@ public class PublicacaoQuery extends BasicQuery {
 			BigInteger qtdCurtidas = (BigInteger) publicacao[4];
 
 			commands.add(new PublicacaoMarcacaoDTO(publicacao[0].toString(), (Double) publicacao[1],
-					(Double) publicacao[2], categoria, qtdCurtidas.longValue(), publicacoes.size()));
+					(Double) publicacao[2], categoria, qtdCurtidas.longValue(), getNumPublicacoes()));
 		}
 		return commands;
 
