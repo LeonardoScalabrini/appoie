@@ -50,23 +50,23 @@
 			<artifactId>lutung</artifactId>
 			<version>0.0.7</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.easytesting</groupId>
 			<artifactId>fest-assert</artifactId>
 			<version>1.4</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
-        	<groupId>org.seleniumhq.selenium</groupId>
-        	<artifactId>selenium-firefox-driver</artifactId>
-        	<version>2.53.1</version>
-   		</dependency>  
-   		
-   		
-   		<!-- Dependências para envio de email -->
-   		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-firefox-driver</artifactId>
+			<version>2.53.1</version>
+		</dependency>
+
+
+		<!-- Dependências para envio de email -->
+		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
@@ -75,10 +75,9 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>javax.mail-api</artifactId>
-			<version>1.5.5</version>
 		</dependency>
-		
-			<dependency>
+
+		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
@@ -87,14 +86,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency> 
-		
+		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.6.0</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.pitest/pitest-maven -->
+		<dependency>
+			<groupId>org.pitest</groupId>
+			<artifactId>pitest-maven</artifactId>
+			<version>1.2.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -103,8 +107,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<targetClasses>
+						<param>com.appoie.querys.PublicacaoQuery</param>
+					</targetClasses>
+					<targetTests>
+						<param>com.appoie.querys.PublicacaoQueryTest</param>
+					</targetTests>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 
 </project>

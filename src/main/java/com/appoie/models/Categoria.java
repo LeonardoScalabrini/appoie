@@ -8,7 +8,7 @@ public enum Categoria {
 	PAVIMENTACAO("Pavimentação"), SANEAMENTOBASICO("Saneamento Básico"), SEGURANCA("Segurança"), TERRENOBALDIO("Terreno Baldio"), 
 	TRANSPORTEPUBLICO("Transporte Público");
 	
-	private FotoRepository repository = new FotoRepository(TipoImagem.PNG);
+	private FotoRepository repository = new FotoRepository();
 	
 	private final String PATCH_MARCADORES_PADRAO = "c:\\fotosAppoie\\Categoria\\Marcadores\\";
 

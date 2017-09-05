@@ -185,7 +185,7 @@ public class UsuarioControllerTest {
 	
 	public void nãoDeveCadastrarComEmailJaExistente() throws Exception{
 		String email = "teste@teste.com.br";
-		Usuario usuario = new UsuarioBuilder().email(email).cadastrar();
+		Usuario usuario = new UsuarioBuilder().email(email).criar();
 		repository.save(usuario);
 		
 		cadastrarPage = home.cadastrar();
@@ -205,7 +205,7 @@ public class UsuarioControllerTest {
 		Cidade cidade = new Cidade(new EstadoId(), "Maringá");
 		cidadeRepository.save(cidade);
 		
-		Usuario usuario = new UsuarioBuilder().cidadeId(cidade.getId()).cadastrar();
+		Usuario usuario = new UsuarioBuilder().cidadeId(cidade.getId()).criar();
 		repository.save(usuario);
 		
 		home.email(email);

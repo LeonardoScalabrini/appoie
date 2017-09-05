@@ -8,5 +8,4 @@ public abstract class BasicQuery {
 
 	@Autowired
 	protected EntityManager em;
-	
 }

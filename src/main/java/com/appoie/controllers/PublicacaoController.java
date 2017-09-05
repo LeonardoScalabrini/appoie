@@ -22,6 +22,7 @@ import com.appoie.dto.PublicacaoMarcacaoDTO;
 import com.appoie.dto.PublicacaoPreviaDTO;
 import com.appoie.exceptions.PublicacaoFechadaException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
+import com.appoie.exceptions.SemResultadoException;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.PublicacaoId;
 import com.appoie.services.PublicacaoService;
@@ -51,12 +52,12 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "detalhada/{id}")
-	public PublicacaoDetalhadaDTO recuperarDetalhada(@PathVariable PublicacaoId id) {
+	public PublicacaoDetalhadaDTO recuperarDetalhada(@PathVariable PublicacaoId id) throws SemResultadoException {
 		return service.getDetalhesPublicacao(id);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "previa/{id}")
-	public PublicacaoPreviaDTO recuperarPrevia(@PathVariable PublicacaoId id) {
+	public PublicacaoPreviaDTO recuperarPrevia(@PathVariable PublicacaoId id) throws SemResultadoException {
 		return service.getPreviaPublicacao(id);
 	}
 
@@ -88,20 +89,19 @@ public class PublicacaoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/status/fechamento")
-	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacoes(@RequestBody VerificaFechamentoPublicacaoCommand command) {
+	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacoes(@RequestBody VerificaFechamentoPublicacaoCommand command) throws SemResultadoException {
 		return service.verificarFechamentoPublicacao(command);
 		
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/fechar/{id}")
-	public void fecharPublicacao(@PathVariable PublicacaoId id) {
+	public void fecharPublicacao(@PathVariable PublicacaoId id) throws SemResultadoException {
 		try {
 			service.fecharPublicacao(id);
 		} catch (PublicacaoFechadaException e) {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/verificar/novasPublicacoes/{index}")
 	public List<PublicacaoMarcacaoDTO> verificarNovasPublicacoes(@PathVariable Integer index) {

@@ -4,13 +4,12 @@ import org.springframework.stereotype.Service;
 
 import com.appoie.ids.FotoPublicacaoId;
 import com.appoie.models.FotoPublicacao;
-import com.appoie.models.TipoImagem;
 import com.appoie.utils.FotoRepository;
 
 @Service
 public class FotoPublicacaoService {
 
-	private FotoRepository repository = new FotoRepository(TipoImagem.PNG);
+	private FotoRepository repository = new FotoRepository();
 	
 	public FotoPublicacao salvar(String foto) {
 		FotoPublicacaoId id = new FotoPublicacaoId();

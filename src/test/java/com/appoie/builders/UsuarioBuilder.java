@@ -37,7 +37,7 @@ public class UsuarioBuilder {
 		
 	}
 	
-	public Usuario cadastrar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
+	public Usuario criar() throws EmailFormatoException, SenhaTamanhoMinimoException, Exception{
 		CadastrarCommand cadastrarCommand = new CadastrarCommand(nome, sobrenome, sexo, cep, cidade, estado, dataDeNascimento, email, confirmarEmail, senha, confirmarSenha);
 		return new Usuario(cadastrarCommand, cidadeId);
 	}

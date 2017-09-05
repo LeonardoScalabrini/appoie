@@ -5,17 +5,20 @@ import java.util.Arrays;
 import com.appoie.commands.SalvarPublicacaoCommand;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.FotoPublicacaoId;
+import com.appoie.ids.PublicacaoId;
 import com.appoie.ids.UsuarioId;
 import com.appoie.models.Categoria;
 import com.appoie.models.CriticidadeProblema;
+import com.appoie.models.FotoPublicacao;
 import com.appoie.models.Publicacao;
 
 public class PublicacaoBuilder {
 	
+	private FotoBuilder fotoBuilder = new FotoBuilder();
 	private String titulo = "titulo";
 	private String descricao = "descrição";
 	private Categoria categoria = Categoria.ARBORIZACAO;
-	private String foto = new FotoBuilder().getBase64();
+	private String foto = fotoBuilder.base64;
 	private String estado = "Paraná";
 	private String cidade = "Maringá";
 	private Double lat = -23.4098268;
@@ -24,6 +27,8 @@ public class PublicacaoBuilder {
 	private UsuarioId usuarioId = new UsuarioId("USUARIO_ID");
 	private CidadeId cidadeId = new CidadeId("CIDADE_ID");
 	private FotoPublicacaoId fotoPublicacaoId = new FotoPublicacaoId("FOTO_PUBLICACAO_ID");
+	private PublicacaoId publicacaoId = new PublicacaoId();
+	private String endereco = fotoBuilder.endereco;
 	
 	public PublicacaoBuilder titulo(String titulo){
 		this.titulo = titulo;
@@ -88,7 +93,16 @@ public class PublicacaoBuilder {
 	public Publicacao criar(){
 		SalvarPublicacaoCommand command = new SalvarPublicacaoCommand(titulo, descricao, categoria.name(), cidade, estado, 
 				lat, lng, Arrays.asList(foto), criticidade);
-				
+		
 		return new Publicacao(command, usuarioId, cidadeId, fotoPublicacaoId);
+	}
+
+	public FotoPublicacao criarFoto() {
+		return new FotoPublicacao(fotoPublicacaoId, endereco);
+	}
+
+	public PublicacaoBuilder endereco(String endereco) {
+		this.endereco = endereco;
+		return this;
 	}
 }

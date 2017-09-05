@@ -21,6 +21,7 @@ import com.appoie.exceptions.FiltroStatusException;
 import com.appoie.exceptions.FiltroTipoPublicacaoException;
 import com.appoie.exceptions.PublicacaoFechadaException;
 import com.appoie.exceptions.QuantidadeFotosPublicacaoException;
+import com.appoie.exceptions.SemResultadoException;
 import com.appoie.ids.ApoiadorId;
 import com.appoie.ids.CidadeId;
 import com.appoie.ids.PublicacaoId;
@@ -110,12 +111,12 @@ public class PublicacaoService {
 		return publicacaoQuery.getMarcadores(cidadeId);
 	}
 
-	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) {
+	public PublicacaoPreviaDTO getPreviaPublicacao(PublicacaoId id) throws SemResultadoException {
 		return publicacaoQuery.getPreviaPublicacao(id, Sessao.getUsuarioId());
 	}
 
-	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) {
-		return publicacaoQuery.getDetalhesPublicacao(id);
+	public PublicacaoDetalhadaDTO getDetalhesPublicacao(PublicacaoId id) throws SemResultadoException {
+		return publicacaoQuery.getDetalhesPublicacao(id, Sessao.getUsuarioId());
 	}
 
 	public List<IconesDTO> getIconesDTO() {
@@ -161,12 +162,12 @@ public class PublicacaoService {
 		publicacaoRepository.save(p);
 	}
 
-	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacao(VerificaFechamentoPublicacaoCommand command) {
+	public List<NotificacaoPublicacaoDTO> verificarFechamentoPublicacao(VerificaFechamentoPublicacaoCommand command) throws SemResultadoException {
 		return publicacaoQuery.verificarFechamentoPublicacao(command);
 
 	}
 
-	public void fecharPublicacao(PublicacaoId id) throws PublicacaoFechadaException {
+	public void fecharPublicacao(PublicacaoId id) throws PublicacaoFechadaException, SemResultadoException {
 		Publicacao p = publicacaoRepository.findOne(id);
 		if (p.getStatus().equals(Status.FECHADO)) {
 			throw new PublicacaoFechadaException();

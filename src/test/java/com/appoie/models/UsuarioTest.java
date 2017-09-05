@@ -35,7 +35,7 @@ public class UsuarioTest {
 								  email("teste@teste.com.br").
 								  senha("123456").
 								  cidadeId(cidadeId).
-								  cadastrar();
+								  criar();
 
 		Assert.assertTrue(usuario.getNome().equals("teste"));
 		Assert.assertTrue(usuario.getSobrenome().equals("teste"));
@@ -49,42 +49,42 @@ public class UsuarioTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarNomeNulo() throws Exception {
-		usuario = builder.nome(null).cadastrar();
+		usuario = builder.nome(null).criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarNomeVazio() throws Exception {
-		usuario = builder.nome("").cadastrar();
+		usuario = builder.nome("").criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarSobrenomeNulo() throws Exception {
-		usuario = builder.sobrenome(null).cadastrar();
+		usuario = builder.sobrenome(null).criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarSobrenomeVazio() throws Exception {
-		usuario = builder.sobrenome("").cadastrar();
+		usuario = builder.sobrenome("").criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarDataDeNascimentoNula() throws Exception {
-		usuario = builder.dataDeNascimento(null).cadastrar();
+		usuario = builder.dataDeNascimento(null).criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarEmailNulo() throws Exception {
-		usuario = builder.email(null).cadastrar();
+		usuario = builder.email(null).criar();
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void nãoDeveAceitarSenhaNula() throws Exception {
-		usuario = builder.senha(null).cadastrar();
+		usuario = builder.senha(null).criar();
 	}
 	
 	@Test
 	public void deveAlterarPerfil() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		Calendar agora = Calendar.getInstance();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().dataDeNascimento(agora).getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
@@ -96,49 +96,49 @@ public class UsuarioTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComNomeVazio() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().nome("").getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComNomeNull() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().nome(null).getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComSobrenomeVazio() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().sobrenome("").getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComSobrenomeNull() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().sobrenome(null).getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComSexoVazio() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().sexo("").getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComSexoNull() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().sexo(null).getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void naoDeveAlterarComDataNascimentoNull() throws Exception {
-		usuario = builder.cadastrar();
+		usuario = builder.criar();
 		AlterarPerfilCommand alterarPerfilCommand = builder.alterarPerfil().dataDeNascimento(null).getAlterarPerfilCommand();
 		usuario.alterarPerfil(alterarPerfilCommand);
 	}

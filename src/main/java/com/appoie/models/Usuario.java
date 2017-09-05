@@ -42,7 +42,7 @@ public class Usuario extends BasicEntity<UsuarioId>{
 	private CidadeId cidadeId;
 	
 	public Usuario() {
-
+		setId(new UsuarioId());
 	}
 	
 	public Usuario(SalvarUsuarioFacebookCommand facebookCommand) throws EmailFormatoException{
